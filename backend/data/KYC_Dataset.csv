@@ -1,0 +1,37 @@
+﻿Name,Gender,Date of Birth,Street Address,City,State,Country,IC Number,Phone Number,Nationality,Marital Status,Employment Status,Job Title,Income Range
+Ahmad Firdaus,Male,4/18/1992,23 Jalan Damai,Kuala Lumpur,WP Kuala Lumpur,Malaysia,920418-14-5321,60123456789,Malaysian,Single,Employed,Software Engineer,"MYR 5,001–8,000"
+Siti Aisyah,Female,9/2/1988,15 Jalan Merpati,Shah Alam,Selangor,Malaysia,880902-10-8744,60134567890,Malaysian,Married,Employed,HR Executive,"MYR 4,001–6,000"
+Daniel Tan,Male,1/27/1995,88 Jalan Bukit,Petaling Jaya,Selangor,Malaysia,950127-08-2295,60172345678,Malaysian,Single,Employed,Data Analyst,"MYR 6,001–9,000"
+Nur Izzati,Female,6/12/2000,7 Jalan Kenanga,Bangi,Selangor,Malaysia,000612-05-9934,60113456123,Malaysian,Single,Student,Undergraduate Student,"< MYR 2,000"
+Mohd Hafiz,Male,11/5/1983,102 Jalan Permai,Johor Bahru,Johor,Malaysia,831105-01-6675,60169988776,Malaysian,Married,Self-Employed,SME Owner,"MYR 8,001–12,000"
+Lim Wei Jian,Male,3/21/1990,54 Jalan Puchong,Puchong,Selangor,Malaysia,900321-07-4321,60183344556,Malaysian,Single,Employed,Marketing Executive,"MYR 4,001–6,000"
+Aina Sofea,Female,12/30/1997,9 Jalan Sentosa,Seremban,Negeri Sembilan,Malaysia,971230-06-1246,60146677889,Malaysian,Single,Employed,Graphic Designer,"MYR 3,001–5,000"
+Rajiv Kumar,Male,7/14/1985,31 Jalan Maju,Klang,Selangor,Malaysia,850714-10-8899,60191122334,Malaysian,Married,Employed,Operations Manager,"MYR 7,001–10,000"
+Farah Nadia,Female,2/9/1993,66 Jalan Harmoni,Putrajaya,Putrajaya,Malaysia,930209-14-5568,60127788990,Malaysian,Married,Employed,Policy Officer,"MYR 6,001–9,000"
+Kelvin Chong,Male,8/25/1978,120 Jalan Raja,Ipoh,Perak,Malaysia,780825-08-3345,60162233445,Malaysian,Married,Employed,Finance Manager,"MYR 10,001–15,000"
+Noor Azman,Male,2/16/1970,45 Jalan Sejahtera,Alor Setar,Kedah,Malaysia,700216-02-5567,60125566778,Malaysian,Married,Retired,NA,NA
+Salmah Binti Ali,Female,10/8/1965,18 Jalan Aman,Kota Bharu,Kelantan,Malaysia,651008-03-8898,60137788991,Malaysian,Married,Retired,NA,NA
+Amirul Hakim,Male,5/24/1998,12 Jalan Mutiara,Sungai Petani,Kedah,Malaysia,980524-14-3345,60186677889,Malaysian,Single,Unemployed,NA,NA
+Priya Nair,Female,11/19/1994,77 Jalan Indah,George Town,Penang,Malaysia,941119-08-6672,60128899001,Malaysian,Single,Unemployed,NA,NA
+Wong Chee Leong,Male,1/3/1960,90 Jalan Seri,Melaka Tengah,Melaka,Malaysia,600103-04-1123,60179900123,Malaysian,Married,Retired,NA,NA
+Muhammad Aiman,Male,8/17/2005,21 Jalan Universiti,Skudai,Johor,Malaysia,050817-01-7785,60174567890,Malaysian,Single,Student,Diploma Student,"< MYR 2,000"
+Hana Syafiqa,Female,3/14/1996,12 Jalan Melati,Gombak,Selangor,Malaysia,960314-10-4456,60129876543,Malaysian,Single,Employed,Accounts Executive,"MYR 4,001–6,000"
+Amir Danish,Male,7/9/2001,8 Jalan Kolej,Cyberjaya,Selangor,Malaysia,010709-14-8834,60184561234,Malaysian,Single,Student,Degree Student,"< MYR 2,000"
+Tan Mei Ling,Female,11/22/1987,66 Jalan Utama,Butterworth,Penang,Malaysia,871122-07-2299,60167778890,Malaysian,Married,Employed,Procurement Officer,"MYR 5,001–7,000"
+Hafiz Rahman,Male,5/30/1993,19 Jalan Bestari,Nilai,Negeri Sembilan,Malaysia,930530-05-6671,60192233445,Malaysian,Single,Employed,QA Engineer,"MYR 6,001–8,000"
+Aishah Nabila,Female,12/18/1999,44 Jalan Cempaka,Pasir Gudang,Johor,Malaysia,991218-01-5543,60135566778,Malaysian,Single,Employed,Customer Support Officer,"MYR 3,001–4,500"
+Ong Kah Wei,Male,4/7/1981,101 Jalan Bukit Indah,Ampang,Selangor,Malaysia,810407-10-3342,60168899001,Malaysian,Married,Employed,Project Manager,"MYR 9,001–12,000"
+Suresh Raman,Male,9/25/1975,27 Jalan Harmoni,Batu Pahat,Johor,Malaysia,750925-08-7788,60179922334,Malaysian,Married,Self-Employed,Logistics Contractor,"MYR 7,001–10,000"
+Nurul Huda,Female,1/11/2000,5 Jalan Kampus,Kuala Terengganu,Terengganu,Malaysia,000111-11-4499,60146678901,Malaysian,Single,Student,Foundation Student,"< MYR 2,000"
+Kelvin Ng,Male,6/3/1994,78 Jalan Tun Razak,Kuching,Sarawak,Malaysia,940603-13-2211,60182334455,Malaysian,Single,Employed,Sales Consultant,"MYR 4,001–6,000"
+Farhan Zikri,Male,10/29/1989,39 Jalan Rakyat,Sungai Buloh,Selangor,Malaysia,891029-02-9988,60127765432,Malaysian,Married,Employed,Supply Chain Executive,"MYR 6,001–8,000"
+Chong Li Xuan,Female,8/16/1997,14 Jalan Murni,Miri,Sarawak,Malaysia,970816-13-5577,60183322110,Malaysian,Single,Employed,UI/UX Designer,"MYR 5,001–7,000"
+Mohamad Rizal,Male,2/5/1968,90 Jalan Desa,Kuala Kangsar,Perak,Malaysia,680205-08-6611,60161122334,Malaysian,Married,Retired,NA,NA
+Jasmine Lee,Female,9/13/1992,52 Jalan Raja Chulan,Kuala Lumpur,WP Kuala Lumpur,Malaysia,920913-14-3389,60198877665,Malaysian,Single,Employed,Brand Strategist,"MYR 7,001–9,000"
+Faizal Iskandar,Male,12/1/1984,63 Jalan Seri Putra,Putrajaya,Putrajaya,Malaysia,841201-01-7781,60165544332,Malaysian,Married,Employed,Policy Advisor,"MYR 8,001–11,000"
+Lim Jun Hao,Male,4/26/2003,9 Jalan Pelajar,Subang Jaya,Selangor,Malaysia,030426-10-2214,60181122345,Malaysian,Single,Student,Undergraduate Student,"< MYR 2,000"
+Nabila Sofiya,Female,7/8/1995,21 Jalan Impian,Kuantan,Pahang,Malaysia,950708-06-8844,60147788990,Malaysian,Married,Employed,Insurance Executive,"MYR 5,001–7,000"
+Ismail Hamzah,Male,6/19/1972,118 Jalan Lama,Taiping,Perak,Malaysia,720619-08-3345,60163344556,Malaysian,Married,Self-Employed,Workshop Owner,"MYR 6,001–9,000"
+Alicia Wong,Female,1/27/1986,30 Jalan Anggerik,Kota Kinabalu,Sabah,Malaysia,860127-12-9901,60192211009,Malaysian,Married,Employed,Tourism Manager,"MYR 7,001–10,000"
+Azreen Iqbal,Male,11/15/1998,16 Jalan Siswa,Jitra,Kedah,Malaysia,981115-02-6619,60174455667,Malaysian,Single,Unemployed,NA,NA
+Siti Mariam,Female,5/2/1962,72 Jalan Damai,Segamat,Johor,Malaysia,620502-01-4433,60169988765,Malaysian,Married,Retired,NA,NA
