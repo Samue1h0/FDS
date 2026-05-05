@@ -2,6 +2,7 @@ import os
 import asyncio
 import json
 import psycopg2
+from datetime import datetime, timezone
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -372,6 +373,114 @@ def score_distribution():
     ]
 
 
+# ── Audit: chain vs DB integrity ─────────────────────────────
+
+@app.get("/api/audit/integrity-check")
+def integrity_check():
+    """
+    Compares every record on the Fabric blockchain against the private
+    PostgreSQL store and flags any count or field-level discrepancies.
+    Fields checked: fraud_score, predicted_label, amount_myr,
+                    ml_prediction, rule_flag.
+    """
+    try:
+        fabric_result = fabric.get_all_transactions()
+        fabric_txns = fabric_result if isinstance(fabric_result, list) else fabric_result.get("transactions", [])
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Fabric unavailable: {e}")
+
+    fabric_map: dict = {
+        t["transaction_id"]: t
+        for t in fabric_txns
+        if t.get("transaction_id")
+    }
+
+    conn = get_db()
+    db_map: dict = {}
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT transaction_id, fraud_score, predicted_label,
+                       amount_myr, ml_prediction, rule_flag
+                FROM private_transactions
+            """)
+            for row in cur.fetchall():
+                db_map[row[0]] = {
+                    "fraud_score":     float(row[1]) if row[1] is not None else None,
+                    "predicted_label": row[2],
+                    "amount_myr":      float(row[3]) if row[3] is not None else None,
+                    "ml_prediction":   int(row[4])   if row[4] is not None else None,
+                    "rule_flag":       int(row[5])   if row[5] is not None else None,
+                }
+    finally:
+        conn.close()
+
+    fabric_ids  = set(fabric_map.keys())
+    db_ids      = set(db_map.keys())
+    common      = fabric_ids & db_ids
+    only_chain  = fabric_ids - db_ids
+    only_db     = db_ids - fabric_ids
+
+    FLOAT_FIELDS   = {"fraud_score", "amount_myr"}
+    COMPARE_FIELDS = ["fraud_score", "predicted_label", "amount_myr", "ml_prediction", "rule_flag"]
+
+    mismatch_details = []
+    matched = 0
+    for tid in common:
+        f_rec = fabric_map[tid]
+        d_rec = db_map[tid]
+        record_ok = True
+        for field in COMPARE_FIELDS:
+            f_val = f_rec.get(field)
+            d_val = d_rec.get(field)
+            if field in FLOAT_FIELDS:
+                try:
+                    match = abs(float(f_val) - float(d_val)) <= 0.001
+                except (TypeError, ValueError):
+                    match = (f_val == d_val)
+            else:
+                match = str(f_val).upper() == str(d_val).upper()
+            if not match:
+                mismatch_details.append({
+                    "transaction_id": tid,
+                    "field":  field,
+                    "chain":  f_val,
+                    "db":     d_val,
+                })
+                record_ok = False
+                break
+        if record_ok:
+            matched += 1
+
+    tampered = bool(mismatch_details) or bool(only_db) or bool(only_chain)
+
+    return {
+        "status":          "tampered" if tampered else "verified",
+        "chain_total":     len(fabric_ids),
+        "db_total":        len(db_ids),
+        "checked":         len(common),
+        "matched":         matched,
+        "mismatches":      len(mismatch_details),
+        "only_in_chain":   len(only_chain),
+        "only_in_db":      len(only_db),
+        "mismatch_sample": mismatch_details[:3],
+        "checked_at":      datetime.now(timezone.utc).isoformat(),
+    }
+
+
+# ── Internal reset (demo only) ───────────────────────────────
+
+@app.post("/internal/reset-demo")
+def reset_demo():
+    conn = get_db()
+    with conn.cursor() as cur:
+        cur.execute("TRUNCATE TABLE private_transactions RESTART IDENTITY")
+    conn.commit()
+    conn.close()
+    _notify_clients("reset", {})
+    return {"status": "cleared"}
+
+
 # ── Internal notify (called by Kafka consumer) ────────────────
 
 @app.post("/internal/notify")
@@ -417,7 +526,9 @@ async def stream_dashboard(request: Request):
                 )
                 yield f"event: dashboard\ndata: {json.dumps(snapshot)}\n\n"
             except Exception as e:
-                yield f"event: error\ndata: {json.dumps({'detail': str(e)})}\n\n"
+                # Keep the stream alive; client will retry on next event/keepalive
+                print(f"[SSE] initial snapshot error: {e}", flush=True)
+                yield ": keepalive\n\n"
 
             # Wait for events, push snapshot on each one
             while True:
@@ -426,7 +537,14 @@ async def stream_dashboard(request: Request):
 
                 try:
                     # Block until an event arrives or 30s keepalive timeout
-                    await asyncio.wait_for(queue.get(), timeout=30)
+                    event_data = await asyncio.wait_for(queue.get(), timeout=30)
+
+                    # Reset event: notify the client then close this connection.
+                    # The browser's EventSource will reconnect automatically and
+                    # get a fresh empty snapshot — no manual reconnect needed.
+                    if isinstance(event_data, dict) and event_data.get("type") == "reset":
+                        yield "event: reset\ndata: {}\n\n"
+                        return
 
                     # Debounce: drain any events that stacked up while
                     # we were building the last snapshot
@@ -439,7 +557,9 @@ async def stream_dashboard(request: Request):
                         )
                         yield f"event: dashboard\ndata: {json.dumps(snapshot)}\n\n"
                     except Exception as e:
-                        yield f"event: error\ndata: {json.dumps({'detail': str(e)})}\n\n"
+                        # Keep the stream alive; don't push a broken event to the client
+                        print(f"[SSE] snapshot error: {e}", flush=True)
+                        yield ": keepalive\n\n"
 
                 except asyncio.TimeoutError:
                     # Keepalive — SSE comment, ignored by browser

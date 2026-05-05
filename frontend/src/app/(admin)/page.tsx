@@ -8,6 +8,7 @@ import FraudTrendChart         from "@/components/ecommerce/FraudTrendChart";
 import RecentTransactions      from "@/components/ecommerce/RecentTransactions";
 import BlockchainAuditSection  from "@/components/ecommerce/BlockchainAuditSection";
 import DashboardStatusBar      from "@/components/ecommerce/DashboardStatusBar";
+import FraudAlertFeed          from "@/components/ecommerce/FraudAlertFeed";
 import { useDashboardData }    from "@/hooks/useDashboardData";
 
 // ── Skeletons ─────────────────────────────────────────────────────────────────
@@ -89,6 +90,20 @@ function RadialSkeleton() {
   );
 }
 
+function AlertSkeleton() {
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] p-5 sm:p-6">
+      <div className="h-5 w-28 rounded bg-gray-200 dark:bg-gray-700 animate-pulse mb-2" />
+      <div className="h-3 w-40 rounded bg-gray-100 dark:bg-gray-800 animate-pulse mb-5" />
+      <div className="space-y-2">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="h-16 rounded-xl bg-gray-100 dark:bg-gray-800 animate-pulse" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function AuditSkeleton() {
   return (
     <>
@@ -150,6 +165,7 @@ export default function DashboardPage() {
     stats, trend, scoreDist,
     recentTransactions, allTransactions,
     status, lastUpdated, error, isSSE, refresh,
+    alerts, clearAlerts,
   } = useDashboardData();
 
   const isLoading = status === "loading";
@@ -196,16 +212,21 @@ export default function DashboardPage() {
           : <RiskDistributionChart scoreDist={scoreDist} />}
       </div>
 
-      {/* Row 3 — Table + Review Progress */}
-      <div className="col-span-12 xl:col-span-7">
+      {/* Row 3 — Table + Review Progress + Live Alerts */}
+      <div className="col-span-12 xl:col-span-6 xl:h-[460px]">
         {isLoading
           ? <TableSkeleton />
           : <RecentTransactions transactions={recentTransactions} />}
       </div>
-      <div className="col-span-12 xl:col-span-5">
+      <div className="col-span-12 xl:col-span-3 xl:h-[460px]">
         {isLoading
           ? <RadialSkeleton />
           : <ReviewProgressCard stats={stats} />}
+      </div>
+      <div className="col-span-12 xl:col-span-3 xl:h-[460px]">
+        {isLoading
+          ? <AlertSkeleton />
+          : <FraudAlertFeed alerts={alerts} onClear={clearAlerts} />}
       </div>
 
       {/* Row 4 — Blockchain Audit */}

@@ -59,9 +59,7 @@ export default function DashboardStatusBar({
               <span className="font-medium text-gray-700 dark:text-gray-300">
                 {formatTime(lastUpdated)}
               </span>
-              {isSSE
-                ? " · Live push every 5s"
-                : " · Auto-refreshes every 30s"}
+              {!isSSE && " · Auto-refreshes every 30s"}
             </>
           )}
 

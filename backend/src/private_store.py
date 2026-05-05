@@ -43,7 +43,17 @@ class PrivateRecordStore:
                     risk_reasons,
                     ground_truth_label
                 ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (transaction_id) DO NOTHING
+                ON CONFLICT (transaction_id) DO UPDATE SET
+                    mcc                = EXCLUDED.mcc,
+                    mode               = EXCLUDED.mode,
+                    location           = EXCLUDED.location,
+                    ic_hash            = EXCLUDED.ic_hash,
+                    masked_card_number = EXCLUDED.masked_card_number,
+                    fraud_score        = EXCLUDED.fraud_score,
+                    predicted_label    = EXCLUDED.predicted_label,
+                    ml_prediction      = EXCLUDED.ml_prediction,
+                    rule_flag          = EXCLUDED.rule_flag,
+                    risk_reasons       = EXCLUDED.risk_reasons
             """, (
                 private_record.get("transaction_id"),
                 private_record.get("cardholder_name"),

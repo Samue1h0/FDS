@@ -2,6 +2,7 @@ import json
 import os
 import psycopg2
 import pandas as pd
+import requests
 from confluent_kafka import Consumer, Producer, KafkaError
 from cryptography.fernet import Fernet
 
@@ -11,6 +12,22 @@ from src.private_store import PrivateRecordStore
 BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
 POSTGRES_DSN      = os.getenv("POSTGRES_DSN", "postgresql://fraud_user:fraud_pass@localhost:5432/fraud_private")
 ENCRYPTION_KEY    = os.getenv("ENCRYPTION_KEY", "").encode()
+FASTAPI_URL       = os.getenv("FASTAPI_URL", "http://localhost:8000")
+
+
+def notify_fastapi(transaction_id: str, predicted_label: str, fraud_score: float):
+    try:
+        requests.post(
+            f"{FASTAPI_URL}/internal/notify",
+            json={
+                "transaction_id":  transaction_id,
+                "predicted_label": predicted_label,
+                "fraud_score":     fraud_score,
+            },
+            timeout=2,
+        )
+    except Exception:
+        pass
 
 INPUT_TOPIC  = "raw-transactions"
 OUTPUT_TOPIC = "scored-transactions"
@@ -72,6 +89,11 @@ def run():
                     pr["masked_card_number"] = bp["masked_card_number"]
 
                     private_store.save(pr)
+                    notify_fastapi(
+                        transaction_id=bp["transaction_id"],
+                        predicted_label=bp["predicted_label"],
+                        fraud_score=bp["fraud_score"],
+                    )
 
                     producer.produce(
                         OUTPUT_TOPIC,

@@ -36,8 +36,8 @@ function formatDateTime(timestamp: string): string {
 
 export default function RecentTransactions({ transactions }: RecentTransactionsProps) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
-      <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 h-full">
+      <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between shrink-0">
         <div>
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">Recent Transactions</h3>
         </div>
@@ -51,7 +51,7 @@ export default function RecentTransactions({ transactions }: RecentTransactionsP
         </div>
       </div>
 
-      <div className="max-w-full overflow-x-auto">
+      <div className="flex-1 min-h-0 overflow-auto custom-scrollbar">
         <Table>
           <TableHeader className="border-gray-100 dark:border-gray-800 border-y">
             <TableRow>

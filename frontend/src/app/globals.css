@@ -190,6 +190,30 @@
   body {
     @apply relative font-normal font-outfit z-1 bg-gray-50;
   }
+
+  /* Page-level scrollbar */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #e4e7ec transparent;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #e4e7ec;
+      border-radius: 9999px;
+    }
+    &.dark {
+      scrollbar-color: #344054 transparent;
+    }
+    &.dark::-webkit-scrollbar-thumb {
+      background-color: #344054;
+    }
+  }
 }
 
 @utility menu-item {

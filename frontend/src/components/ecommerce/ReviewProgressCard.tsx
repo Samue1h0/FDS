@@ -26,7 +26,7 @@ export default function ReviewProgressCard({ stats }: ReviewProgressCardProps) {
 
   const options: ApexOptions = {
     colors: ["#465FFF"],
-    chart: { fontFamily: "Outfit, sans-serif", type: "radialBar", height: 330, sparkline: { enabled: true } },
+    chart: { fontFamily: "Outfit, sans-serif", type: "radialBar", height: 220, sparkline: { enabled: true } },
     plotOptions: {
       radialBar: {
         startAngle: -85,
@@ -51,8 +51,8 @@ export default function ReviewProgressCard({ stats }: ReviewProgressCardProps) {
   };
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-white/[0.03]">
-      <div className="px-5 pt-5 bg-white shadow-default rounded-2xl pb-11 dark:bg-gray-900 sm:px-6 sm:pt-6">
+    <div className="rounded-2xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-white/[0.03] h-full flex flex-col">
+      <div className="flex-1 px-5 pt-5 bg-white shadow-default rounded-2xl pb-3 dark:bg-gray-900 sm:px-6 sm:pt-6">
         <div className="flex justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">Review Progress</h3>
@@ -77,8 +77,8 @@ export default function ReviewProgressCard({ stats }: ReviewProgressCardProps) {
         </div>
 
         <div className="relative">
-          <div className="max-h-[330px] pt-3.5">
-            <ReactApexChart options={options} series={series} type="radialBar" height={330} />
+          <div className="max-h-[220px] pt-3.5">
+            <ReactApexChart options={options} series={series} type="radialBar" height={220} />
           </div>
           <span
             className={`absolute left-1/2 top-full -translate-x-1/2 -translate-y-[95%] rounded-full px-3 py-1 text-xs font-medium ${
@@ -91,7 +91,7 @@ export default function ReviewProgressCard({ stats }: ReviewProgressCardProps) {
           </span>
         </div>
 
-        <p className="mx-auto mt-10 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
+        <p className="mx-auto mt-4 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
           {reviewed} of {total} flagged transactions have been reviewed.{" "}
           {pending > 0 ? `${pending} still need attention.` : "All cases are resolved!"}
         </p>

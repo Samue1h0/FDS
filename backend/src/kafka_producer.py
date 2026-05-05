@@ -16,7 +16,7 @@ def produce_from_csv(
     txn_path: str,
     kyc_path: str,
     bootstrap_servers: str = BOOTSTRAP_SERVERS,
-    delay_seconds: float = 0.0,
+    delay_seconds: float = 1.0,
 ):
     producer = Producer({"bootstrap.servers": bootstrap_servers})
 
