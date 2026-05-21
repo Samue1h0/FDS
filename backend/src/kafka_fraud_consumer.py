@@ -47,8 +47,8 @@ def run():
     conn = psycopg2.connect(POSTGRES_DSN)
     private_store = PrivateRecordStore(conn, ENCRYPTION_KEY)
 
-    kyc_df = pd.read_csv("data/KYC_Dataset.csv")
-    txn_df = pd.read_csv("data/Transaction_Datasetss.csv")
+    kyc_df = pd.read_csv("data/KYC_Data.csv")
+    txn_df = pd.read_csv("data/Transaction_Data5k.csv")
     scorer = FraudScorer(kyc_df=kyc_df, history_df=txn_df.merge(kyc_df, on="IC Number", how="left"))
 
     consumer.subscribe([INPUT_TOPIC])

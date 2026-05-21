@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import { FraudMetrics }       from "@/components/ecommerce/FraudMetrics";
-import ReviewProgressCard      from "@/components/ecommerce/ReviewProgressCard";
-import RiskDistributionChart   from "@/components/ecommerce/RiskDistributionChart";
-import FraudTrendChart         from "@/components/ecommerce/FraudTrendChart";
-import RecentTransactions      from "@/components/ecommerce/RecentTransactions";
-import BlockchainAuditSection  from "@/components/ecommerce/BlockchainAuditSection";
-import DashboardStatusBar      from "@/components/ecommerce/DashboardStatusBar";
-import FraudAlertFeed          from "@/components/ecommerce/FraudAlertFeed";
+import { FraudMetrics }       from "@/components/dashboard/FraudMetrics";
+import ReviewProgressCard      from "@/components/dashboard/ReviewProgressCard";
+import RiskDistributionChart   from "@/components/dashboard/RiskDistributionChart";
+import FraudTrendChart         from "@/components/dashboard/FraudTrendChart";
+import RecentTransactions      from "@/components/dashboard/RecentTransactions";
+import BlockchainAuditSection  from "@/components/dashboard/BlockchainAuditSection";
+import DashboardStatusBar      from "@/components/dashboard/DashboardStatusBar";
+import FraudAlertFeed          from "@/components/dashboard/FraudAlertFeed";
 import { useDashboardData }    from "@/hooks/useDashboardData";
 
 // ── Skeletons ─────────────────────────────────────────────────────────────────

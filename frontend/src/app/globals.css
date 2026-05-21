@@ -381,6 +381,17 @@
   @apply !p-0;
 }
 
+/* Year up/down spinner arrows — make them visible in dark mode (default is dark) */
+.dark .numInputWrapper span.arrowUp:after {
+  border-bottom-color: rgba(255, 255, 255, 0.7) !important;
+}
+.dark .numInputWrapper span.arrowDown:after {
+  border-top-color: rgba(255, 255, 255, 0.7) !important;
+}
+.dark .numInputWrapper span {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
 .flatpickr-weekdays {
   @apply h-auto mt-6 mb-4 !bg-transparent;
 }

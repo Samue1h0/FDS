@@ -1,0 +1,821 @@
+Name,Date of Birth,Gender,Street Address,City,State,Country,IC Number,Phone Number,Nationality,Marital Status,Employment Status,Job Title,Income Range
+Zhen Sim,22/5/1986,Male,"No 119, Jalan Melati",Petaling Jaya,Selangor,Malaysia,860522-06-2393,60165337019,Malaysian,Single,Unemployed,NA,NA
+Daniel Abdullah,4/6/1972,Male,"No 188, Jalan Merdeka",Pasir Mas,Kelantan,Malaysia,720604-08-9079,60167479067,Malaysian,Married,Employed,Pharmacy Assistant,MYR 4000 - 6000
+Raj Ho,25/12/2003,Female,"No 52, Jalan Sultan Ismail",Setapak,Kuala Lumpur,Malaysia,031225-04-3428,60181214990,Malaysian,Married,Employed,Graphic Designer,MYR 8000 - 12000
+Marcus Pillai,22/11/1998,Male,"No 6, Jalan Kenanga",Pasir Mas,Kelantan,Malaysia,981122-03-9653,60181439814,Malaysian,Married,Employed,Logistics Coordinator,MYR 8000 - 12000
+Sarah Ismail,24/11/1986,Female,"No 131, Jalan Bukit Bintang",Ipoh,Perak,Malaysia,861124-06-8252,60182622358,Malaysian,Married,Employed,IT Support Technician,MYR 1000 - 2000
+Haziq Foo,1/12/1988,Female,"No 15, Jalan Bukit Bintang",Temerloh,Pahang,Malaysia,881201-12-9294,60175789161,Malaysian,Single,Employed,Administrative Assistant,MYR 2000 - 4000
+Kumar Ismail,29/7/1972,Male,"No 126, Jalan Tun Razak",Miri,Sarawak,Malaysia,720729-04-8579,60136968583,Malaysian,Single,Employed,Logistics Coordinator,MYR 8000 - 12000
+Mei Foo,26/2/2003,Male,"No 70, Jalan Sultan Ismail",Alor Gajah,Melaka,Malaysia,030226-16-0427,60182992160,Malaysian,Single,Employed,Account Executive,MYR 8000 - 12000
+Jasmine Tan,13/1/2001,Female,"No 136, Jalan Kenanga",Tawau,Sabah,Malaysia,010113-13-1238,60174899837,Malaysian,Married,Employed,Marketing Executive,MYR 8000 - 12000
+Ahmad Ng,11/2/1974,Male,"No 134, Jalan Raja Chulan",Cheras,Kuala Lumpur,Malaysia,740211-07-1811,60127287458,Malaysian,Married,Unemployed,NA,NA
+Mei Gan,24/5/1977,Male,"No 186, Jalan Merdeka",Kuching,Sarawak,Malaysia,770524-16-9939,60191083116,Malaysian,Single,Employed,Pharmacy Assistant,MYR 6000 - 8000
+Amira Ibrahim,3/9/2005,Male,"No 109, Jalan Cempaka",Taiping,Perak,Malaysia,050903-02-9071,60187243764,Malaysian,Married,Employed,Logistics Coordinator,MYR 2000 - 4000
+Zhen Hassan,17/4/1996,Male,"No 191, Jalan Ampang",Kuala Terengganu,Terengganu,Malaysia,960417-12-9461,60113206710,Malaysian,Married,Employed,IT Support Technician,MYR 2000 - 4000
+Suresh Hassan,7/5/2000,Male,"No 104, Jalan Tun Razak",Kuala Lumpur,Kuala Lumpur,Malaysia,000507-04-4161,60151828244,Malaysian,Married,Employed,Graphic Designer,MYR 2000 - 4000
+Tan Cheong,16/2/2001,Male,"No 125, Jalan Tun Razak",Sandakan,Sabah,Malaysia,010216-09-5735,60167707441,Malaysian,Single,Employed,Customer Service Officer,MYR 1000 - 2000
+Priya Low,13/10/1972,Female,"No 50, Jalan SS15",Bentong,Pahang,Malaysia,721013-11-8626,60124525484,Malaysian,Single,Employed,Pharmacy Assistant,MYR 8000 - 12000
+Raj Singh,9/12/2000,Male,"No 199, Jalan Putra",Bayan Lepas,Penang,Malaysia,001209-09-2839,60151337983,Malaysian,Single,Retired,NA,NA
+Irfan Subramaniam,7/1/1978,Male,"No 150, Jalan Indah",Nilai,Negeri Sembilan,Malaysia,780107-09-4831,60166226062,Malaysian,Married,Employed,Marketing Executive,MYR 2000 - 4000
+Ying Yap,6/2/2004,Female,"No 149, Jalan Melati",Johor Bahru,Johor,Malaysia,040206-01-4318,60138738435,Malaysian,Single,Student,Retail Part-Time Assistant,MYR 1000 - 2000
+Siti Pillai,1/8/1999,Male,"No 168, Jalan Kenanga",Alor Gajah,Melaka,Malaysia,990801-06-1615,60125339934,Malaysian,Married,Unemployed,NA,NA
+Adam Teh,3/10/1981,Female,"No 27, Jalan Ampang",Sungai Petani,Kedah,Malaysia,811003-07-0426,60176205107,Malaysian,Married,Employed,Human Resource Executive,MYR 4000 - 6000
+Irfan Yap,19/12/1996,Female,"No 40, Jalan Setia Alam",Tawau,Sabah,Malaysia,961219-10-1030,60124282700,Malaysian,Single,Retired,NA,NA
+Alicia Ong,22/8/1997,Female,"No 86, Jalan SS15",Bukit Mertajam,Penang,Malaysia,970822-06-3514,60145250686,Malaysian,Single,Student,Part-Time Barista,MYR 1000 - 2000
+Arjun Yusof,17/1/1983,Female,"No 9, Jalan Melati",Melaka City,Melaka,Malaysia,830117-07-8028,60112521387,Malaysian,Single,Retired,NA,NA
+Farah Tan,15/8/1980,Female,"No 84, Jalan Cempaka",Skudai,Johor,Malaysia,800815-11-1746,60137763299,Malaysian,Married,Retired,NA,NA
+Aisyah Ong,5/8/1985,Female,"No 60, Jalan Kenanga",Pasir Mas,Kelantan,Malaysia,850805-03-5572,60127032910,Malaysian,Single,Employed,Customer Service Officer,MYR 1000 - 2000
+Hafiz Chan,27/10/2002,Female,"No 85, Jalan SS15",Skudai,Johor,Malaysia,021027-01-7608,60156676132,Malaysian,Married,Employed,Sales Executive,MYR 4000 - 6000
+Siti Ng,22/11/1981,Male,"No 164, Jalan Bandar",Klang,Selangor,Malaysia,811122-10-1065,60144422557,Malaysian,Single,Employed,Administrative Assistant,MYR 2000 - 4000
+Jasmine Ibrahim,17/8/1992,Male,"No 163, Jalan Tun Razak",Subang Jaya,Selangor,Malaysia,920817-07-3087,60182311267,Malaysian,Single,Self-Employed,Insurance Agent,MYR 8000 - 13000
+Zul Tan,14/2/1974,Female,"No 62, Jalan Melati",Pasir Gudang,Johor,Malaysia,740214-07-6162,60172113696,Malaysian,Single,Employed,IT Support Technician,MYR 8000 - 12000
+Nisha Goh,25/12/1972,Female,"No 149, Jalan Putra",Kuala Lumpur,Kuala Lumpur,Malaysia,721225-15-2794,60183437226,Malaysian,Single,Unemployed,NA,NA
+Jun Chong,19/3/1991,Female,"No 112, Jalan Ampang",Petaling Jaya,Selangor,Malaysia,910319-15-5426,60194265727,Malaysian,Married,Self-Employed,E-commerce Entrepreneur,MYR 6000 - 8000
+Amira Gan,3/7/1985,Male,"No 107, Jalan Melati",Pasir Mas,Kelantan,Malaysia,850703-07-6681,60145516251,Malaysian,Single,Unemployed,NA,NA
+Adam Low,16/5/1995,Female,"No 175, Jalan Bandar",Kota Bharu,Kelantan,Malaysia,950516-08-1654,60154205851,Malaysian,Married,Employed,Logistics Coordinator,MYR 2000 - 4000
+Amira Hassan,30/9/2000,Male,"No 91, Jalan Bukit Bintang",Kuala Terengganu,Terengganu,Malaysia,000930-14-8427,60198696045,Malaysian,Single,Self-Employed,Hair Stylist,MYR 4000 - 6000
+Adam Subramaniam,13/4/1984,Male,"No 122, Jalan Bandar",Bukit Mertajam,Penang,Malaysia,840413-07-4631,60167672291,Malaysian,Single,Employed,Account Executive,MYR 1000 - 2000
+Brandon Lim,29/11/1998,Male,"No 118, Jalan Melati",George Town,Penang,Malaysia,981129-13-9407,60192269067,Malaysian,Married,Self-Employed,Content Creator,MYR 3000 - 9000
+Nur Kumar,11/1/1987,Female,"No 57, Jalan Ampang",Temerloh,Pahang,Malaysia,870111-10-1962,60196562169,Malaysian,Single,Employed,Restaurant Supervisor,MYR 6000 - 8000
+Lee Lim,7/3/1987,Female,"No 61, Jalan Cempaka",Ayer Keroh,Melaka,Malaysia,870307-14-7590,60186859950,Malaysian,Married,Unemployed,NA,NA
+Jason Yusof,27/7/1983,Female,"No 166, Jalan Indah",Alor Gajah,Melaka,Malaysia,830727-01-5278,60109476966,Malaysian,Married,Retired,NA,NA
+Daniel Rahman,23/10/2000,Male,"No 106, Jalan Indah",Sibu,Sarawak,Malaysia,001023-11-6223,60133191222,Malaysian,Single,Employed,Logistics Coordinator,MYR 6000 - 8000
+Wei Singh,10/12/1972,Female,"No 74, Jalan Indah",Seremban,Negeri Sembilan,Malaysia,721210-10-2920,60118242029,Malaysian,Married,Employed,Restaurant Supervisor,MYR 6000 - 8000
+Jun Ng,26/12/2000,Male,"No 38, Jalan Sultan Ismail",Dungun,Terengganu,Malaysia,001226-15-5445,60158489824,Malaysian,Married,Employed,Human Resource Executive,MYR 2000 - 4000
+Fiona Ong,12/10/1984,Male,"No 5, Jalan SS15",Bayan Lepas,Penang,Malaysia,841012-05-2861,60188225077,Malaysian,Single,Employed,Data Analyst,MYR 4000 - 6000
+Jun Foo,22/2/2001,Male,"No 136, Jalan SS15",Kuantan,Pahang,Malaysia,010222-15-0343,60166205304,Malaysian,Single,Self-Employed,Car Workshop Owner,MYR 10000 - 15000
+Suresh Lim,15/4/2005,Female,"No 68, Jalan Kenanga",Bentong,Pahang,Malaysia,050415-14-4690,60177191060,Malaysian,Single,Employed,Marketing Executive,MYR 6000 - 8000
+Aisyah Ooi,3/4/1976,Male,"No 30, Jalan Bandar",Miri,Sarawak,Malaysia,760403-01-8481,60161423890,Malaysian,Married,Employed,Customer Service Officer,MYR 2000 - 4000
+Nisha Kumar,13/2/1987,Male,"No 33, Jalan Indah",Bentong,Pahang,Malaysia,870213-05-3087,60165472482,Malaysian,Married,Employed,Bank Teller,MYR 1000 - 2000
+Arjun Dass,28/9/1981,Female,"No 26, Jalan Klang Lama",Sandakan,Sabah,Malaysia,810928-04-5134,60119838105,Malaysian,Single,Unemployed,NA,NA
+Ali Chan,7/10/1980,Female,"No 18, Jalan Merdeka",Tawau,Sabah,Malaysia,801007-12-8754,60168107976,Malaysian,Single,Employed,Pharmacy Assistant,MYR 2000 - 4000
+Lim Singh,7/7/1977,Male,"No 102, Jalan Kenanga",Pasir Mas,Kelantan,Malaysia,770707-02-1119,60151995990,Malaysian,Married,Self-Employed,Makeup Artist,MYR 2000 - 4000
+Alicia Foo,15/6/1999,Male,"No 198, Jalan Ampang",Nilai,Negeri Sembilan,Malaysia,990615-11-7333,60164868829,Malaysian,Single,Employed,Bank Teller,MYR 8000 - 12000
+Lee Lee,26/3/2000,Male,"No 55, Jalan Klang Lama",Kota Bharu,Kelantan,Malaysia,000326-01-2631,60132955083,Malaysian,Single,Employed,Retail Sales Assistant,MYR 2000 - 4000
+Amira Mahmud,19/6/1994,Female,"No 64, Jalan Melati",Kota Kinabalu,Sabah,Malaysia,940619-12-1980,60185962667,Malaysian,Single,Employed,Graphic Designer,MYR 1000 - 2000
+Amira Ng,25/8/1975,Male,"No 31, Jalan Indah",Alor Gajah,Melaka,Malaysia,750825-11-9731,60142792443,Malaysian,Single,Employed,Sales Executive,MYR 8000 - 12000
+Raj Gan,12/7/1997,Female,"No 117, Jalan Melati",Wangsa Maju,Kuala Lumpur,Malaysia,970712-13-7338,60123842558,Malaysian,Married,Retired,NA,NA
+Kai Menon,8/5/1990,Female,"No 86, Jalan Bandar",Nilai,Negeri Sembilan,Malaysia,900508-14-0924,60163160651,Malaysian,Single,Unemployed,NA,NA
+Aisyah Hassan,29/10/1977,Male,"No 174, Jalan Ampang",Kulim,Kedah,Malaysia,771029-16-8071,60181340351,Malaysian,Single,Employed,Logistics Coordinator,MYR 2000 - 4000
+Kumar Tan,15/3/1987,Male,"No 3, Jalan Indah",Bukit Mertajam,Penang,Malaysia,870315-04-0943,60111391259,Malaysian,Single,Employed,IT Support Technician,MYR 8000 - 12000
+Brandon Hassan,30/4/1982,Female,"No 186, Jalan Kenanga",Kota Kinabalu,Sabah,Malaysia,820430-05-0874,60166723951,Malaysian,Single,Self-Employed,Freelance Graphic Designer,MYR 8000 - 12000
+Hafiz Ismail,17/9/1995,Male,"No 186, Jalan Bandar",Kota Bharu,Kelantan,Malaysia,950917-03-1347,60132910066,Malaysian,Married,Employed,Sales Executive,MYR 8000 - 12000
+Priya Phang,27/10/1999,Female,"No 149, Jalan Setia Alam",Miri,Sarawak,Malaysia,991027-01-1882,60145456970,Malaysian,Single,Unemployed,NA,NA
+Raj Phang,11/3/1985,Female,"No 34, Jalan Raja Chulan",Kuala Lumpur,Kuala Lumpur,Malaysia,850311-16-6052,60152770529,Malaysian,Married,Employed,Sales Executive,MYR 8000 - 12000
+Tan Ismail,14/9/1979,Male,"No 156, Jalan Bukit Bintang",Bukit Mertajam,Penang,Malaysia,790914-05-1657,60195880805,Malaysian,Single,Student,Part-Time Barista,MYR 1000 - 2000
+Hafiz Foo,7/11/1994,Male,"No 152, Jalan Tun Razak",Temerloh,Pahang,Malaysia,941107-10-7767,60182819344,Malaysian,Single,Employed,Procurement Officer,MYR 6000 - 8000
+Amira Chong,12/1/1975,Female,"No 60, Jalan Indah",Setapak,Kuala Lumpur,Malaysia,750112-01-6272,60147028837,Malaysian,Single,Employed,Logistics Coordinator,MYR 1000 - 2000
+Mei Ong,4/5/1980,Female,"No 183, Jalan Setia Alam",Sungai Petani,Kedah,Malaysia,800504-07-1098,60165070369,Malaysian,Married,Unemployed,NA,NA
+Farah Subramaniam,7/11/1988,Female,"No 13, Jalan Putra",Kuala Lumpur,Kuala Lumpur,Malaysia,881107-03-8868,60127975777,Malaysian,Single,Employed,Project Coordinator,MYR 6000 - 8000
+Devi Hassan,28/5/1989,Female,"No 197, Jalan Cempaka",Port Dickson,Negeri Sembilan,Malaysia,890528-14-9218,60126379862,Malaysian,Single,Self-Employed,Hair Stylist,MYR 6000 - 8000
+Ahmad Pillai,24/2/1992,Male,"No 32, Jalan Bukit Bintang",Kuching,Sarawak,Malaysia,920224-11-4503,60104696005,Malaysian,Single,Employed,Logistics Coordinator,MYR 2000 - 4000
+Suresh Lee,17/12/1983,Female,"No 166, Jalan Merdeka",Subang Jaya,Selangor,Malaysia,831217-08-0986,60179940014,Malaysian,Single,Student,College Intern,< MYR 1000
+Ying Hassan,4/11/1990,Female,"No 24, Jalan Raja Chulan",Miri,Sarawak,Malaysia,901104-07-0888,60176261814,Malaysian,Single,Employed,Restaurant Supervisor,MYR 2000 - 4000
+Aisyah Lau,24/10/1998,Male,"No 164, Jalan Setia Alam",Kota Kinabalu,Sabah,Malaysia,981024-12-0235,60186287952,Malaysian,Single,Employed,Logistics Coordinator,MYR 2000 - 4000
+Lee Ibrahim,18/7/2001,Female,"No 34, Jalan Raja Chulan",Miri,Sarawak,Malaysia,010718-08-3004,60151817673,Malaysian,Married,Employed,Retail Sales Assistant,MYR 6000 - 8000
+Jun Low,7/7/1983,Female,"No 109, Jalan Tun Razak",Alor Gajah,Melaka,Malaysia,830707-02-8296,60181553139,Malaysian,Single,Employed,Data Analyst,MYR 2000 - 4000
+Ahmad Rahman,6/9/1991,Male,"No 36, Jalan Indah",Teluk Intan,Perak,Malaysia,910906-11-5999,60142950727,Malaysian,Single,Retired,NA,NA
+Mei Ling,7/1/2005,Female,"No 137, Jalan Sultan Ismail",Teluk Intan,Perak,Malaysia,050107-04-5924,60165697205,Malaysian,Married,Employed,Restaurant Supervisor,MYR 1000 - 2000
+Raj Tay,15/10/1995,Female,"No 29, Jalan Bukit Bintang",Kota Kinabalu,Sabah,Malaysia,951015-14-8832,60149498397,Malaysian,Single,Student,Retail Part-Time Assistant,MYR 1000 - 2000
+Fiona Sim,15/7/1985,Female,"No 64, Jalan Melati",Kuala Lumpur,Kuala Lumpur,Malaysia,850715-02-7236,60124239690,Malaysian,Married,Unemployed,NA,NA
+Zhen Dass,19/6/1974,Female,"No 30, Jalan Melati",Alor Gajah,Melaka,Malaysia,740619-13-6410,60123063740,Malaysian,Married,Employed,IT Support Technician,MYR 1000 - 2000
+Jun Chua,12/10/1987,Male,"No 47, Jalan Tun Razak",Kuala Terengganu,Terengganu,Malaysia,871012-03-8261,60135861285,Malaysian,Single,Employed,Marketing Executive,MYR 1000 - 2000
+Jasmine Ismail,4/6/2004,Female,"No 102, Jalan Anggerik",Miri,Sarawak,Malaysia,040604-04-4336,60144574394,Malaysian,Married,Employed,Procurement Officer,MYR 4000 - 6000
+Anand Wong,25/2/1973,Female,"No 145, Jalan Bandar",Kulim,Kedah,Malaysia,730225-08-4152,60104330744,Malaysian,Single,Employed,Human Resource Executive,MYR 8000 - 12000
+Anand Teh,25/1/1999,Male,"No 156, Jalan Setia Alam",Tawau,Sabah,Malaysia,990125-14-9449,60177146858,Malaysian,Married,Employed,Customer Service Officer,MYR 6000 - 8000
+Kumar Teh,19/3/1988,Male,"No 59, Jalan Cempaka",Bentong,Pahang,Malaysia,880319-05-7485,60175800361,Malaysian,Single,Employed,Restaurant Supervisor,MYR 2000 - 4000
+Lee Kumar,20/5/2004,Male,"No 124, Jalan Cempaka",Sibu,Sarawak,Malaysia,040520-10-9813,60177890262,Malaysian,Single,Student,University Student,< MYR 1000
+Daniel Subramaniam,24/3/1982,Female,"No 169, Jalan Melati",Skudai,Johor,Malaysia,820324-13-9220,60149101387,Malaysian,Single,Retired,NA,NA
+Mei Lau,26/5/1996,Male,"No 197, Jalan Raja Chulan",Kuantan,Pahang,Malaysia,960526-04-1801,60182575465,Malaysian,Single,Employed,IT Support Technician,MYR 2000 - 4000
+Lim Subramaniam,10/10/2002,Female,"No 80, Jalan Sultan Ismail",Alor Setar,Kedah,Malaysia,021010-04-4442,60147269919,Malaysian,Single,Employed,Marketing Executive,MYR 8000 - 12000
+Darren Dass,1/4/2000,Male,"No 79, Jalan Ampang",Dungun,Terengganu,Malaysia,000401-10-5455,60162605329,Malaysian,Single,Employed,Bank Teller,MYR 2000 - 4000
+Mei Ismail,19/10/1972,Female,"No 103, Jalan Kenanga",Bukit Mertajam,Penang,Malaysia,721019-10-5268,60171983821,Malaysian,Married,Employed,Bank Teller,MYR 8000 - 12000
+Daniel Ibrahim,30/6/1984,Female,"No 94, Jalan SS15",Cheras,Kuala Lumpur,Malaysia,840630-04-9924,60136309811,Malaysian,Married,Employed,Clinic Assistant,MYR 1000 - 2000
+Arjun Ismail,30/12/1998,Male,"No 199, Jalan Ampang",Dungun,Terengganu,Malaysia,981230-07-1529,60113022695,Malaysian,Married,Employed,Restaurant Supervisor,MYR 6000 - 8000
+Arjun Low,21/11/2005,Female,"No 98, Jalan Sultan Ismail",Klang,Selangor,Malaysia,051121-06-6776,60117887693,Malaysian,Single,Employed,Retail Sales Assistant,MYR 2000 - 4000
+Zul Yusof,13/11/1977,Male,"No 56, Jalan Indah",Seremban,Negeri Sembilan,Malaysia,771113-12-7441,60118516443,Malaysian,Single,Employed,Operations Executive,MYR 4000 - 6000
+Daniel Goh,13/7/2000,Male,"No 32, Jalan Melati",Port Dickson,Negeri Sembilan,Malaysia,000713-01-5909,60173218200,Malaysian,Married,Self-Employed,Hair Stylist,MYR 4000 - 6000
+Ying Lee,13/8/1990,Male,"No 171, Jalan Sultan Ismail",Wangsa Maju,Kuala Lumpur,Malaysia,900813-14-9113,60168499245,Malaysian,Married,Employed,Data Analyst,MYR 1000 - 2000
+Mei Phang,20/4/1999,Male,"No 41, Jalan Ampang",Kota Bharu,Kelantan,Malaysia,990420-12-3655,60148135870,Malaysian,Single,Student,University Student,MYR 1000 - 2000
+Amira Khoo,9/1/1971,Male,"No 55, Jalan Raja Chulan",Skudai,Johor,Malaysia,710109-14-4377,60108959895,Malaysian,Single,Employed,Software Developer,MYR 2000 - 4000
+Tan Foo,22/3/1972,Female,"No 59, Jalan SS15",Kuala Lumpur,Kuala Lumpur,Malaysia,720322-16-4626,60111736942,Malaysian,Married,Employed,Human Resource Executive,MYR 4000 - 6000
+Aisyah Cheong,4/9/1970,Male,"No 119, Jalan Klang Lama",Ayer Keroh,Melaka,Malaysia,700904-12-9131,60182007119,Malaysian,Single,Retired,NA,NA
+Alicia Teh,27/7/1993,Male,"No 142, Jalan Kenanga",Bukit Mertajam,Penang,Malaysia,930727-12-5571,60175483774,Malaysian,Single,Student,Retail Part-Time Assistant,MYR 1000 - 2000
+Daniel Menon,11/3/1989,Male,"No 114, Jalan Merdeka",Subang Jaya,Selangor,Malaysia,890311-07-5411,60142253470,Malaysian,Married,Employed,Bank Teller,MYR 8000 - 12000
+Ali Sim,16/7/1988,Male,"No 17, Jalan Cempaka",Setapak,Kuala Lumpur,Malaysia,880716-15-2543,60148759709,Malaysian,Single,Employed,Sales Executive,MYR 1000 - 2000
+Fiona Chong,31/1/2003,Male,"No 63, Jalan Bukit Bintang",Cheras,Kuala Lumpur,Malaysia,030131-10-9055,60101542050,Malaysian,Single,Employed,Marketing Executive,MYR 2000 - 4000
+Lim Ismail,8/1/1977,Male,"No 60, Jalan Sultan Ismail",Pasir Gudang,Johor,Malaysia,770108-01-5953,60103857364,Malaysian,Married,Employed,IT Support Technician,MYR 4000 - 6000
+Daniel Ng,15/10/1986,Male,"No 180, Jalan Ampang",Seremban,Negeri Sembilan,Malaysia,861015-14-7315,60125723643,Malaysian,Married,Self-Employed,Baker,MYR 6000 - 8000
+Nur Phang,14/1/1990,Female,"No 89, Jalan Sultan Ismail",Taiping,Perak,Malaysia,900114-13-4312,60161622660,Malaysian,Single,Retired,NA,NA
+Marcus Ng,13/10/1995,Male,"No 24, Jalan Cempaka",Taiping,Perak,Malaysia,951013-08-5103,60103207057,Malaysian,Single,Employed,Network Technician,MYR 1000 - 2000
+Lee Teh,1/8/1979,Female,"No 9, Jalan Klang Lama",Ipoh,Perak,Malaysia,790801-13-2172,60197792679,Malaysian,Single,Self-Employed,Small Business Owner,MYR 1000 - 2000
+Suresh Ng,28/5/1989,Female,"No 51, Jalan Ampang",Kota Kinabalu,Sabah,Malaysia,890528-04-7098,60125878714,Malaysian,Single,Employed,Bank Teller,MYR 4000 - 6000
+Wei Ho,26/12/1984,Female,"No 134, Jalan Putra",Sibu,Sarawak,Malaysia,841226-02-2808,60164481738,Malaysian,Married,Employed,Account Executive,MYR 8000 - 12000
+Jasmine Khoo,27/5/2002,Female,"No 13, Jalan Tun Razak",Alor Setar,Kedah,Malaysia,020527-02-8992,60131778082,Malaysian,Single,Self-Employed,Grab Driver,MYR 6000 - 8000
+Amira Menon,6/12/1981,Female,"No 125, Jalan Bandar",Nilai,Negeri Sembilan,Malaysia,811206-09-5484,60184713358,Malaysian,Married,Unemployed,NA,NA
+Wei Low,30/1/1972,Female,"No 11, Jalan Merdeka",Pasir Mas,Kelantan,Malaysia,720130-05-5878,60133956152,Malaysian,Married,Employed,Procurement Officer,MYR 4000 - 6000
+Anand Singh,9/7/1988,Female,"No 193, Jalan Kenanga",Miri,Sarawak,Malaysia,880709-09-3256,60175358823,Malaysian,Single,Student,University Student,MYR 1000 - 2000
+Mei Low,29/3/1987,Female,"No 175, Jalan Bandar",Sandakan,Sabah,Malaysia,870329-16-4962,60186271460,Malaysian,Single,Employed,Restaurant Supervisor,MYR 4000 - 6000
+Anand Mahmud,26/9/1977,Female,"No 25, Jalan Klang Lama",Pasir Gudang,Johor,Malaysia,770926-11-3640,60186789669,Malaysian,Single,Student,University Student,MYR 1000 - 2000
+Tan Kaur,30/6/1993,Female,"No 96, Jalan Merdeka",Teluk Intan,Perak,Malaysia,930630-16-3010,60161483736,Malaysian,Single,Retired,NA,NA
+Haziq Pillai,29/12/1981,Male,"No 32, Jalan Merdeka",Nilai,Negeri Sembilan,Malaysia,811229-05-1985,60146416954,Malaysian,Married,Employed,Restaurant Supervisor,MYR 1000 - 2000
+Aisyah Ho,11/2/1973,Male,"No 178, Jalan Merdeka",Ayer Keroh,Melaka,Malaysia,730211-14-6797,60157158261,Malaysian,Single,Unemployed,NA,NA
+Alicia Singh,27/2/1988,Female,"No 112, Jalan SS15",George Town,Penang,Malaysia,880227-02-5730,60118207319,Malaysian,Married,Employed,Restaurant Supervisor,MYR 2000 - 4000
+Anand Ong,17/1/1980,Female,"No 56, Jalan Putra",Ipoh,Perak,Malaysia,800117-11-1184,60181093763,Malaysian,Single,Employed,Sales Executive,MYR 1000 - 2000
+Irfan Chua,15/10/1974,Female,"No 7, Jalan Setia Alam",Shah Alam,Selangor,Malaysia,741015-15-6594,60144495579,Malaysian,Married,Employed,Retail Sales Assistant,MYR 8000 - 12000
+Nisha Low,30/7/1992,Female,"No 188, Jalan Putra",Kuching,Sarawak,Malaysia,920730-06-9442,60104586554,Malaysian,Married,Employed,Clinic Assistant,MYR 8000 - 12000
+Priya Tan,31/3/1992,Female,"No 79, Jalan Bandar",Kuala Lumpur,Kuala Lumpur,Malaysia,920331-14-3426,60166445238,Malaysian,Married,Employed,Graphic Designer,MYR 2000 - 4000
+Darren Menon,16/9/1982,Male,"No 59, Jalan Merdeka",Seremban,Negeri Sembilan,Malaysia,820916-01-4607,60154498714,Malaysian,Single,Unemployed,NA,NA
+Hafiz Mahmud,27/7/1972,Male,"No 192, Jalan Setia Alam",Bayan Lepas,Penang,Malaysia,720727-08-5815,60124391379,Malaysian,Married,Employed,Logistics Coordinator,MYR 4000 - 6000
+Amira Tan,12/11/1984,Female,"No 37, Jalan Cempaka",Sibu,Sarawak,Malaysia,841112-04-5864,60177939405,Malaysian,Single,Student,University Student,MYR 1000 - 2000
+Sarah Lim,10/11/2004,Male,"No 191, Jalan Merdeka",George Town,Penang,Malaysia,041110-04-4323,60144761895,Malaysian,Married,Employed,Human Resource Executive,MYR 8000 - 12000
+Nur Ling,15/2/1984,Female,"No 48, Jalan Setia Alam",Kuching,Sarawak,Malaysia,840215-07-9530,60104447310,Malaysian,Married,Employed,Bank Teller,MYR 1000 - 2000
+Nisha Tay,7/1/1974,Female,"No 8, Jalan Melati",Cheras,Kuala Lumpur,Malaysia,740107-13-3308,60102730824,Malaysian,Single,Student,College Intern,< MYR 1000
+Lee Sim,22/7/1999,Male,"No 42, Jalan Raja Chulan",Bukit Mertajam,Penang,Malaysia,990722-04-4575,60115831839,Malaysian,Single,Employed,Data Analyst,MYR 6000 - 8000
+Kumar Goh,15/2/1987,Female,"No 199, Jalan Putra",Miri,Sarawak,Malaysia,870215-16-6060,60113852067,Malaysian,Single,Employed,Account Executive,MYR 1000 - 2000
+Mei Kaur,11/6/1980,Male,"No 110, Jalan Anggerik",Kuching,Sarawak,Malaysia,800611-09-7295,60124039193,Malaysian,Single,Employed,IT Support Technician,MYR 2000 - 4000
+Kelvin Dass,3/6/1996,Female,"No 82, Jalan Anggerik",Sibu,Sarawak,Malaysia,960603-07-8508,60146608952,Malaysian,Married,Retired,NA,NA
+Hafiz Pillai,16/2/2003,Female,"No 184, Jalan Bukit Bintang",Alor Setar,Kedah,Malaysia,030216-12-9980,60195568294,Malaysian,Single,Employed,Clinic Assistant,MYR 2000 - 4000
+Amira Kaur,29/9/1973,Female,"No 116, Jalan Indah",Kota Bharu,Kelantan,Malaysia,730929-14-6884,60171525869,Malaysian,Married,Employed,Account Executive,MYR 4000 - 6000
+Brandon Ling,30/11/1985,Female,"No 149, Jalan SS15",Petaling Jaya,Selangor,Malaysia,851130-09-8602,60173471569,Malaysian,Single,Self-Employed,Car Workshop Owner,MYR 6000 - 8000
+Kumar Sim,27/12/1988,Female,"No 191, Jalan Melati",Kuala Terengganu,Terengganu,Malaysia,881227-11-2956,60181600423,Malaysian,Single,Unemployed,NA,NA
+Adam Chan,9/8/1996,Male,"No 154, Jalan Merdeka",Wangsa Maju,Kuala Lumpur,Malaysia,960809-03-0233,60178145519,Malaysian,Single,Employed,Clinic Assistant,MYR 4000 - 6000
+Ying Foo,25/1/1992,Female,"No 158, Jalan Anggerik",Seremban,Negeri Sembilan,Malaysia,920125-14-8100,60112919936,Malaysian,Married,Employed,Account Executive,MYR 1000 - 2000
+Adam Tay,3/9/1983,Female,"No 8, Jalan Indah",Kuching,Sarawak,Malaysia,830903-08-2210,60145395914,Malaysian,Single,Student,Retail Part-Time Assistant,< MYR 1000
+Siti Tan,20/12/2001,Male,"No 4, Jalan Kenanga",Skudai,Johor,Malaysia,011220-04-5867,60128909328,Malaysian,Married,Unemployed,NA,NA
+Sarah Abdullah,6/3/2002,Male,"No 158, Jalan Merdeka",Alor Setar,Kedah,Malaysia,020306-14-6491,60178513157,Malaysian,Married,Employed,Account Executive,MYR 1000 - 2000
+Ying Subramaniam,11/12/2003,Female,"No 188, Jalan Bandar",Teluk Intan,Perak,Malaysia,031211-14-7986,60111521540,Malaysian,Married,Unemployed,NA,NA
+Haziq Cheong,16/3/1975,Male,"No 7, Jalan Setia Alam",Teluk Intan,Perak,Malaysia,750316-09-1367,60136926748,Malaysian,Single,Self-Employed,Content Creator,MYR 1000 - 2000
+Zul Tay,22/9/1999,Female,"No 184, Jalan Indah",Kuantan,Pahang,Malaysia,990922-10-7764,60146039934,Malaysian,Single,Self-Employed,E-commerce Entrepreneur,MYR 10000 - 20000
+Nisha Chan,13/6/2000,Male,"No 101, Jalan Putra",Ayer Keroh,Melaka,Malaysia,000613-05-1323,60179266445,Malaysian,Single,Employed,Clinic Assistant,MYR 4000 - 6000
+Farah Phang,16/2/1985,Male,"No 74, Jalan Putra",Bayan Lepas,Penang,Malaysia,850216-10-8975,60108238233,Malaysian,Married,Retired,NA,NA
+Sarah Tan,10/2/1988,Male,"No 2, Jalan Kenanga",Ipoh,Perak,Malaysia,880210-12-9657,60106618176,Malaysian,Single,Unemployed,NA,NA
+Zhen Teh,17/2/2001,Male,"No 11, Jalan SS15",Kulim,Kedah,Malaysia,010217-07-2857,60157797985,Malaysian,Married,Self-Employed,Content Creator,MYR 6000 - 8000
+Zul Subramaniam,22/7/1975,Male,"No 191, Jalan Merdeka",Cheras,Kuala Lumpur,Malaysia,750722-10-8799,60104896699,Malaysian,Married,Self-Employed,Photographer,MYR 8000 - 12000
+Nur Ong,3/8/2005,Female,"No 84, Jalan Sultan Ismail",Sungai Petani,Kedah,Malaysia,050803-02-2500,60109744709,Malaysian,Married,Employed,Bank Teller,MYR 8000 - 12000
+Darren Ho,11/7/1971,Female,"No 151, Jalan Putra",Sibu,Sarawak,Malaysia,710711-02-4556,60129532145,Malaysian,Single,Employed,Bank Teller,MYR 4000 - 6000
+Devi Ng,17/12/1992,Female,"No 106, Jalan Bukit Bintang",Ayer Keroh,Melaka,Malaysia,921217-02-5504,60158572611,Malaysian,Married,Self-Employed,Online Seller,MYR 10000 - 20000
+Hakim Singh,4/1/1978,Male,"No 189, Jalan SS15",Cheras,Kuala Lumpur,Malaysia,780104-03-9197,60149883942,Malaysian,Single,Employed,Procurement Officer,MYR 4000 - 6000
+Jun Teh,11/3/2000,Male,"No 25, Jalan Cempaka",Sungai Petani,Kedah,Malaysia,000311-06-5141,60186588940,Malaysian,Single,Employed,Data Analyst,MYR 2000 - 4000
+Nisha Abdullah,18/2/2004,Male,"No 146, Jalan Kenanga",Kuching,Sarawak,Malaysia,040218-07-6519,60173449151,Malaysian,Single,Unemployed,NA,NA
+Haziq Phang,10/5/1976,Female,"No 115, Jalan Tun Razak",Setapak,Kuala Lumpur,Malaysia,760510-03-4644,60139557197,Malaysian,Single,Self-Employed,Insurance Agent,MYR 4000 - 6000
+Hafiz Subramaniam,24/8/2000,Female,"No 71, Jalan Kenanga",Sibu,Sarawak,Malaysia,000824-14-2434,60116689147,Malaysian,Married,Self-Employed,Grab Driver,MYR 4000 - 6000
+Jason Tan,31/5/1971,Female,"No 60, Jalan Anggerik",Kota Bharu,Kelantan,Malaysia,710531-03-9434,60116080566,Malaysian,Single,Employed,Account Executive,MYR 1000 - 2000
+Lee Yap,3/1/1978,Male,"No 100, Jalan Ampang",Kota Kinabalu,Sabah,Malaysia,780103-09-6035,60187200776,Malaysian,Single,Employed,Bank Teller,MYR 2000 - 4000
+Amira Lim,29/9/1980,Male,"No 111, Jalan Bandar",Alor Gajah,Melaka,Malaysia,800929-06-3461,60129084475,Malaysian,Married,Employed,Administrative Assistant,MYR 8000 - 12000
+Zul Dass,22/1/2002,Male,"No 132, Jalan Putra",Temerloh,Pahang,Malaysia,020122-15-8395,60173563141,Malaysian,Single,Student,Retail Part-Time Assistant,MYR 1000 - 2000
+Fiona Gan,21/4/1994,Female,"No 50, Jalan Kenanga",Sungai Petani,Kedah,Malaysia,940421-08-5442,60118462151,Malaysian,Married,Unemployed,NA,NA
+Aisyah Subramaniam,3/10/1986,Male,"No 110, Jalan Merdeka",Kulai,Johor,Malaysia,861003-12-8507,60111508597,Malaysian,Single,Retired,NA,NA
+Hafiz Kumar,1/11/2000,Male,"No 92, Jalan Putra",Miri,Sarawak,Malaysia,001101-04-8501,60106826451,Malaysian,Married,Retired,NA,NA
+Haziq Yusof,26/11/1971,Female,"No 77, Jalan Melati",Nilai,Negeri Sembilan,Malaysia,711126-08-2854,60168597030,Malaysian,Married,Self-Employed,Tuition Teacher,MYR 4000 - 6000
+Lim Pillai,31/12/2004,Male,"No 122, Jalan Bandar",Klang,Selangor,Malaysia,041231-13-9837,60156170003,Malaysian,Single,Employed,Human Resource Executive,MYR 1000 - 2000
+Ahmad Foo,15/12/1991,Male,"No 64, Jalan Bukit Bintang",Klang,Selangor,Malaysia,911215-13-7307,60151486341,Malaysian,Single,Employed,Logistics Coordinator,MYR 4000 - 6000
+Kai Tay,31/10/2000,Male,"No 89, Jalan Cempaka",Bayan Lepas,Penang,Malaysia,001031-11-8101,60195338363,Malaysian,Married,Employed,Marketing Executive,MYR 6000 - 8000
+Alicia Hassan,28/9/2001,Male,"No 160, Jalan Cempaka",Pasir Mas,Kelantan,Malaysia,010928-02-1617,60144369781,Malaysian,Married,Employed,Retail Sales Assistant,MYR 8000 - 12000
+Hafiz Chua,2/6/1984,Male,"No 172, Jalan Raja Chulan",Melaka City,Melaka,Malaysia,840602-13-3385,60139546038,Malaysian,Single,Unemployed,NA,NA
+Zul Foo,22/4/1984,Male,"No 140, Jalan SS15",Taiping,Perak,Malaysia,840422-09-7833,60164484779,Malaysian,Single,Student,University Student,MYR 1000 - 2000
+Haziq Ling,13/1/1970,Female,"No 63, Jalan Indah",Bayan Lepas,Penang,Malaysia,700113-07-6982,60195168244,Malaysian,Single,Employed,Graphic Designer,MYR 1000 - 2000
+Priya Pillai,6/3/1998,Male,"No 114, Jalan Klang Lama",Alor Setar,Kedah,Malaysia,980306-13-6365,60138884501,Malaysian,Single,Employed,Procurement Officer,MYR 1000 - 2000
+Hafiz Gan,4/7/2001,Male,"No 149, Jalan Merdeka",Kulim,Kedah,Malaysia,010704-07-2473,60144213780,Malaysian,Single,Employed,Human Resource Executive,MYR 6000 - 8000
+Kumar Hassan,8/11/1988,Female,"No 27, Jalan Melati",Subang Jaya,Selangor,Malaysia,881108-03-9372,60164473297,Malaysian,Single,Employed,Pharmacy Assistant,MYR 1000 - 2000
+Raj Chong,26/10/1989,Female,"No 61, Jalan Anggerik",Johor Bahru,Johor,Malaysia,891026-02-5856,60145469136,Malaysian,Single,Employed,Operations Executive,MYR 1000 - 2000
+Ahmad Lim,14/6/1972,Female,"No 199, Jalan Sultan Ismail",George Town,Penang,Malaysia,720614-07-0086,60172629378,Malaysian,Married,Employed,Graphic Designer,MYR 1000 - 2000
+Irfan Pillai,20/12/2001,Male,"No 100, Jalan Melati",Kota Kinabalu,Sabah,Malaysia,011220-06-3511,60141718166,Malaysian,Single,Employed,Administrative Assistant,MYR 4000 - 6000
+Aisyah Foo,1/5/2004,Female,"No 54, Jalan Indah",Port Dickson,Negeri Sembilan,Malaysia,040501-03-2942,60169824446,Malaysian,Married,Self-Employed,Grab Driver,MYR 6000 - 8000
+Irfan Chan,26/9/1975,Female,"No 151, Jalan Sultan Ismail",Tawau,Sabah,Malaysia,750926-16-4578,60169059336,Malaysian,Married,Employed,Project Coordinator,MYR 1000 - 2000
+Jason Gan,7/7/1977,Female,"No 50, Jalan Anggerik",Wangsa Maju,Kuala Lumpur,Malaysia,770707-12-7378,60193572124,Malaysian,Single,Student,Retail Part-Time Assistant,< MYR 1000
+Darren Kaur,30/1/2001,Female,"No 145, Jalan Raja Chulan",Ipoh,Perak,Malaysia,010130-16-5986,60184889564,Malaysian,Single,Retired,NA,NA
+Haziq Lee,13/8/1996,Female,"No 1, Jalan Merdeka",Kota Bharu,Kelantan,Malaysia,960813-08-4238,60147427145,Malaysian,Married,Employed,Administrative Assistant,MYR 2000 - 4000
+Raj Abdullah,2/11/2003,Female,"No 133, Jalan Ampang",Pasir Gudang,Johor,Malaysia,031102-12-2340,60175096268,Malaysian,Single,Employed,Data Analyst,MYR 8000 - 12000
+Fiona Low,27/2/1998,Female,"No 83, Jalan Ampang",Miri,Sarawak,Malaysia,980227-03-6810,60137002383,Malaysian,Single,Employed,Marketing Executive,MYR 4000 - 6000
+Adam Lee,6/11/2005,Male,"No 175, Jalan Cempaka",Bukit Mertajam,Penang,Malaysia,051106-09-4293,60122165169,Malaysian,Married,Retired,NA,NA
+Ying Wong,7/4/2002,Male,"No 11, Jalan Merdeka",Kulim,Kedah,Malaysia,020407-16-1635,60192800393,Malaysian,Married,Employed,Human Resource Executive,MYR 8000 - 12000
+Zul Ismail,2/9/1976,Female,"No 39, Jalan Kenanga",Kuantan,Pahang,Malaysia,760902-10-9664,60114975418,Malaysian,Single,Employed,Bank Teller,MYR 4000 - 6000
+Wei Cheong,10/12/1978,Male,"No 26, Jalan Ampang",Kajang,Selangor,Malaysia,781210-03-7559,60195839008,Malaysian,Married,Employed,Customer Service Officer,MYR 4000 - 6000
+Wei Yusof,21/8/1984,Female,"No 146, Jalan Bukit Bintang",Alor Gajah,Melaka,Malaysia,840821-04-3338,60158545765,Malaysian,Single,Employed,Logistics Coordinator,MYR 6000 - 8000
+Tan Tan,15/7/1988,Male,"No 118, Jalan Kenanga",Kota Kinabalu,Sabah,Malaysia,880715-12-2511,60121656730,Malaysian,Single,Employed,Sales Executive,MYR 8000 - 12000
+Jasmine Goh,22/5/1977,Male,"No 40, Jalan Kenanga",Kulim,Kedah,Malaysia,770522-15-2007,60132564114,Malaysian,Single,Student,Retail Part-Time Assistant,< MYR 1000
+Fiona Khoo,19/3/1990,Female,"No 3, Jalan Raja Chulan",Subang Jaya,Selangor,Malaysia,900319-03-4052,60147325885,Malaysian,Single,Employed,Software Developer,MYR 4000 - 6000
+Amira Lau,13/2/1979,Female,"No 92, Jalan SS15",Dungun,Terengganu,Malaysia,790213-16-6004,60188445665,Malaysian,Single,Employed,Sales Executive,MYR 6000 - 8000
+Adam Goh,19/10/2003,Female,"No 182, Jalan Merdeka",Kulim,Kedah,Malaysia,031019-05-2448,60196198264,Malaysian,Single,Retired,NA,NA
+Tan Lau,5/7/1984,Male,"No 53, Jalan SS15",Ayer Keroh,Melaka,Malaysia,840705-02-4147,60115127685,Malaysian,Single,Student,Retail Part-Time Assistant,< MYR 1000
+Siti Ong,13/4/1989,Female,"No 156, Jalan Melati",Kuala Terengganu,Terengganu,Malaysia,890413-06-5074,60152679677,Malaysian,Married,Employed,Bank Teller,MYR 8000 - 12000
+Daniel Tan,11/1/2002,Female,"No 154, Jalan Ampang",Bukit Mertajam,Penang,Malaysia,020111-07-3774,60122422057,Malaysian,Married,Employed,Graphic Designer,MYR 1000 - 2000
+Fiona Chua,13/8/1973,Female,"No 113, Jalan Anggerik",Ipoh,Perak,Malaysia,730813-11-8194,60177959246,Malaysian,Married,Retired,NA,NA
+Tan Tay,24/2/1984,Male,"No 99, Jalan Raja Chulan",Seremban,Negeri Sembilan,Malaysia,840224-15-8483,60111533897,Malaysian,Married,Employed,Human Resource Executive,MYR 8000 - 12000
+Suresh Kaur,11/1/2001,Female,"No 115, Jalan Indah",Ayer Keroh,Melaka,Malaysia,010111-10-4040,60138721581,Malaysian,Single,Employed,Project Coordinator,MYR 1000 - 2000
+Marcus Sim,21/11/1988,Male,"No 97, Jalan Merdeka",Wangsa Maju,Kuala Lumpur,Malaysia,881121-15-5905,60164676643,Malaysian,Married,Employed,Software Developer,MYR 2000 - 4000
+Ahmad Abdullah,11/12/2000,Female,"No 3, Jalan Bandar",Tawau,Sabah,Malaysia,001211-12-0342,60167679376,Malaysian,Single,Employed,Logistics Coordinator,MYR 4000 - 6000
+Priya Foo,16/12/1978,Female,"No 156, Jalan Kenanga",Kajang,Selangor,Malaysia,781216-09-1380,60105713226,Malaysian,Single,Unemployed,NA,NA
+Kumar Phang,11/5/1978,Female,"No 25, Jalan Raja Chulan",Miri,Sarawak,Malaysia,780511-01-6952,60196017831,Malaysian,Single,Employed,Data Analyst,MYR 8000 - 12000
+Wei Ismail,28/11/1977,Female,"No 120, Jalan SS15",Dungun,Terengganu,Malaysia,771128-15-7824,60127991104,Malaysian,Single,Employed,Retail Sales Assistant,MYR 6000 - 8000
+Zul Singh,2/2/1981,Male,"No 195, Jalan Sultan Ismail",Dungun,Terengganu,Malaysia,810202-12-7507,60114727621,Malaysian,Single,Retired,NA,NA
+Irfan Tay,28/12/1980,Female,"No 80, Jalan Raja Chulan",Alor Gajah,Melaka,Malaysia,801228-09-3518,60163029295,Malaysian,Married,Self-Employed,Makeup Artist,MYR 8000 - 12000
+Marcus Low,7/1/1992,Male,"No 35, Jalan Klang Lama",Alor Gajah,Melaka,Malaysia,920107-14-4303,60158222331,Malaysian,Married,Self-Employed,Property Agent,MYR 12000 - 18000
+Brandon Wong,19/12/1992,Female,"No 30, Jalan Klang Lama",Bukit Mertajam,Penang,Malaysia,921219-06-8574,60101025132,Malaysian,Single,Retired,NA,NA
+Haziq Ismail,6/8/1970,Male,"No 129, Jalan Tun Razak",Teluk Intan,Perak,Malaysia,700806-13-4031,60176705137,Malaysian,Single,Employed,Logistics Coordinator,MYR 1000 - 2000
+Anand Kaur,15/12/1997,Male,"No 20, Jalan Putra",Alor Setar,Kedah,Malaysia,971215-15-1279,60144033210,Malaysian,Married,Employed,Marketing Executive,MYR 6000 - 8000
+Nisha Ling,25/10/1978,Male,"No 37, Jalan Klang Lama",Alor Gajah,Melaka,Malaysia,781025-04-3813,60192613060,Malaysian,Married,Self-Employed,Tuition Teacher,MYR 6000 - 8000
+Nur Low,19/5/1970,Male,"No 91, Jalan Indah",Kota Bharu,Kelantan,Malaysia,700519-08-0583,60128865765,Malaysian,Single,Employed,Customer Service Officer,MYR 2000 - 4000
+Tan Subramaniam,18/3/1974,Male,"No 70, Jalan Indah",Kota Bharu,Kelantan,Malaysia,740318-03-5043,60194432098,Malaysian,Married,Self-Employed,Property Agent,MYR 4000 - 6000
+Priya Ling,14/10/1977,Female,"No 2, Jalan Putra",Taiping,Perak,Malaysia,771014-03-0482,60176841527,Malaysian,Married,Self-Employed,Small Business Owner,MYR 8000 - 12000
+Hakim Tay,6/5/1989,Female,"No 76, Jalan SS15",Taiping,Perak,Malaysia,890506-05-5780,60186520737,Malaysian,Single,Employed,Procurement Officer,MYR 4000 - 6000
+Adam Tan,12/2/1994,Male,"No 186, Jalan Indah",Kulim,Kedah,Malaysia,940212-02-9839,60108103016,Malaysian,Single,Employed,Human Resource Executive,MYR 4000 - 6000
+Kai Tan,27/9/1970,Male,"No 131, Jalan Bandar",Temerloh,Pahang,Malaysia,700927-11-0625,60165870082,Malaysian,Single,Retired,NA,NA
+Suresh Abdullah,9/12/2001,Male,"No 137, Jalan Putra",Teluk Intan,Perak,Malaysia,011209-06-2191,60123463984,Malaysian,Single,Student,Part-Time Barista,MYR 1000 - 2000
+Jason Lau,5/10/1997,Male,"No 165, Jalan Anggerik",Port Dickson,Negeri Sembilan,Malaysia,971005-05-2791,60146456231,Malaysian,Single,Student,College Intern,< MYR 1000
+Ali Lim,18/10/1979,Female,"No 78, Jalan Merdeka",Seremban,Negeri Sembilan,Malaysia,791018-10-1182,60116019084,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 8000 - 12000
+Haziq Chua,17/12/1971,Male,"No 115, Jalan Melati",Teluk Intan,Perak,Malaysia,711217-11-2405,60109924914,Malaysian,Married,Employed,Account Executive,MYR 4000 - 6000
+Aisyah Rahman,14/5/1980,Female,"No 6, Jalan Raja Chulan",Pasir Mas,Kelantan,Malaysia,800514-07-0176,60116530718,Malaysian,Single,Employed,Procurement Officer,MYR 6000 - 8000
+Jasmine Ng,11/8/1983,Female,"No 32, Jalan Raja Chulan",George Town,Penang,Malaysia,830811-15-3146,60129400711,Malaysian,Married,Employed,Restaurant Supervisor,MYR 6000 - 8000
+Hafiz Menon,4/9/2001,Female,"No 48, Jalan Anggerik",Melaka City,Melaka,Malaysia,010904-03-0578,60199420029,Malaysian,Married,Employed,Software Developer,MYR 2000 - 4000
+Mei Tan,17/3/1999,Female,"No 141, Jalan Cempaka",Kuala Lumpur,Kuala Lumpur,Malaysia,990317-01-2764,60112152695,Malaysian,Single,Employed,Data Analyst,MYR 8000 - 12000
+Haziq Teh,12/3/1984,Female,"No 151, Jalan Merdeka",Klang,Selangor,Malaysia,840312-14-2190,60107861244,Malaysian,Single,Unemployed,NA,NA
+Mei Lim,26/8/2003,Female,"No 174, Jalan Klang Lama",Kuantan,Pahang,Malaysia,030826-02-0234,60148835327,Malaysian,Married,Unemployed,NA,NA
+Hakim Phang,2/3/1998,Male,"No 160, Jalan Setia Alam",Pasir Mas,Kelantan,Malaysia,980302-01-9743,60177399109,Malaysian,Single,Unemployed,NA,NA
+Jasmine Ling,20/9/1994,Male,"No 80, Jalan Setia Alam",Kota Kinabalu,Sabah,Malaysia,940920-01-8083,60194254823,Malaysian,Married,Unemployed,NA,NA
+Nur Goh,6/11/2005,Male,"No 119, Jalan Anggerik",George Town,Penang,Malaysia,051106-02-8155,60154939847,Malaysian,Single,Employed,Network Technician,MYR 1000 - 2000
+Adam Lim,6/12/2004,Male,"No 47, Jalan Sultan Ismail",Teluk Intan,Perak,Malaysia,041206-04-6211,60185537339,Malaysian,Married,Employed,Procurement Officer,MYR 8000 - 12000
+Farah Gan,1/1/1995,Male,"No 186, Jalan Raja Chulan",Pasir Gudang,Johor,Malaysia,950101-04-9019,60173304567,Malaysian,Single,Employed,Procurement Officer,MYR 2000 - 4000
+Devi Subramaniam,24/4/1985,Male,"No 110, Jalan Merdeka",Sibu,Sarawak,Malaysia,850424-02-3061,60173861705,Malaysian,Single,Employed,Marketing Executive,MYR 2000 - 4000
+Arjun Mahmud,25/5/1986,Female,"No 21, Jalan Raja Chulan",Bayan Lepas,Penang,Malaysia,860525-05-0966,60159971570,Malaysian,Married,Employed,Clinic Assistant,MYR 8000 - 12000
+Siti Kumar,9/9/2004,Male,"No 88, Jalan Sultan Ismail",Cheras,Kuala Lumpur,Malaysia,040909-01-1661,60163690593,Malaysian,Single,Retired,NA,NA
+Lee Tay,6/6/1979,Female,"No 99, Jalan Sultan Ismail",Kulai,Johor,Malaysia,790606-15-2666,60156760101,Malaysian,Single,Employed,Operations Executive,MYR 1000 - 2000
+Nisha Hassan,17/1/1989,Male,"No 38, Jalan Sultan Ismail",Bukit Mertajam,Penang,Malaysia,890117-04-0507,60164889888,Malaysian,Single,Student,Part-Time Barista,MYR 1000 - 2000
+Zul Mahmud,29/7/1977,Male,"No 91, Jalan Anggerik",Kajang,Selangor,Malaysia,770729-14-2297,60122523185,Malaysian,Married,Employed,Retail Sales Assistant,MYR 8000 - 12000
+Anand Kumar,31/12/2000,Male,"No 115, Jalan Merdeka",Dungun,Terengganu,Malaysia,001231-09-8649,60129872291,Malaysian,Single,Employed,Network Technician,MYR 6000 - 8000
+Hafiz Lau,14/11/1978,Female,"No 72, Jalan Klang Lama",Nilai,Negeri Sembilan,Malaysia,781114-04-1882,60181084218,Malaysian,Married,Employed,Pharmacy Assistant,MYR 6000 - 8000
+Daniel Lee,15/8/1994,Male,"No 180, Jalan Anggerik",Klang,Selangor,Malaysia,940815-08-2197,60125918119,Malaysian,Single,Student,Part-Time Barista,< MYR 1000
+Nisha Ong,10/9/2001,Male,"No 62, Jalan Tun Razak",Skudai,Johor,Malaysia,010910-14-4563,60126189892,Malaysian,Single,Employed,Clinic Assistant,MYR 1000 - 2000
+Lim Khoo,22/9/1980,Female,"No 68, Jalan Klang Lama",Port Dickson,Negeri Sembilan,Malaysia,800922-05-7240,60183430529,Malaysian,Single,Student,Retail Part-Time Assistant,< MYR 1000
+Irfan Mahmud,18/9/2002,Male,"No 97, Jalan Bukit Bintang",Kulim,Kedah,Malaysia,020918-09-0999,60142000115,Malaysian,Married,Retired,NA,NA
+Ahmad Yusof,13/10/1980,Male,"No 79, Jalan Merdeka",Bentong,Pahang,Malaysia,801013-05-2515,60146590950,Malaysian,Single,Student,University Student,< MYR 1000
+Haziq Chong,23/1/1991,Male,"No 31, Jalan Raja Chulan",Ipoh,Perak,Malaysia,910123-03-9757,60107120754,Malaysian,Married,Unemployed,NA,NA
+Farah Ling,19/2/2000,Female,"No 153, Jalan Raja Chulan",Alor Setar,Kedah,Malaysia,000219-12-3536,60138115608,Malaysian,Single,Student,College Intern,< MYR 1000
+Zhen Abdullah,16/7/1971,Female,"No 98, Jalan Melati",Alor Gajah,Melaka,Malaysia,710716-12-0600,60179099941,Malaysian,Single,Unemployed,NA,NA
+Brandon Tay,10/11/2000,Male,"No 150, Jalan Anggerik",Kulai,Johor,Malaysia,001110-01-2273,60175302763,Malaysian,Single,Retired,NA,NA
+Suresh Ong,23/4/2003,Female,"No 18, Jalan Kenanga",Kajang,Selangor,Malaysia,030423-05-1434,60166392356,Malaysian,Single,Employed,Account Executive,MYR 2000 - 4000
+Ali Yap,11/7/1984,Male,"No 23, Jalan SS15",Pasir Gudang,Johor,Malaysia,840711-08-6847,60163303921,Malaysian,Married,Employed,Network Technician,MYR 8000 - 12000
+Ali Kaur,27/4/1978,Male,"No 183, Jalan Raja Chulan",Teluk Intan,Perak,Malaysia,780427-04-4407,60176601089,Malaysian,Married,Self-Employed,Makeup Artist,MYR 1000 - 2000
+Marcus Cheong,17/8/2000,Female,"No 176, Jalan Setia Alam",Bentong,Pahang,Malaysia,000817-08-9466,60165735790,Malaysian,Single,Employed,Restaurant Supervisor,MYR 6000 - 8000
+Wei Ooi,9/2/1988,Female,"No 164, Jalan Bandar",Port Dickson,Negeri Sembilan,Malaysia,880209-05-9370,60144884063,Malaysian,Single,Student,Part-Time Barista,< MYR 1000
+Lee Singh,3/5/1970,Male,"No 19, Jalan Kenanga",Ayer Keroh,Melaka,Malaysia,700503-13-8457,60174513342,Malaysian,Single,Employed,Graphic Designer,MYR 6000 - 8000
+Ying Chua,28/7/1974,Female,"No 90, Jalan Putra",Cheras,Kuala Lumpur,Malaysia,740728-04-6130,60144101741,Malaysian,Married,Employed,Administrative Assistant,MYR 8000 - 12000
+Tan Phang,20/11/1992,Male,"No 110, Jalan SS15",Alor Setar,Kedah,Malaysia,921120-11-2803,60191921752,Malaysian,Single,Employed,Procurement Officer,MYR 6000 - 8000
+Darren Teh,27/4/2001,Female,"No 21, Jalan Tun Razak",Setapak,Kuala Lumpur,Malaysia,010427-08-2576,60113570057,Malaysian,Married,Employed,Project Coordinator,MYR 6000 - 8000
+Kai Lim,4/11/1971,Male,"No 97, Jalan Anggerik",Kota Kinabalu,Sabah,Malaysia,711104-05-6141,60114770561,Malaysian,Single,Student,Part-Time Barista,< MYR 1000
+Marcus Lim,15/12/1974,Female,"No 78, Jalan Sultan Ismail",Ayer Keroh,Melaka,Malaysia,741215-15-7858,60154195608,Malaysian,Married,Employed,Graphic Designer,MYR 1000 - 2000
+Brandon Chua,14/12/1982,Female,"No 181, Jalan Klang Lama",Pasir Mas,Kelantan,Malaysia,821214-04-3332,60182928977,Malaysian,Married,Unemployed,NA,NA
+Wei Tan,10/5/1978,Female,"No 42, Jalan Melati",Kota Kinabalu,Sabah,Malaysia,780510-15-8476,60111739548,Malaysian,Single,Employed,Retail Sales Assistant,MYR 1000 - 2000
+Daniel Chong,12/8/1999,Female,"No 114, Jalan Kenanga",Ayer Keroh,Melaka,Malaysia,990812-12-2026,60166875807,Malaysian,Single,Employed,Account Executive,MYR 8000 - 12000
+Kumar Dass,22/6/1980,Female,"No 195, Jalan Bukit Bintang",Bukit Mertajam,Penang,Malaysia,800622-03-2862,60118788469,Malaysian,Married,Employed,Sales Executive,MYR 6000 - 8000
+Hakim Rahman,12/4/1997,Male,"No 81, Jalan Melati",Sandakan,Sabah,Malaysia,970412-05-3695,60152144303,Malaysian,Married,Retired,NA,NA
+Jason Low,19/1/1991,Male,"No 77, Jalan Anggerik",Kota Bharu,Kelantan,Malaysia,910119-10-6085,60109401694,Malaysian,Married,Employed,Operations Executive,MYR 4000 - 6000
+Jason Rahman,23/11/2004,Female,"No 44, Jalan Tun Razak",Kuala Lumpur,Kuala Lumpur,Malaysia,041123-04-0154,60117946997,Malaysian,Married,Unemployed,NA,NA
+Irfan Ling,9/11/1981,Male,"No 153, Jalan Cempaka",Ipoh,Perak,Malaysia,811109-10-2833,60101625010,Malaysian,Single,Retired,NA,NA
+Priya Mahmud,19/6/1983,Female,"No 14, Jalan Tun Razak",Setapak,Kuala Lumpur,Malaysia,830619-06-3658,60114509361,Malaysian,Married,Employed,Human Resource Executive,MYR 4000 - 6000
+Brandon Foo,12/7/1985,Male,"No 190, Jalan Merdeka",Dungun,Terengganu,Malaysia,850712-11-7053,60134023336,Malaysian,Married,Employed,Operations Executive,MYR 1000 - 2000
+Devi Chong,21/3/1977,Male,"No 63, Jalan SS15",Johor Bahru,Johor,Malaysia,770321-12-2585,60194342524,Malaysian,Married,Employed,Administrative Assistant,MYR 8000 - 12000
+Kumar Ooi,26/8/1972,Male,"No 175, Jalan Setia Alam",Kota Kinabalu,Sabah,Malaysia,720826-13-2011,60156230840,Malaysian,Married,Employed,Operations Executive,MYR 8000 - 12000
+Darren Low,20/3/1995,Male,"No 22, Jalan Putra",Pasir Mas,Kelantan,Malaysia,950320-07-5333,60183394341,Malaysian,Single,Employed,Operations Executive,MYR 8000 - 12000
+Mei Chong,21/12/1996,Male,"No 164, Jalan Kenanga",Kota Kinabalu,Sabah,Malaysia,961221-02-2641,60179276686,Malaysian,Single,Employed,Graphic Designer,MYR 4000 - 6000
+Adam Ismail,24/7/1979,Female,"No 169, Jalan Putra",Petaling Jaya,Selangor,Malaysia,790724-14-4816,60189151410,Malaysian,Married,Employed,Restaurant Supervisor,MYR 8000 - 12000
+Haziq Yap,30/3/1993,Male,"No 199, Jalan Sultan Ismail",Shah Alam,Selangor,Malaysia,930330-11-4715,60169422047,Malaysian,Single,Student,Retail Part-Time Assistant,MYR 1000 - 2000
+Adam Menon,31/7/1980,Male,"No 193, Jalan Cempaka",Sungai Petani,Kedah,Malaysia,800731-11-5627,60126724137,Malaysian,Married,Employed,Graphic Designer,MYR 1000 - 2000
+Amira Lee,23/1/1983,Male,"No 106, Jalan Raja Chulan",Alor Gajah,Melaka,Malaysia,830123-05-8237,60112112780,Malaysian,Single,Employed,Human Resource Executive,MYR 2000 - 4000
+Ying Goh,9/9/1991,Male,"No 163, Jalan Klang Lama",Klang,Selangor,Malaysia,910909-08-2389,60159737897,Malaysian,Married,Retired,NA,NA
+Fiona Teh,10/12/1993,Female,"No 95, Jalan Klang Lama",Alor Setar,Kedah,Malaysia,931210-11-3708,60131992336,Malaysian,Single,Employed,Software Developer,MYR 6000 - 8000
+Jason Subramaniam,19/1/1996,Male,"No 177, Jalan Raja Chulan",Kulim,Kedah,Malaysia,960119-15-8407,60114010841,Malaysian,Married,Employed,Software Developer,MYR 1000 - 2000
+Lee Low,24/8/1973,Male,"No 72, Jalan Raja Chulan",Kuching,Sarawak,Malaysia,730824-16-8113,60188986887,Malaysian,Married,Retired,NA,NA
+Suresh Gan,31/3/1994,Male,"No 45, Jalan Kenanga",Cheras,Kuala Lumpur,Malaysia,940331-10-3571,60116801184,Malaysian,Married,Employed,Graphic Designer,MYR 1000 - 2000
+Raj Ismail,17/3/1991,Female,"No 199, Jalan Anggerik",Teluk Intan,Perak,Malaysia,910317-07-5668,60147310837,Malaysian,Married,Employed,Network Technician,MYR 6000 - 8000
+Zul Low,16/5/1981,Male,"No 146, Jalan Bukit Bintang",Melaka City,Melaka,Malaysia,810516-10-7871,60174676388,Malaysian,Married,Employed,Procurement Officer,MYR 6000 - 8000
+Hakim Menon,7/3/1989,Female,"No 101, Jalan Ampang",Temerloh,Pahang,Malaysia,890307-10-6062,60173900384,Malaysian,Married,Employed,Procurement Officer,MYR 2000 - 4000
+Jason Abdullah,2/12/2001,Female,"No 156, Jalan Klang Lama",Johor Bahru,Johor,Malaysia,011202-13-4064,60188951203,Malaysian,Single,Employed,Operations Executive,MYR 1000 - 2000
+Alicia Subramaniam,20/7/1981,Male,"No 86, Jalan Putra",Wangsa Maju,Kuala Lumpur,Malaysia,810720-10-4807,60158545295,Malaysian,Married,Unemployed,NA,NA
+Darren Chua,13/11/1978,Male,"No 168, Jalan SS15",Kuala Lumpur,Kuala Lumpur,Malaysia,781113-11-5097,60151551276,Malaysian,Single,Employed,Clinic Assistant,MYR 8000 - 12000
+Lim Teh,4/2/1999,Male,"No 169, Jalan Klang Lama",Teluk Intan,Perak,Malaysia,990204-11-8167,60132521964,Malaysian,Single,Retired,NA,NA
+Suresh Yusof,8/9/1985,Female,"No 117, Jalan Tun Razak",Bentong,Pahang,Malaysia,850908-09-1350,60125733415,Malaysian,Married,Employed,Retail Sales Assistant,MYR 1000 - 2000
+Nisha Subramaniam,13/2/1990,Female,"No 11, Jalan Bukit Bintang",Kuala Lumpur,Kuala Lumpur,Malaysia,900213-10-6946,60151890075,Malaysian,Married,Employed,Logistics Coordinator,MYR 8000 - 12000
+Fiona Ng,29/4/1992,Female,"No 155, Jalan Kenanga",Johor Bahru,Johor,Malaysia,920429-02-5608,60106322957,Malaysian,Married,Employed,Graphic Designer,MYR 8000 - 12000
+Kai Lee,19/4/1990,Male,"No 121, Jalan Putra",Temerloh,Pahang,Malaysia,900419-05-8993,60133006000,Malaysian,Single,Employed,Human Resource Executive,MYR 8000 - 12000
+Darren Kumar,9/9/1997,Female,"No 149, Jalan Sultan Ismail",Kulim,Kedah,Malaysia,970909-06-9652,60102026422,Malaysian,Married,Employed,Account Executive,MYR 2000 - 4000
+Kai Foo,23/6/1990,Male,"No 52, Jalan SS15",Kulai,Johor,Malaysia,900623-14-2737,60145621334,Malaysian,Married,Unemployed,NA,NA
+Raj Lim,9/12/1988,Female,"No 70, Jalan Indah",Wangsa Maju,Kuala Lumpur,Malaysia,881209-06-7976,60129384022,Malaysian,Single,Employed,Procurement Officer,MYR 2000 - 4000
+Kelvin Mahmud,28/6/1991,Female,"No 80, Jalan Cempaka",Setapak,Kuala Lumpur,Malaysia,910628-10-9436,60153479568,Malaysian,Single,Employed,Sales Executive,MYR 8000 - 12000
+Sarah Kaur,17/6/1979,Male,"No 12, Jalan Tun Razak",Teluk Intan,Perak,Malaysia,790617-06-9649,60138324504,Malaysian,Married,Unemployed,NA,NA
+Suresh Ismail,27/9/2003,Female,"No 112, Jalan Raja Chulan",Dungun,Terengganu,Malaysia,030927-16-9048,60199102274,Malaysian,Married,Employed,Administrative Assistant,MYR 6000 - 8000
+Siti Ismail,14/9/2003,Male,"No 102, Jalan Klang Lama",Tawau,Sabah,Malaysia,030914-16-9213,60184160379,Malaysian,Single,Employed,Software Developer,MYR 1000 - 2000
+Ahmad Menon,28/2/1981,Male,"No 45, Jalan Kenanga",Sandakan,Sabah,Malaysia,810228-16-7879,60106436594,Malaysian,Single,Employed,Retail Sales Assistant,MYR 1000 - 2000
+Aisyah Menon,26/5/2004,Male,"No 17, Jalan Indah",Bukit Mertajam,Penang,Malaysia,040526-09-2165,60138370686,Malaysian,Married,Employed,IT Support Technician,MYR 8000 - 12000
+Jasmine Kumar,4/5/1985,Male,"No 173, Jalan Merdeka",Miri,Sarawak,Malaysia,850504-16-2609,60168443603,Malaysian,Single,Retired,NA,NA
+Alicia Rahman,23/12/1986,Female,"No 151, Jalan Putra",Port Dickson,Negeri Sembilan,Malaysia,861223-15-8552,60173234655,Malaysian,Single,Self-Employed,Photographer,MYR 2000 - 4000
+Lee Ling,11/8/1998,Female,"No 4, Jalan Cempaka",Port Dickson,Negeri Sembilan,Malaysia,980811-07-7256,60145487644,Malaysian,Single,Retired,NA,NA
+Ahmad Wong,24/9/1988,Female,"No 60, Jalan Bandar",Ayer Keroh,Melaka,Malaysia,880924-06-9806,60188998897,Malaysian,Single,Employed,Human Resource Executive,MYR 2000 - 4000
+Brandon Chong,23/6/1989,Female,"No 30, Jalan Klang Lama",Shah Alam,Selangor,Malaysia,890623-09-4410,60137116178,Malaysian,Married,Employed,Human Resource Executive,MYR 8000 - 12000
+Priya Ong,8/5/1980,Female,"No 98, Jalan Sultan Ismail",Melaka City,Melaka,Malaysia,800508-03-9498,60126521618,Malaysian,Married,Employed,Graphic Designer,MYR 8000 - 12000
+Hafiz Yap,14/5/1997,Female,"No 7, Jalan Setia Alam",Kuching,Sarawak,Malaysia,970514-14-4586,60151475600,Malaysian,Single,Employed,Operations Executive,MYR 4000 - 6000
+Nisha Kaur,3/7/1974,Male,"No 8, Jalan Kenanga",Johor Bahru,Johor,Malaysia,740703-01-2305,60154928412,Malaysian,Single,Employed,Retail Sales Assistant,MYR 6000 - 8000
+Suresh Foo,24/2/2003,Female,"No 81, Jalan Merdeka",Sandakan,Sabah,Malaysia,030224-06-1564,60188625793,Malaysian,Single,Employed,Human Resource Executive,MYR 2000 - 4000
+Irfan Cheong,20/7/2003,Female,"No 198, Jalan Anggerik",Kuantan,Pahang,Malaysia,030720-11-1020,60167779149,Malaysian,Married,Employed,Data Analyst,MYR 8000 - 12000
+Jasmine Yusof,11/11/1973,Female,"No 151, Jalan Raja Chulan",Melaka City,Melaka,Malaysia,731111-05-5062,60172262502,Malaysian,Single,Student,University Student,MYR 1000 - 2000
+Zhen Tay,24/7/2000,Female,"No 3, Jalan Bandar",Kuala Terengganu,Terengganu,Malaysia,000724-02-5976,60112801419,Malaysian,Married,Unemployed,NA,NA
+Zhen Wong,1/4/1994,Male,"No 36, Jalan SS15",Nilai,Negeri Sembilan,Malaysia,940401-05-0315,60119401858,Malaysian,Single,Employed,Procurement Officer,MYR 2000 - 4000
+Adam Ho,13/7/1985,Male,"No 6, Jalan Anggerik",Bentong,Pahang,Malaysia,850713-08-9135,60122125244,Malaysian,Single,Employed,Graphic Designer,MYR 1000 - 2000
+Adam Kaur,21/7/1976,Male,"No 63, Jalan Ampang",Sandakan,Sabah,Malaysia,760721-09-4457,60122474739,Malaysian,Single,Employed,Procurement Officer,MYR 6000 - 8000
+Sarah Ong,21/5/2001,Female,"No 103, Jalan Indah",Seremban,Negeri Sembilan,Malaysia,010521-06-3418,60113154318,Malaysian,Married,Employed,IT Support Technician,MYR 6000 - 8000
+Marcus Foo,17/5/1996,Male,"No 4, Jalan Sultan Ismail",Dungun,Terengganu,Malaysia,960517-02-1263,60174885815,Malaysian,Married,Unemployed,NA,NA
+Aisyah Ling,22/4/1984,Male,"No 190, Jalan Bandar",Kuching,Sarawak,Malaysia,840422-15-8471,60124991994,Malaysian,Married,Self-Employed,Small Business Owner,MYR 2000 - 4000
+Ahmad Gan,3/10/1984,Female,"No 153, Jalan Bukit Bintang",Tawau,Sabah,Malaysia,841003-07-8082,60139779509,Malaysian,Married,Retired,NA,NA
+Kumar Foo,25/1/1977,Female,"No 155, Jalan Bandar",Teluk Intan,Perak,Malaysia,770125-06-9760,60189869265,Malaysian,Single,Employed,Software Developer,MYR 8000 - 12000
+Hafiz Chong,28/7/1976,Female,"No 83, Jalan Raja Chulan",Sibu,Sarawak,Malaysia,760728-09-6116,60135756772,Malaysian,Single,Employed,Operations Executive,MYR 1000 - 2000
+Arjun Chong,19/4/1985,Female,"No 118, Jalan Cempaka",Kota Bharu,Kelantan,Malaysia,850419-06-4820,60121137786,Malaysian,Married,Self-Employed,Online Seller,MYR 10000 - 20000
+Hakim Lee,26/9/2004,Female,"No 74, Jalan Raja Chulan",Bayan Lepas,Penang,Malaysia,040926-03-6106,60106045032,Malaysian,Married,Unemployed,NA,NA
+Brandon Khoo,10/1/1971,Female,"No 44, Jalan Cempaka",Skudai,Johor,Malaysia,710110-06-4310,60129496099,Malaysian,Married,Employed,Administrative Assistant,MYR 1000 - 2000
+Ali Low,28/3/1975,Female,"No 80, Jalan Indah",Klang,Selangor,Malaysia,750328-03-6128,60195074822,Malaysian,Single,Retired,NA,NA
+Zul Lau,13/5/1973,Female,"No 76, Jalan Ampang",Ipoh,Perak,Malaysia,730513-03-7234,60192345717,Malaysian,Married,Unemployed,NA,NA
+Ying Kaur,29/11/1997,Female,"No 60, Jalan Ampang",Taiping,Perak,Malaysia,971129-09-8052,60144153343,Malaysian,Married,Employed,Procurement Officer,MYR 1000 - 2000
+Suresh Dass,7/8/1987,Female,"No 37, Jalan Cempaka",Sibu,Sarawak,Malaysia,870807-11-3780,60132007201,Malaysian,Married,Employed,Operations Executive,MYR 2000 - 4000
+Alicia Dass,17/2/1990,Male,"No 97, Jalan Bandar",Tawau,Sabah,Malaysia,900217-09-2831,60195462796,Malaysian,Single,Employed,Project Coordinator,MYR 8000 - 12000
+Daniel Singh,20/4/1989,Female,"No 41, Jalan Bandar",Petaling Jaya,Selangor,Malaysia,890420-03-1672,60194409230,Malaysian,Married,Employed,Software Developer,MYR 4000 - 6000
+Anand Ho,16/2/2004,Female,"No 98, Jalan Merdeka",Wangsa Maju,Kuala Lumpur,Malaysia,040216-09-7350,60171027919,Malaysian,Single,Retired,NA,NA
+Lee Ho,30/1/1977,Male,"No 115, Jalan Ampang",Cheras,Kuala Lumpur,Malaysia,770130-02-9947,60103889654,Malaysian,Single,Employed,Account Executive,MYR 2000 - 4000
+Adam Ibrahim,11/8/1987,Male,"No 66, Jalan Merdeka",Bayan Lepas,Penang,Malaysia,870811-16-7929,60176443578,Malaysian,Single,Student,Retail Part-Time Assistant,< MYR 1000
+Wei Sim,10/2/1991,Male,"No 101, Jalan Bukit Bintang",Nilai,Negeri Sembilan,Malaysia,910210-09-2515,60187439487,Malaysian,Single,Employed,Logistics Coordinator,MYR 4000 - 6000
+Lee Lau,29/7/1985,Female,"No 179, Jalan Kenanga",Petaling Jaya,Selangor,Malaysia,850729-16-4568,60127502442,Malaysian,Single,Employed,Project Coordinator,MYR 8000 - 12000
+Tan Kumar,25/7/1998,Female,"No 25, Jalan Setia Alam",Cheras,Kuala Lumpur,Malaysia,980725-11-5226,60189747180,Malaysian,Single,Employed,Procurement Officer,MYR 4000 - 6000
+Hafiz Tan,11/2/1978,Female,"No 2, Jalan Ampang",Cheras,Kuala Lumpur,Malaysia,780211-05-4562,60102590284,Malaysian,Single,Student,College Intern,< MYR 1000
+Ahmad Ismail,11/12/1997,Female,"No 159, Jalan Anggerik",Dungun,Terengganu,Malaysia,971211-08-3740,60129626301,Malaysian,Single,Employed,Clinic Assistant,MYR 8000 - 12000
+Nisha Chua,13/9/1996,Female,"No 122, Jalan Bukit Bintang",Petaling Jaya,Selangor,Malaysia,960913-13-2940,60186142587,Malaysian,Single,Employed,Network Technician,MYR 4000 - 6000
+Lim Lee,10/10/1974,Female,"No 11, Jalan SS15",Tawau,Sabah,Malaysia,741010-02-2826,60141963183,Malaysian,Married,Retired,NA,NA
+Aisyah Chan,19/10/1998,Female,"No 7, Jalan Anggerik",Kulai,Johor,Malaysia,981019-11-2872,60101757976,Malaysian,Single,Retired,NA,NA
+Tan Ng,8/10/1983,Female,"No 135, Jalan Setia Alam",Kulai,Johor,Malaysia,831008-11-0250,60113324840,Malaysian,Married,Employed,Customer Service Officer,MYR 8000 - 12000
+Devi Sim,29/11/1994,Male,"No 123, Jalan Kenanga",Pasir Gudang,Johor,Malaysia,941129-06-4557,60131346193,Malaysian,Married,Employed,Pharmacy Assistant,MYR 6000 - 8000
+Ahmad Goh,2/6/1999,Female,"No 39, Jalan Klang Lama",Johor Bahru,Johor,Malaysia,990602-10-6138,60143923771,Malaysian,Married,Employed,Operations Executive,MYR 8000 - 12000
+Adam Yusof,6/2/2005,Male,"No 87, Jalan Bukit Bintang",Sungai Petani,Kedah,Malaysia,050206-08-5379,60178624224,Malaysian,Married,Employed,Pharmacy Assistant,MYR 1000 - 2000
+Lee Ng,6/9/1992,Male,"No 95, Jalan Klang Lama",Kuching,Sarawak,Malaysia,920906-07-0315,60119363118,Malaysian,Single,Student,University Student,< MYR 1000
+Farah Lau,28/2/1975,Male,"No 40, Jalan Bandar",Teluk Intan,Perak,Malaysia,750228-08-7853,60115614892,Malaysian,Single,Employed,Administrative Assistant,MYR 1000 - 2000
+Jun Menon,26/2/2001,Female,"No 120, Jalan Ampang",Kuala Terengganu,Terengganu,Malaysia,010226-04-0968,60113794020,Malaysian,Single,Student,Retail Part-Time Assistant,MYR 1000 - 2000
+Suresh Subramaniam,31/8/1974,Male,"No 113, Jalan Klang Lama",George Town,Penang,Malaysia,740831-07-6343,60119892606,Malaysian,Married,Employed,Operations Executive,MYR 2000 - 4000
+Hafiz Abdullah,14/1/1985,Female,"No 177, Jalan Raja Chulan",Sibu,Sarawak,Malaysia,850114-14-8162,60116117749,Malaysian,Married,Self-Employed,Online Seller,MYR 6000 - 8000
+Jason Teh,7/12/1997,Female,"No 53, Jalan Raja Chulan",Kota Kinabalu,Sabah,Malaysia,971207-15-9616,60114208437,Malaysian,Married,Employed,Graphic Designer,MYR 2000 - 4000
+Anand Lee,21/12/2000,Female,"No 152, Jalan Putra",Taiping,Perak,Malaysia,001221-06-7672,60175283744,Malaysian,Married,Unemployed,NA,NA
+Raj Yap,7/9/1970,Male,"No 182, Jalan Merdeka",Melaka City,Melaka,Malaysia,700907-01-3769,60194704228,Malaysian,Single,Employed,Data Analyst,MYR 4000 - 6000
+Raj Cheong,9/7/1987,Female,"No 82, Jalan Merdeka",Kota Kinabalu,Sabah,Malaysia,870709-01-7998,60129643697,Malaysian,Single,Student,College Intern,< MYR 1000
+Haziq Low,20/3/2005,Male,"No 158, Jalan Bukit Bintang",Skudai,Johor,Malaysia,050320-15-0321,60148729803,Malaysian,Married,Unemployed,NA,NA
+Adam Gan,24/2/1995,Male,"No 108, Jalan Setia Alam",Pasir Mas,Kelantan,Malaysia,950224-04-3801,60111239300,Malaysian,Single,Retired,NA,NA
+Irfan Lau,4/4/1981,Female,"No 74, Jalan Tun Razak",Nilai,Negeri Sembilan,Malaysia,810404-04-8660,60177731160,Malaysian,Single,Employed,Human Resource Executive,MYR 2000 - 4000
+Nur Mahmud,15/4/1998,Female,"No 169, Jalan Tun Razak",Petaling Jaya,Selangor,Malaysia,980415-03-7786,60145069393,Malaysian,Married,Employed,Clinic Assistant,MYR 1000 - 2000
+Kai Low,19/12/1992,Male,"No 1, Jalan Tun Razak",Taiping,Perak,Malaysia,921219-06-3859,60126157234,Malaysian,Single,Employed,Sales Executive,MYR 4000 - 6000
+Nisha Ng,17/9/1971,Female,"No 182, Jalan Ampang",Taiping,Perak,Malaysia,710917-05-1876,60135072263,Malaysian,Single,Employed,Administrative Assistant,MYR 8000 - 12000
+Jason Khoo,19/12/2000,Female,"No 62, Jalan Tun Razak",Nilai,Negeri Sembilan,Malaysia,001219-16-6022,60163800839,Malaysian,Married,Employed,Bank Teller,MYR 8000 - 12000
+Kelvin Abdullah,31/8/1994,Male,"No 162, Jalan Melati",Alor Gajah,Melaka,Malaysia,940831-15-3407,60135230703,Malaysian,Single,Unemployed,NA,NA
+Darren Chong,21/9/1979,Female,"No 93, Jalan Tun Razak",Kota Bharu,Kelantan,Malaysia,790921-11-4650,60115855640,Malaysian,Single,Self-Employed,Grab Driver,MYR 6000 - 8000
+Darren Subramaniam,1/6/1994,Female,"No 165, Jalan Merdeka",Dungun,Terengganu,Malaysia,940601-09-1438,60166870038,Malaysian,Single,Employed,Bank Teller,MYR 8000 - 12000
+Siti Foo,7/2/1979,Female,"No 151, Jalan Indah",Sibu,Sarawak,Malaysia,790207-14-9652,60152574524,Malaysian,Married,Employed,Account Executive,MYR 2000 - 4000
+Tan Ooi,21/12/1983,Male,"No 4, Jalan Kenanga",Port Dickson,Negeri Sembilan,Malaysia,831221-12-0381,60191637047,Malaysian,Married,Employed,IT Support Technician,MYR 8000 - 12000
+Jasmine Ooi,2/5/1992,Male,"No 72, Jalan Kenanga",Temerloh,Pahang,Malaysia,920502-15-5555,60138025696,Malaysian,Single,Employed,Account Executive,MYR 2000 - 4000
+Irfan Lee,16/9/1977,Female,"No 74, Jalan Merdeka",Kuala Terengganu,Terengganu,Malaysia,770916-05-1502,60127644173,Malaysian,Single,Employed,Clinic Assistant,MYR 2000 - 4000
+Alicia Lim,25/5/2001,Female,"No 155, Jalan Tun Razak",Setapak,Kuala Lumpur,Malaysia,010525-06-1454,60104601677,Malaysian,Married,Retired,NA,NA
+Anand Pillai,12/8/1983,Male,"No 99, Jalan Tun Razak",Kuala Terengganu,Terengganu,Malaysia,830812-14-5063,60182535836,Malaysian,Single,Employed,Graphic Designer,MYR 2000 - 4000
+Daniel Ismail,24/9/1991,Male,"No 127, Jalan Raja Chulan",Melaka City,Melaka,Malaysia,910924-07-1101,60199171743,Malaysian,Married,Employed,Data Analyst,MYR 8000 - 10000
+Jun Mahmud,16/7/1977,Male,"No 14, Jalan Raja Chulan",Johor Bahru,Johor,Malaysia,770716-01-5121,60188411009,Malaysian,Married,Employed,Bank Teller,MYR 8000 - 12000
+Kai Ong,4/7/1982,Male,"No 162, Jalan Anggerik",Setapak,Kuala Lumpur,Malaysia,820704-12-8743,60166383176,Malaysian,Single,Employed,Bank Teller,MYR 1000 - 2000
+Kai Mahmud,13/9/2002,Male,"No 143, Jalan Ampang",Kota Kinabalu,Sabah,Malaysia,020913-07-3213,60128155830,Malaysian,Married,Employed,Procurement Officer,MYR 2000 - 4000
+Kelvin Chan,24/5/2002,Male,"No 168, Jalan Raja Chulan",Seremban,Negeri Sembilan,Malaysia,020524-15-3799,60114834335,Malaysian,Single,Student,Part-Time Barista,< MYR 1000
+Zhen Lim,29/3/1979,Female,"No 170, Jalan Merdeka",Bukit Mertajam,Penang,Malaysia,790329-12-0898,60138702250,Malaysian,Single,Employed,Administrative Assistant,MYR 4000 - 6000
+Sarah Tay,25/6/1994,Male,"No 68, Jalan Ampang",Wangsa Maju,Kuala Lumpur,Malaysia,940625-06-7527,60189047640,Malaysian,Single,Employed,Account Executive,MYR 8000 - 12000
+Zhen Tan,16/11/2002,Male,"No 93, Jalan Indah",Tawau,Sabah,Malaysia,021116-01-2627,60164768885,Malaysian,Married,Employed,Operations Executive,MYR 6000 - 8000
+Sarah Goh,27/12/1990,Male,"No 97, Jalan Bandar",Ipoh,Perak,Malaysia,901227-15-2389,60172349463,Malaysian,Single,Student,University Student,MYR 1000 - 2000
+Mei Subramaniam,19/4/1996,Male,"No 184, Jalan Anggerik",Kuantan,Pahang,Malaysia,960419-05-3813,60179601377,Malaysian,Married,Unemployed,NA,NA
+Alicia Khoo,9/7/1998,Female,"No 30, Jalan Tun Razak",Alor Gajah,Melaka,Malaysia,980709-13-3394,60173242433,Malaysian,Single,Self-Employed,Baker,MYR 6000 - 8000
+Aisyah Yusof,5/8/1978,Female,"No 82, Jalan Klang Lama",Sungai Petani,Kedah,Malaysia,780805-15-7690,60136641078,Malaysian,Married,Employed,Bank Teller,MYR 6000 - 8000
+Lee Chua,21/7/1973,Male,"No 102, Jalan Cempaka",Kulim,Kedah,Malaysia,730721-01-1653,60117201489,Malaysian,Single,Self-Employed,Property Agent,MYR 8000 - 12000
+Ahmad Low,2/2/2004,Male,"No 187, Jalan Bukit Bintang",Miri,Sarawak,Malaysia,040202-11-8747,60109138037,Malaysian,Married,Employed,Retail Sales Assistant,MYR 1000 - 2000
+Brandon Yusof,23/8/2001,Male,"No 145, Jalan Ampang",Kajang,Selangor,Malaysia,010823-10-5645,60116805890,Malaysian,Single,Unemployed,NA,NA
+Kumar Menon,19/12/1986,Female,"No 107, Jalan Sultan Ismail",Wangsa Maju,Kuala Lumpur,Malaysia,861219-10-9780,60157856380,Malaysian,Single,Student,Retail Part-Time Assistant,< MYR 1000
+Devi Tay,14/10/2004,Female,"No 59, Jalan SS15",Kulim,Kedah,Malaysia,041014-07-3102,60121095310,Malaysian,Married,Employed,Project Coordinator,MYR 4000 - 6000
+Marcus Yusof,27/6/1984,Male,"No 95, Jalan Ampang",Sandakan,Sabah,Malaysia,840627-11-0171,60168065305,Malaysian,Married,Employed,Data Analyst,MYR 4000 - 6000
+Devi Chua,25/3/1991,Male,"No 172, Jalan Bandar",Kuching,Sarawak,Malaysia,910325-04-6779,60127023377,Malaysian,Married,Retired,NA,NA
+Jason Sim,21/6/1983,Male,"No 142, Jalan Indah",Wangsa Maju,Kuala Lumpur,Malaysia,830621-11-5205,60124535809,Malaysian,Single,Unemployed,NA,NA
+Farah Ibrahim,13/11/1972,Male,"No 122, Jalan Cempaka",Port Dickson,Negeri Sembilan,Malaysia,721113-10-5405,60126817098,Malaysian,Married,Unemployed,NA,NA
+Hafiz Singh,28/12/1970,Male,"No 180, Jalan Ampang",Kajang,Selangor,Malaysia,701228-02-6247,60143023913,Malaysian,Single,Student,Part-Time Barista,MYR 1000 - 2000
+Darren Singh,2/10/1999,Male,"No 169, Jalan Putra",Sungai Petani,Kedah,Malaysia,991002-05-9551,60116439401,Malaysian,Married,Self-Employed,Property Agent,MYR 6000 - 8000
+Fiona Ling,27/2/2001,Male,"No 84, Jalan Klang Lama",Shah Alam,Selangor,Malaysia,010227-02-5869,60128618260,Malaysian,Married,Employed,Marketing Executive,MYR 1000 - 2000
+Arjun Ibrahim,31/8/1992,Female,"No 157, Jalan Indah",Pasir Mas,Kelantan,Malaysia,920831-16-6712,60193387441,Malaysian,Single,Employed,Data Analyst,MYR 1000 - 2000
+Hafiz Ibrahim,1/3/1987,Male,"No 110, Jalan Cempaka",Kuching,Sarawak,Malaysia,870301-16-7915,60104233810,Malaysian,Married,Employed,Human Resource Executive,MYR 4000 - 6000
+Nur Yap,29/4/1993,Female,"No 34, Jalan Indah",Kulim,Kedah,Malaysia,930429-10-1430,60139067821,Malaysian,Single,Self-Employed,Baker,MYR 6000 - 8000
+Sarah Ng,9/4/1985,Male,"No 194, Jalan Bandar",Kota Bharu,Kelantan,Malaysia,850409-05-9873,60164744233,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 6000 - 8000
+Fiona Phang,14/4/1979,Female,"No 35, Jalan Anggerik",Kuala Terengganu,Terengganu,Malaysia,790414-08-2132,60142409614,Malaysian,Married,Employed,Human Resource Executive,MYR 8000 - 12000
+Jun Ibrahim,7/5/1995,Male,"No 28, Jalan Cempaka",Kuala Terengganu,Terengganu,Malaysia,950507-04-4413,60148636310,Malaysian,Married,Retired,NA,NA
+Nur Tan,27/4/1982,Male,"No 85, Jalan Merdeka",Kuala Lumpur,Kuala Lumpur,Malaysia,820427-16-4725,60152481276,Malaysian,Single,Employed,Sales Executive,MYR 1000 - 2000
+Ying Rahman,30/6/1972,Male,"No 126, Jalan Tun Razak",Sibu,Sarawak,Malaysia,720630-11-8601,60117275826,Malaysian,Single,Employed,Procurement Officer,MYR 4000 - 6000
+Lee Subramaniam,19/4/2003,Male,"No 183, Jalan Ampang",Johor Bahru,Johor,Malaysia,030419-10-5205,60166659194,Malaysian,Married,Unemployed,NA,NA
+Priya Yusof,24/10/1992,Female,"No 132, Jalan Indah",Alor Setar,Kedah,Malaysia,921024-08-1106,60146562305,Malaysian,Married,Employed,Network Technician,MYR 1000 - 2000
+Priya Ibrahim,17/12/1990,Female,"No 42, Jalan Merdeka",Kulim,Kedah,Malaysia,901217-01-6498,60191914988,Malaysian,Single,Employed,Administrative Assistant,MYR 8000 - 12000
+Kai Abdullah,18/7/1995,Male,"No 179, Jalan SS15",Bentong,Pahang,Malaysia,950718-14-8033,60184608105,Malaysian,Single,Employed,Graphic Designer,MYR 1000 - 2000
+Hafiz Lee,16/5/2001,Male,"No 157, Jalan Putra",Pasir Gudang,Johor,Malaysia,010516-03-3877,60194692711,Malaysian,Single,Employed,Retail Sales Assistant,MYR 1000 - 2000
+Siti Chan,10/11/2005,Male,"No 86, Jalan Melati",Kota Bharu,Kelantan,Malaysia,051110-06-3021,60107116707,Malaysian,Single,Student,Part-Time Barista,MYR 1000 - 2000
+Siti Goh,9/1/1990,Female,"No 1, Jalan Merdeka",Bukit Mertajam,Penang,Malaysia,900109-12-5004,60133264887,Malaysian,Married,Retired,NA,NA
+Devi Rahman,24/4/1976,Female,"No 76, Jalan Bandar",Nilai,Negeri Sembilan,Malaysia,760424-03-1686,60127973832,Malaysian,Single,Student,Retail Part-Time Assistant,< MYR 1000
+Alicia Phang,28/3/1994,Male,"No 177, Jalan SS15",Wangsa Maju,Kuala Lumpur,Malaysia,940328-01-4477,60177313560,Malaysian,Single,Employed,Data Analyst,MYR 8000 - 12000
+Jasmine Foo,3/3/2001,Female,"No 5, Jalan Ampang",Sandakan,Sabah,Malaysia,010303-09-1740,60143702901,Malaysian,Married,Employed,Procurement Officer,MYR 6000 - 8000
+Siti Phang,22/5/1994,Female,"No 21, Jalan Melati",Kuala Terengganu,Terengganu,Malaysia,940522-14-0424,60138527805,Malaysian,Married,Retired,NA,NA
+Jun Ismail,22/8/1999,Male,"No 11, Jalan Cempaka",Teluk Intan,Perak,Malaysia,990822-01-2443,60159789522,Malaysian,Married,Employed,Sales Executive,MYR 1000 - 2000
+Nisha Dass,30/4/1976,Male,"No 32, Jalan Tun Razak",Ayer Keroh,Melaka,Malaysia,760430-10-2163,60106622840,Malaysian,Married,Employed,Bank Teller,MYR 4000 - 6000
+Arjun Kaur,27/6/1995,Male,"No 83, Jalan Indah",Taiping,Perak,Malaysia,950627-16-4437,60119356603,Malaysian,Single,Student,College Intern,MYR 1000 - 2000
+Arjun Tay,8/5/1974,Male,"No 110, Jalan Bukit Bintang",Kulai,Johor,Malaysia,740508-02-3155,60171754266,Malaysian,Single,Employed,IT Support Technician,MYR 6000 - 8000
+Mei Sim,29/10/1983,Male,"No 77, Jalan Putra",Bentong,Pahang,Malaysia,831029-16-8209,60135291721,Malaysian,Single,Self-Employed,Online Seller,MYR 6000 - 8000
+Farah Hassan,16/12/2004,Male,"No 179, Jalan Merdeka",Sibu,Sarawak,Malaysia,041216-16-5033,60156572267,Malaysian,Single,Student,University Student,MYR 1000 - 2000
+Farah Kumar,9/2/1984,Male,"No 18, Jalan Tun Razak",Petaling Jaya,Selangor,Malaysia,840209-05-8171,60185313410,Malaysian,Married,Unemployed,NA,NA
+Sarah Rahman,15/7/1978,Male,"No 27, Jalan Bukit Bintang",Sandakan,Sabah,Malaysia,780715-16-0677,60158446254,Malaysian,Married,Unemployed,NA,NA
+Lim Kaur,6/5/1970,Male,"No 167, Jalan Anggerik",Alor Setar,Kedah,Malaysia,700506-02-0151,60193723890,Malaysian,Single,Student,University Student,< MYR 1000
+Priya Kaur,20/8/1990,Female,"No 126, Jalan Indah",Sandakan,Sabah,Malaysia,900820-06-9516,60124055807,Malaysian,Single,Unemployed,NA,NA
+Adam Singh,2/12/1986,Male,"No 124, Jalan Sultan Ismail",Dungun,Terengganu,Malaysia,861202-12-2707,60103562970,Malaysian,Married,Employed,Customer Service Officer,MYR 4000 - 6000
+Haziq Gan,1/11/1980,Male,"No 3, Jalan Kenanga",Melaka City,Melaka,Malaysia,801101-12-2795,60116621765,Malaysian,Married,Self-Employed,Freelance Graphic Designer,MYR 1000 - 2000
+Tan Sim,18/3/1970,Male,"No 15, Jalan SS15",Dungun,Terengganu,Malaysia,700318-05-3519,60194118717,Malaysian,Married,Unemployed,NA,NA
+Lim Goh,30/4/1972,Female,"No 82, Jalan Anggerik",Johor Bahru,Johor,Malaysia,720430-12-5076,60135008344,Malaysian,Single,Student,Retail Part-Time Assistant,MYR 1000 - 2000
+Ali Rahman,30/7/1994,Female,"No 57, Jalan Ampang",Johor Bahru,Johor,Malaysia,940730-12-0210,60116086271,Malaysian,Single,Employed,Administrative Assistant,MYR 2000 - 4000
+Farah Lim,29/12/2004,Male,"No 12, Jalan Anggerik",Taiping,Perak,Malaysia,041229-03-0345,60109894830,Malaysian,Married,Employed,Data Analyst,MYR 1000 - 2000
+Farah Goh,21/3/1976,Male,"No 65, Jalan Anggerik",George Town,Penang,Malaysia,760321-01-8681,60112861723,Malaysian,Married,Employed,Sales Executive,MYR 4000 - 6000
+Jasmine Chong,31/5/1973,Female,"No 61, Jalan Melati",Nilai,Negeri Sembilan,Malaysia,730531-07-5278,60132514377,Malaysian,Married,Employed,Retail Sales Assistant,MYR 8000 - 12000
+Lee Yusof,15/11/1991,Female,"No 67, Jalan Tun Razak",Kota Bharu,Kelantan,Malaysia,911115-06-1894,60189073964,Malaysian,Single,Unemployed,NA,NA
+Fiona Rahman,18/2/1985,Male,"No 111, Jalan Kenanga",Sandakan,Sabah,Malaysia,850218-03-0147,60128658266,Malaysian,Married,Unemployed,NA,NA
+Anand Yusof,15/7/1975,Female,"No 198, Jalan Putra",Tawau,Sabah,Malaysia,750715-11-2500,60171529931,Malaysian,Married,Unemployed,NA,NA
+Zul Cheong,9/1/1994,Female,"No 109, Jalan Setia Alam",Bayan Lepas,Penang,Malaysia,940109-12-2402,60187912306,Malaysian,Married,Employed,Sales Executive,MYR 1000 - 2000
+Sarah Hassan,21/4/1998,Male,"No 191, Jalan Klang Lama",Kulai,Johor,Malaysia,980421-12-6599,60139299185,Malaysian,Married,Employed,Logistics Coordinator,MYR 6000 - 8000
+Ahmad Subramaniam,25/5/1989,Male,"No 185, Jalan Klang Lama",Cheras,Kuala Lumpur,Malaysia,890525-08-0105,60147469740,Malaysian,Single,Student,Part-Time Barista,MYR 1000 - 2000
+Kelvin Ong,4/5/1974,Male,"No 95, Jalan Bandar",Kuching,Sarawak,Malaysia,740504-05-4331,60185119797,Malaysian,Single,Student,Part-Time Barista,< MYR 1000
+Amira Low,6/10/1974,Female,"No 197, Jalan Setia Alam",Ayer Keroh,Melaka,Malaysia,741006-16-2710,60139913439,Malaysian,Married,Self-Employed,E-commerce Entrepreneur,MYR 6000 - 8000
+Nisha Chong,8/11/1979,Male,"No 182, Jalan Anggerik",Johor Bahru,Johor,Malaysia,791108-08-0011,60111830997,Malaysian,Married,Employed,Restaurant Supervisor,MYR 6000 - 8000
+Anand Khoo,17/12/1985,Male,"No 47, Jalan Bukit Bintang",Teluk Intan,Perak,Malaysia,851217-12-3687,60156638990,Malaysian,Married,Employed,Account Executive,MYR 8000 - 12000
+Priya Chua,21/11/1992,Female,"No 138, Jalan Klang Lama",Miri,Sarawak,Malaysia,921121-13-2550,60181447869,Malaysian,Single,Employed,Marketing Executive,MYR 8000 - 12000
+Mei Chan,8/10/1999,Male,"No 48, Jalan Putra",Taiping,Perak,Malaysia,991008-16-5127,60199517772,Malaysian,Single,Employed,Project Coordinator,MYR 1000 - 2000
+Sarah Chan,31/10/1973,Male,"No 49, Jalan Tun Razak",Kota Kinabalu,Sabah,Malaysia,731031-11-2385,60181791543,Malaysian,Married,Self-Employed,E-commerce Entrepreneur,MYR 4000 - 6000
+Brandon Ibrahim,17/8/1970,Female,"No 200, Jalan Putra",Tawau,Sabah,Malaysia,700817-03-2676,60159738033,Malaysian,Married,Retired,NA,NA
+Ying Cheong,9/5/2005,Male,"No 143, Jalan Klang Lama",Kuantan,Pahang,Malaysia,050509-10-1223,60199496079,Malaysian,Single,Employed,IT Support Technician,MYR 4000 - 6000
+Lee Phang,14/3/1989,Male,"No 119, Jalan Setia Alam",Ipoh,Perak,Malaysia,890314-10-1843,60168431969,Malaysian,Single,Student,University Student,MYR 1000 - 2000
+Fiona Ibrahim,29/9/1979,Female,"No 37, Jalan Kenanga",Ayer Keroh,Melaka,Malaysia,790929-14-6380,60111121484,Malaysian,Single,Self-Employed,Content Creator,MYR 1000 - 2000
+Suresh Tay,12/5/1989,Male,"No 83, Jalan SS15",Shah Alam,Selangor,Malaysia,890512-13-0183,60141914485,Malaysian,Married,Self-Employed,Grab Driver,MYR 1000 - 2000
+Kelvin Ho,4/6/2004,Female,"No 70, Jalan Raja Chulan",Pasir Mas,Kelantan,Malaysia,040604-09-9536,60137813185,Malaysian,Single,Unemployed,NA,NA
+Mei Ibrahim,19/12/1978,Male,"No 162, Jalan Setia Alam",Klang,Selangor,Malaysia,781219-13-6443,60149566175,Malaysian,Single,Employed,Bank Teller,MYR 1000 - 2000
+Hafiz Dass,16/11/2000,Female,"No 93, Jalan SS15",Sandakan,Sabah,Malaysia,001116-16-1782,60181376723,Malaysian,Single,Unemployed,NA,NA
+Irfan Chong,25/1/1989,Female,"No 40, Jalan Tun Razak",Sibu,Sarawak,Malaysia,890125-13-0820,60147072397,Malaysian,Married,Employed,Procurement Officer,MYR 2000 - 4000
+Kelvin Lee,25/7/1998,Male,"No 192, Jalan Ampang",Kuala Lumpur,Kuala Lumpur,Malaysia,980725-16-9155,60119884997,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 4000 - 6000
+Siti Cheong,14/12/1982,Female,"No 143, Jalan Bukit Bintang",Dungun,Terengganu,Malaysia,821214-12-8360,60158941789,Malaysian,Single,Employed,Administrative Assistant,MYR 2000 - 4000
+Devi Ling,12/5/1974,Male,"No 90, Jalan Cempaka",Ipoh,Perak,Malaysia,740512-10-3745,60104969910,Malaysian,Married,Retired,NA,NA
+Lim Tay,22/3/1982,Female,"No 34, Jalan SS15",Pasir Mas,Kelantan,Malaysia,820322-13-1614,60194972847,Malaysian,Married,Retired,NA,NA
+Alicia Ng,2/1/1982,Female,"No 97, Jalan Putra",Sibu,Sarawak,Malaysia,820102-10-9234,60139549451,Malaysian,Married,Self-Employed,Content Creator,MYR 6000 - 8000
+Lee Dass,14/7/1979,Female,"No 41, Jalan Setia Alam",Nilai,Negeri Sembilan,Malaysia,790714-14-0796,60112712048,Malaysian,Married,Employed,Administrative Assistant,MYR 8000 - 12000
+Jasmine Sim,28/11/1976,Female,"No 160, Jalan Merdeka",Temerloh,Pahang,Malaysia,761128-14-7112,60176904917,Malaysian,Married,Employed,Software Developer,MYR 8000 - 12000
+Marcus Kaur,21/2/1980,Female,"No 42, Jalan Melati",Taiping,Perak,Malaysia,800221-09-2882,60194289255,Malaysian,Single,Employed,IT Support Technician,MYR 4000 - 6000
+Devi Ibrahim,4/6/1988,Male,"No 121, Jalan Ampang",Bentong,Pahang,Malaysia,880604-02-5663,60152163933,Malaysian,Married,Unemployed,NA,NA
+Nisha Sim,23/9/1992,Male,"No 193, Jalan Bandar",Johor Bahru,Johor,Malaysia,920923-13-4761,60119152575,Malaysian,Single,Retired,NA,NA
+Ahmad Kaur,3/2/1997,Female,"No 9, Jalan Melati",Miri,Sarawak,Malaysia,970203-09-4874,60117055651,Malaysian,Married,Employed,Clinic Assistant,MYR 1000 - 2000
+Lim Dass,13/9/1989,Female,"No 79, Jalan Ampang",Wangsa Maju,Kuala Lumpur,Malaysia,890913-11-1048,60179868536,Malaysian,Single,Employed,Administrative Assistant,MYR 2000 - 4000
+Brandon Teh,17/11/1970,Female,"No 41, Jalan Sultan Ismail",Shah Alam,Selangor,Malaysia,701117-05-5140,60124914662,Malaysian,Married,Employed,Restaurant Supervisor,MYR 6000 - 8000
+Kumar Ibrahim,10/7/1991,Male,"No 102, Jalan Merdeka",Wangsa Maju,Kuala Lumpur,Malaysia,910710-15-7107,60166847153,Malaysian,Single,Student,Retail Part-Time Assistant,< MYR 1000
+Ali Dass,29/11/1980,Female,"No 195, Jalan Kenanga",Kuching,Sarawak,Malaysia,801129-14-8570,60179872011,Malaysian,Married,Self-Employed,Makeup Artist,MYR 6000 - 8000
+Ying Ho,18/7/1983,Male,"No 27, Jalan Setia Alam",Temerloh,Pahang,Malaysia,830718-04-3323,60153318612,Malaysian,Single,Employed,Project Coordinator,MYR 2000 - 4000
+Marcus Ooi,27/4/1981,Male,"No 106, Jalan Raja Chulan",Sibu,Sarawak,Malaysia,810427-12-6851,60134588217,Malaysian,Single,Employed,Data Analyst,MYR 8000 - 12000
+Zul Ling,1/2/2005,Male,"No 27, Jalan Merdeka",Taiping,Perak,Malaysia,050201-10-9499,60175439467,Malaysian,Single,Employed,Bank Teller,MYR 1000 - 2000
+Darren Rahman,23/4/1986,Female,"No 153, Jalan Bukit Bintang",Temerloh,Pahang,Malaysia,860423-09-9946,60179145925,Malaysian,Married,Employed,Network Technician,MYR 2000 - 4000
+Jasmine Ho,3/3/1991,Male,"No 85, Jalan Tun Razak",Kuching,Sarawak,Malaysia,910303-04-7461,60145097929,Malaysian,Single,Employed,Graphic Designer,MYR 1000 - 2000
+Fiona Tay,20/2/1971,Female,"No 147, Jalan Bandar",Alor Gajah,Melaka,Malaysia,710220-14-5442,60172309500,Malaysian,Married,Self-Employed,Grab Driver,MYR 6000 - 8000
+Sarah Ibrahim,4/3/1985,Male,"No 197, Jalan Indah",Kota Bharu,Kelantan,Malaysia,850304-16-7775,60191113102,Malaysian,Married,Unemployed,NA,NA
+Jasmine Teh,15/2/2002,Female,"No 162, Jalan Ampang",Alor Gajah,Melaka,Malaysia,020215-07-9308,60152614030,Malaysian,Married,Retired,NA,NA
+Amira Tay,18/4/1982,Female,"No 67, Jalan Melati",Kota Bharu,Kelantan,Malaysia,820418-06-9270,60143364181,Malaysian,Single,Employed,Retail Sales Assistant,MYR 6000 - 8000
+Ali Abdullah,14/8/1979,Male,"No 153, Jalan Setia Alam",George Town,Penang,Malaysia,790814-15-3617,60101743584,Malaysian,Married,Unemployed,NA,NA
+Devi Lee,16/2/1981,Female,"No 75, Jalan Bandar",Kuala Terengganu,Terengganu,Malaysia,810216-11-3216,60194879342,Malaysian,Married,Employed,Logistics Coordinator,MYR 4000 - 6000
+Zul Sim,25/5/1972,Male,"No 78, Jalan Klang Lama",Sungai Petani,Kedah,Malaysia,720525-01-4925,60101404697,Malaysian,Single,Student,Retail Part-Time Assistant,< MYR 1000
+Hafiz Lim,27/4/1993,Male,"No 19, Jalan Merdeka",Skudai,Johor,Malaysia,930427-06-5865,60146587554,Malaysian,Married,Employed,Graphic Designer,MYR 1000 - 2000
+Farah Ho,24/12/1986,Female,"No 140, Jalan Klang Lama",Kota Bharu,Kelantan,Malaysia,861224-10-5854,60142347069,Malaysian,Married,Self-Employed,Car Workshop Owner,MYR 1000 - 2000
+Haziq Kaur,17/3/1971,Male,"No 47, Jalan Raja Chulan",Ipoh,Perak,Malaysia,710317-06-5433,60143448700,Malaysian,Single,Employed,Operations Executive,MYR 8000 - 12000
+Wei Chua,28/5/1973,Male,"No 22, Jalan Bukit Bintang",Ipoh,Perak,Malaysia,730528-09-7941,60142960681,Malaysian,Single,Employed,Sales Executive,MYR 6000 - 8000
+Nur Sim,14/2/1992,Female,"No 86, Jalan Setia Alam",Wangsa Maju,Kuala Lumpur,Malaysia,920214-13-7322,60128581002,Malaysian,Single,Employed,Bank Teller,MYR 2000 - 4000
+Arjun Ooi,8/4/1997,Male,"No 69, Jalan Setia Alam",Tawau,Sabah,Malaysia,970408-08-1013,60107002525,Malaysian,Single,Employed,Account Executive,MYR 4000 - 6000
+Zul Wong,1/12/1983,Male,"No 40, Jalan Putra",Ayer Keroh,Melaka,Malaysia,831201-04-5473,60183021547,Malaysian,Single,Self-Employed,Online Seller,MYR 4000 - 6000
+Irfan Dass,5/10/1991,Female,"No 114, Jalan Tun Razak",Bentong,Pahang,Malaysia,911005-11-9862,60162414751,Malaysian,Single,Retired,NA,NA
+Lee Abdullah,22/2/1994,Female,"No 136, Jalan Ampang",Bayan Lepas,Penang,Malaysia,940222-07-5532,60189465289,Malaysian,Married,Employed,Account Executive,MYR 8000 - 12000
+Kelvin Rahman,7/11/1999,Male,"No 121, Jalan Raja Chulan",Pasir Mas,Kelantan,Malaysia,991107-01-7717,60147124607,Malaysian,Single,Student,Part-Time Barista,MYR 1000 - 2000
+Kumar Ho,21/4/1996,Male,"No 115, Jalan SS15",Ayer Keroh,Melaka,Malaysia,960421-15-8105,60114011320,Malaysian,Single,Retired,NA,NA
+Siti Hassan,4/4/1982,Female,"No. 6, Jalan Sultan",Johor Bahru,Johor,Malaysia,730115-02-4028,60113539207,Malaysian,Single,Employed,HR Executive,MYR 3000 - 6000
+Aiman Zulkifli,23/2/1987,Female,"No. 129, Jalan Raja Laut",George Town,Penang,Malaysia,770625-02-9858,60123518240,Malaysian,Married,Retired,NA,NA
+Azlan Rashid,27/1/1995,Female,"No. 33, Jalan Raja Laut",Alor Setar,Kedah,Malaysia,820924-02-1178,60183045728,Malaysian,Married,Student,Promoter,MYR 900 - 1600
+Hafiz Harun,25/11/1988,Female,"No. 186, Jalan Ipoh",Kota Kinabalu,Sabah,Malaysia,791115-03-8068,60197700792,Malaysian,Single,Student,Promoter,MYR 900 - 1600
+Farhan Hamid,26/6/1989,Female,"No. 148, Jalan Pahang",Seremban,Negeri Sembilan,Malaysia,780217-13-3564,60128271456,Malaysian,Single,Retired,NA,NA
+Nabil Aziz,12/3/1997,Female,"No. 88, Jalan Merdeka",Johor Bahru,Johor,Malaysia,880724-11-7556,60145981586,Malaysian,Single,Retired,NA,NA
+Rizky Kamal,16/4/1986,Male,"No. 22, Jalan Ipoh",Petaling Jaya,Selangor,Malaysia,881210-13-8735,60185140858,Malaysian,Married,Student,Waiter/Waitress,MYR 800 - 1500
+Rizky Aziz,25/11/1981,Male,"No. 68, Jalan Tun Razak",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,910420-12-7913,60137098105,Malaysian,Married,Unemployed,NA,NA
+Siti Sulaiman,18/7/1980,Male,"No. 173, Jalan Gurney",Kuala Terengganu,Terengganu,Malaysia,851222-09-1709,60181153667,Malaysian,Single,Student,Retail Assistant,MYR 800 - 1500
+Izzat Basri,15/12/1990,Female,"No. 100, Jalan Ampang",Kota Kinabalu,Sabah,Malaysia,930714-07-5322,60124163224,Malaysian,Married,Student,Waiter/Waitress,MYR 800 - 1500
+Farhan Mahmud,23/1/1983,Female,"No. 32, Jalan Gurney",Johor Bahru,Johor,Malaysia,860326-01-8074,60161492525,Malaysian,Single,Employed,Sales Executive,MYR 2500 - 6500
+Izzat Mahmud,14/4/1997,Female,"No. 47, Jalan Merdeka",Petaling Jaya,Selangor,Malaysia,870815-11-9746,60195476276,Malaysian,Married,Self-Employed,Grab Driver,MYR 1500 - 4000
+Danial Zulkifli,6/5/1993,Female,"No. 24, Jalan Gurney",Melaka,Melaka,Malaysia,700303-07-2396,60134820497,Malaysian,Married,Unemployed,NA,NA
+Nabil Mahmud,24/7/1983,Male,"No. 75, Jalan Bukit Bintang",Kota Bharu,Kelantan,Malaysia,991201-14-9027,60181535511,Malaysian,Single,Unemployed,NA,NA
+Aiman Razak,4/9/1999,Female,"No. 79, Jalan Raja Laut",Kuching,Sarawak,Malaysia,890924-04-8900,60177705940,Malaysian,Married,Self-Employed,Online Seller,MYR 2000 - 8000
+Rizky Karim,26/8/1999,Female,"No. 9, Jalan Sultan",George Town,Penang,Malaysia,850119-11-9138,60193204712,Malaysian,Married,Retired,NA,NA
+Nur Ismail,26/9/1993,Female,"No. 84, Jalan Raja Laut",Johor Bahru,Johor,Malaysia,781222-03-3492,60118479461,Malaysian,Single,Student,Retail Assistant,MYR 800 - 1500
+Aqil Salleh,20/3/1983,Female,"No. 139, Jalan Ampang",George Town,Penang,Malaysia,890519-07-2298,60144382717,Malaysian,Married,Retired,NA,NA
+Afiq Jamal,4/3/1991,Male,"No. 102, Jalan Merdeka",Petaling Jaya,Selangor,Malaysia,760624-07-9351,60153717401,Malaysian,Single,Retired,NA,NA
+Aqil Yusof,18/7/1986,Female,"No. 195, Jalan Ampang",George Town,Penang,Malaysia,980113-10-8524,60127325997,Malaysian,Married,Retired,NA,NA
+Fatin Omar,9/3/1990,Male,"No. 4, Jalan Bukit Bintang",Klang,Selangor,Malaysia,940810-09-6935,60169133069,Malaysian,Married,Employed,Accountant,MYR 3000 - 7000
+Danial Harun,18/8/1996,Male,"No. 192, Jalan Gurney",Kota Kinabalu,Sabah,Malaysia,820418-09-7247,60112264815,Malaysian,Married,Employed,HR Executive,MYR 3000 - 6000
+Amir Jamal,28/12/1991,Female,"No. 55, Jalan Setia Alam",Ipoh,Perak,Malaysia,820302-07-2626,60188170464,Malaysian,Single,Retired,NA,NA
+Zul Karim,25/6/1980,Female,"No. 59, Jalan Pahang",Melaka,Melaka,Malaysia,810213-10-8782,60181548288,Malaysian,Single,Unemployed,NA,NA
+Farhan Sulaiman,24/11/1994,Male,"No. 188, Jalan Merdeka",Ipoh,Perak,Malaysia,920318-07-3915,60183758060,Malaysian,Single,Employed,Engineer,MYR 3500 - 8000
+Aiman Hamid,21/8/1998,Male,"No. 94, Jalan Merdeka",Ipoh,Perak,Malaysia,951123-04-9391,60189382029,Malaysian,Single,Retired,NA,NA
+Ahmad Basri,10/1/1989,Female,"No. 120, Jalan Tebrau",Johor Bahru,Johor,Malaysia,960905-04-1412,60193689431,Malaysian,Married,Student,Promoter,MYR 900 - 1600
+Syafiq Razak,23/10/1992,Female,"No. 116, Jalan Bukit Bintang",Miri,Sarawak,Malaysia,790328-01-4784,60125624092,Malaysian,Single,Self-Employed,Photographer,MYR 2000 - 5000
+Izzat Salleh,24/6/1997,Male,"No. 169, Jalan Merdeka",Miri,Sarawak,Malaysia,890104-11-9707,60196825064,Malaysian,Married,Unemployed,NA,NA
+Aqil Mahmud,12/12/1985,Male,"No. 144, Jalan Raja Laut",Alor Setar,Kedah,Malaysia,741102-09-8277,60133488949,Malaysian,Single,Retired,NA,NA
+Hafiz Razak,21/12/1985,Male,"No. 40, Jalan Merdeka",Alor Setar,Kedah,Malaysia,780228-02-5885,60187969921,Malaysian,Single,Employed,Teacher,MYR 2500 - 5000
+Hafiz Hassan,20/5/1999,Male,"No. 93, Jalan Ipoh",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,830604-16-9615,60156080968,Malaysian,Married,Unemployed,NA,NA
+Farhan Jamal,4/3/1993,Female,"No. 198, Jalan Pahang",Johor Bahru,Johor,Malaysia,871124-15-7548,60136082435,Malaysian,Married,Employed,Sales Executive,MYR 2500 - 6500
+Amir Kamal,19/3/1990,Female,"No. 156, Jalan Tebrau",Petaling Jaya,Selangor,Malaysia,930814-04-3316,60164406983,Malaysian,Married,Retired,NA,NA
+Aiman Rashid,1/7/1984,Male,"No. 187, Jalan Tun Razak",Kota Kinabalu,Sabah,Malaysia,710923-16-6305,60131324104,Malaysian,Single,Student,Waiter/Waitress,MYR 800 - 1500
+Syafiq Basri,1/3/1987,Male,"No. 150, Jalan Tun Razak",Klang,Selangor,Malaysia,731114-16-7267,60174871006,Malaysian,Single,Unemployed,NA,NA
+Afiq Yusof,6/5/1988,Female,"No. 65, Jalan Ipoh",Alor Setar,Kedah,Malaysia,960808-05-5520,60168663467,Malaysian,Single,Employed,Engineer,MYR 3500 - 8000
+Nur Sulaiman,22/3/1998,Female,"No. 190, Jalan Ipoh",Ipoh,Perak,Malaysia,980209-09-9632,60129786789,Malaysian,Married,Unemployed,NA,NA
+Aisyah Ismail,2/1/1998,Female,"No. 61, Jalan SS2",Melaka,Melaka,Malaysia,880609-14-5724,60124508537,Malaysian,Married,Student,Promoter,MYR 900 - 1600
+Aqil Rahman,20/7/1985,Male,"No. 16, Jalan SS2",Seremban,Negeri Sembilan,Malaysia,970201-05-6107,60116029843,Malaysian,Single,Employed,Accountant,MYR 3000 - 7000
+Nur Rahman,16/2/1985,Male,"No. 41, Jalan Ipoh",Ipoh,Perak,Malaysia,840525-04-3783,60118683536,Malaysian,Single,Employed,Engineer,MYR 3500 - 8000
+Muhammad Sulaiman,5/8/1988,Male,"No. 76, Jalan SS2",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,971018-01-2933,60176637243,Malaysian,Single,Self-Employed,Photographer,MYR 2000 - 5000
+Nur Omar,2/3/1984,Male,"No. 46, Jalan Tun Razak",Kota Kinabalu,Sabah,Malaysia,840423-09-8283,60154202365,Malaysian,Married,Self-Employed,Photographer,MYR 2000 - 5000
+Ahmad Harun,9/7/1989,Male,"No. 127, Jalan Raja Laut",Seremban,Negeri Sembilan,Malaysia,700419-14-4995,60124158691,Malaysian,Married,Employed,HR Executive,MYR 3000 - 6000
+Ahmad Karim,14/12/1996,Male,"No. 147, Jalan SS2",Kuching,Sarawak,Malaysia,960818-12-2999,60169352897,Malaysian,Single,Retired,NA,NA
+Azlan Aziz,22/8/1989,Male,"No. 114, Jalan Bukit Bintang",Miri,Sarawak,Malaysia,850418-12-5447,60143822386,Malaysian,Married,Employed,Bank Officer,MYR 3000 - 7000
+Muhammad Basri,3/8/1994,Male,"No. 106, Jalan SS2",Miri,Sarawak,Malaysia,981220-03-6803,60146952583,Malaysian,Single,Retired,NA,NA
+Hakimi Razak,18/9/1999,Male,"No. 72, Jalan Tun Razak",Kuching,Sarawak,Malaysia,930402-12-3053,60192869803,Malaysian,Married,Retired,NA,NA
+Aisyah Hassan,17/9/1994,Male,"No. 45, Jalan Ipoh",Melaka,Melaka,Malaysia,970523-08-9767,60145559317,Malaysian,Married,Unemployed,NA,NA
+Zul Yusof,8/3/1997,Male,"No. 5, Jalan SS2",Melaka,Melaka,Malaysia,800909-01-8315,60173638110,Malaysian,Single,Self-Employed,Photographer,MYR 2000 - 5000
+Ahmad Hassan,7/2/1992,Female,"No. 129, Jalan Sultan",Miri,Sarawak,Malaysia,831028-09-8952,60122184181,Malaysian,Married,Retired,NA,NA
+Aiman Mahmud,6/2/1982,Male,"No. 24, Jalan Merdeka",Shah Alam,Selangor,Malaysia,900111-03-5823,60153902482,Malaysian,Single,Unemployed,NA,NA
+Danial Omar,20/6/1988,Male,"No. 82, Jalan Sultan",Alor Setar,Kedah,Malaysia,840211-15-1123,60172805242,Malaysian,Single,Retired,NA,NA
+Zul Mahmud,20/7/1991,Male,"No. 17, Jalan Tun Razak",Johor Bahru,Johor,Malaysia,810323-11-3555,60186321204,Malaysian,Married,Unemployed,NA,NA
+Syafiq Salleh,18/3/1996,Female,"No. 138, Jalan Ipoh",Johor Bahru,Johor,Malaysia,741112-15-6852,60114619672,Malaysian,Single,Employed,Bank Officer,MYR 3000 - 7000
+Ahmad Razak,1/10/1999,Male,"No. 112, Jalan SS2",George Town,Penang,Malaysia,990801-12-1001,60169721268,Malaysian,Single,Unemployed,NA,NA
+Aqil Latif,8/6/1996,Female,"No. 84, Jalan Tebrau",Melaka,Melaka,Malaysia,851206-09-6262,60179308737,Malaysian,Single,Unemployed,NA,NA
+Nur Mahmud,4/2/1985,Female,"No. 200, Jalan Raja Laut",Petaling Jaya,Selangor,Malaysia,820927-09-7404,60127072015,Malaysian,Married,Unemployed,NA,NA
+Danial Mahmud,26/9/1980,Female,"No. 77, Jalan Ipoh",Miri,Sarawak,Malaysia,911216-13-2830,60177905461,Malaysian,Married,Unemployed,NA,NA
+Siti Ismail,4/7/1992,Male,"No. 171, Jalan Tebrau",Kota Bharu,Kelantan,Malaysia,870505-09-4581,60178818058,Malaysian,Single,Self-Employed,Online Seller,MYR 2000 - 8000
+Azlan Harun,13/3/1983,Female,"No. 84, Jalan Setia Alam",Klang,Selangor,Malaysia,740317-03-4888,60182065934,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Fatin Jamal,20/4/1993,Female,"No. 1, Jalan Ipoh",Ipoh,Perak,Malaysia,750808-15-1112,60184959164,Malaysian,Single,Employed,Bank Officer,MYR 3000 - 7000
+Aqil Harun,8/9/1987,Female,"No. 117, Jalan Raja Laut",Shah Alam,Selangor,Malaysia,710112-07-8558,60188230684,Malaysian,Single,Student,Waiter/Waitress,MYR 800 - 1500
+Nur Jamal,13/10/1992,Female,"No. 194, Jalan Bukit Bintang",Seremban,Negeri Sembilan,Malaysia,980711-16-7234,60132910673,Malaysian,Married,Self-Employed,Grab Driver,MYR 1500 - 4000
+Aiman Omar,18/3/1998,Female,"No. 15, Jalan Sultan",Kuching,Sarawak,Malaysia,910518-11-4752,60184197910,Malaysian,Married,Employed,Engineer,MYR 3500 - 8000
+Aiman Latif,27/9/1996,Male,"No. 144, Jalan Bukit Bintang",Seremban,Negeri Sembilan,Malaysia,770806-07-8691,60134671737,Malaysian,Married,Retired,NA,NA
+Zul Basri,10/9/1993,Female,"No. 124, Jalan Tebrau",Kota Bharu,Kelantan,Malaysia,970127-07-2678,60175189736,Malaysian,Married,Student,Part-time Barista,MYR 800 - 1500
+Aisyah Yusof,23/7/1986,Male,"No. 36, Jalan Pahang",Melaka,Melaka,Malaysia,830719-14-2561,60124911400,Malaysian,Married,Student,Waiter/Waitress,MYR 800 - 1500
+Amir Hassan,6/3/1993,Male,"No. 18, Jalan Ampang",Kuala Terengganu,Terengganu,Malaysia,750728-02-6259,60174682151,Malaysian,Single,Employed,Software Engineer,MYR 4000 - 9000
+Fatin Mahmud,21/12/1989,Female,"No. 97, Jalan Tebrau",Seremban,Negeri Sembilan,Malaysia,790915-10-3634,60115447608,Malaysian,Single,Retired,NA,NA
+Fatin Zulkifli,18/9/1985,Male,"No. 115, Jalan Setia Alam",Kuching,Sarawak,Malaysia,970708-13-7453,60171579907,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Azlan Rahman,1/11/1995,Female,"No. 62, Jalan Gurney",Melaka,Melaka,Malaysia,730626-01-1586,60117505400,Malaysian,Single,Self-Employed,Grab Driver,MYR 1500 - 4000
+Afiq Hamid,23/5/1984,Male,"No. 46, Jalan SS2",Kota Bharu,Kelantan,Malaysia,781028-10-4723,60153677684,Malaysian,Married,Employed,Bank Officer,MYR 3000 - 7000
+Aisyah Salleh,3/6/1983,Male,"No. 173, Jalan Bukit Bintang",Kota Bharu,Kelantan,Malaysia,760621-06-6199,60148933666,Malaysian,Single,Unemployed,NA,NA
+Hakimi Basri,23/8/1985,Male,"No. 60, Jalan Pahang",Klang,Selangor,Malaysia,970126-16-8551,60181224704,Malaysian,Single,Student,Waiter/Waitress,MYR 800 - 1500
+Rizky Harun,9/1/1983,Male,"No. 61, Jalan Ampang",Kuala Terengganu,Terengganu,Malaysia,960520-15-8449,60142776394,Malaysian,Single,Self-Employed,Online Seller,MYR 2000 - 8000
+Aiman Yusof,17/6/1980,Female,"No. 151, Jalan Merdeka",Kota Kinabalu,Sabah,Malaysia,940221-05-9752,60179505327,Malaysian,Married,Retired,NA,NA
+Hafiz Fauzi,3/11/1983,Male,"No. 104, Jalan Tebrau",Kota Kinabalu,Sabah,Malaysia,980427-12-7645,60187249443,Malaysian,Single,Retired,NA,NA
+Farhan Zulkifli,17/2/1985,Female,"No. 138, Jalan Pahang",Alor Setar,Kedah,Malaysia,921205-14-6638,60166411759,Malaysian,Married,Student,Part-time Barista,MYR 800 - 1500
+Danial Sulaiman,5/7/1986,Male,"No. 72, Jalan Setia Alam",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,950813-04-7819,60167422816,Malaysian,Single,Employed,Sales Executive,MYR 2500 - 6500
+Hafiz Rahman,21/12/1995,Female,"No. 118, Jalan Merdeka",Kuching,Sarawak,Malaysia,990221-03-4090,60146506025,Malaysian,Married,Employed,Engineer,MYR 3500 - 8000
+Muhammad Kamal,28/3/1991,Male,"No. 84, Jalan Pahang",George Town,Penang,Malaysia,701227-02-2443,60179992117,Malaysian,Single,Employed,Bank Officer,MYR 3000 - 7000
+Aqil Kamal,6/1/1980,Male,"No. 169, Jalan Tun Razak",Johor Bahru,Johor,Malaysia,960715-16-7853,60159554414,Malaysian,Married,Retired,NA,NA
+Zul Rashid,5/4/1984,Female,"No. 81, Jalan Gurney",Johor Bahru,Johor,Malaysia,810925-11-1278,60194160172,Malaysian,Single,Unemployed,NA,NA
+Aqil Hamid,17/10/1997,Female,"No. 138, Jalan Ampang",Kuala Terengganu,Terengganu,Malaysia,840710-10-1472,60115022038,Malaysian,Single,Employed,Sales Executive,MYR 2500 - 6500
+Amir Latif,6/1/1995,Female,"No. 80, Jalan Tun Razak",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,960422-14-4188,60132320530,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Farhan Basri,17/9/1994,Female,"No. 122, Jalan Sultan",Johor Bahru,Johor,Malaysia,940808-13-8620,60174382266,Malaysian,Single,Retired,NA,NA
+Farhan Razak,6/1/1983,Male,"No. 198, Jalan SS2",Klang,Selangor,Malaysia,781218-04-4215,60113568611,Malaysian,Married,Retired,NA,NA
+Farhan Rahman,20/8/1991,Female,"No. 165, Jalan Tun Razak",Kuala Terengganu,Terengganu,Malaysia,900111-02-6706,60125136525,Malaysian,Single,Unemployed,NA,NA
+Fatin Basri,21/8/1980,Female,"No. 19, Jalan Pahang",Alor Setar,Kedah,Malaysia,760322-08-8022,60137068723,Malaysian,Single,Student,Promoter,MYR 900 - 1600
+Hafiz Omar,24/1/1993,Male,"No. 40, Jalan Bukit Bintang",Klang,Selangor,Malaysia,870612-16-5919,60143429357,Malaysian,Married,Self-Employed,Online Seller,MYR 2000 - 8000
+Fatin Fauzi,18/12/1985,Male,"No. 74, Jalan Merdeka",Kuching,Sarawak,Malaysia,850917-07-9621,60153092967,Malaysian,Married,Unemployed,NA,NA
+Danial Karim,11/7/1995,Female,"No. 45, Jalan Pahang",Melaka,Melaka,Malaysia,811023-01-6246,60175924168,Malaysian,Married,Student,Part-time Barista,MYR 800 - 1500
+Zul Salleh,11/11/1995,Male,"No. 40, Jalan Ampang",Klang,Selangor,Malaysia,840905-12-7817,60146748658,Malaysian,Single,Student,Retail Assistant,MYR 800 - 1500
+Hafiz Sulaiman,20/7/1983,Male,"No. 5, Jalan Tebrau",George Town,Penang,Malaysia,950219-16-1049,60174222439,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Syafiq Zulkifli,2/6/1993,Female,"No. 91, Jalan SS2",Klang,Selangor,Malaysia,760706-02-5522,60144928081,Malaysian,Married,Employed,Bank Officer,MYR 3000 - 7000
+Afiq Fauzi,13/7/1988,Male,"No. 179, Jalan SS2",Melaka,Melaka,Malaysia,840228-05-9437,60111858850,Malaysian,Married,Retired,NA,NA
+Nur Aziz,14/1/1990,Male,"No. 23, Jalan Pahang",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,840113-14-6849,60184243016,Malaysian,Single,Student,Waiter/Waitress,MYR 800 - 1500
+Syafiq Hamid,17/3/1993,Male,"No. 131, Jalan Merdeka",Miri,Sarawak,Malaysia,990417-05-8655,60124446552,Malaysian,Married,Employed,Accountant,MYR 3000 - 7000
+Nur Zulkifli,27/2/1994,Female,"No. 23, Jalan Pahang",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,841104-10-1958,60199228857,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Aqil Hassan,12/6/1997,Female,"No. 28, Jalan Tebrau",Melaka,Melaka,Malaysia,741013-09-6288,60144359936,Malaysian,Married,Student,Promoter,MYR 900 - 1600
+Afiq Karim,17/2/1983,Male,"No. 105, Jalan Tebrau",Kuching,Sarawak,Malaysia,861008-12-5015,60143554228,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Nur Basri,7/2/1989,Female,"No. 97, Jalan Setia Alam",Melaka,Melaka,Malaysia,930320-05-4390,60142549398,Malaysian,Single,Unemployed,NA,NA
+Ahmad Ismail,8/3/1980,Female,"No. 96, Jalan Merdeka",Johor Bahru,Johor,Malaysia,710111-07-7256,60166886652,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Siti Omar,18/8/1985,Female,"No. 38, Jalan Ampang",Seremban,Negeri Sembilan,Malaysia,970913-11-5932,60192455660,Malaysian,Married,Self-Employed,Freelance Designer,MYR 2500 - 7000
+Zul Sulaiman,3/5/1984,Male,"No. 42, Jalan Setia Alam",Kuching,Sarawak,Malaysia,851103-12-8021,60131770361,Malaysian,Single,Student,Retail Assistant,MYR 800 - 1500
+Ahmad Jamal,25/4/1988,Female,"No. 91, Jalan Bukit Bintang",Melaka,Melaka,Malaysia,960813-15-7888,60175626315,Malaysian,Married,Unemployed,NA,NA
+Danial Ismail,24/9/1998,Female,"No. 63, Jalan Ampang",Kota Kinabalu,Sabah,Malaysia,860607-03-5386,60168229149,Malaysian,Single,Self-Employed,Freelance Designer,MYR 2500 - 7000
+Azlan Fauzi,22/9/1998,Male,"No. 41, Jalan Setia Alam",Petaling Jaya,Selangor,Malaysia,950610-12-8389,60144705596,Malaysian,Married,Student,Promoter,MYR 900 - 1600
+Rizky Basri,25/5/1988,Male,"No. 151, Jalan Bukit Bintang",Alor Setar,Kedah,Malaysia,871025-16-6357,60136980084,Malaysian,Married,Employed,Software Engineer,MYR 4000 - 9000
+Izzat Yusof,17/3/1990,Male,"No. 200, Jalan Ipoh",Kota Bharu,Kelantan,Malaysia,730218-02-1717,60156203582,Malaysian,Single,Student,Part-time Barista,MYR 800 - 1500
+Fatin Kamal,26/5/1987,Male,"No. 116, Jalan Tun Razak",Shah Alam,Selangor,Malaysia,750104-06-1387,60144265427,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Syafiq Latif,4/3/1996,Male,"No. 121, Jalan Bukit Bintang",Miri,Sarawak,Malaysia,790117-11-5781,60123397786,Malaysian,Single,Employed,Sales Executive,MYR 2500 - 6500
+Izzat Omar,27/12/1984,Male,"No. 17, Jalan Merdeka",Petaling Jaya,Selangor,Malaysia,871011-11-8429,60118398326,Malaysian,Single,Employed,Sales Executive,MYR 2500 - 6500
+Izzat Kamal,19/9/1995,Female,"No. 100, Jalan Bukit Bintang",Alor Setar,Kedah,Malaysia,720802-01-5138,60111916297,Malaysian,Married,Unemployed,NA,NA
+Fatin Hamid,7/9/1987,Male,"No. 169, Jalan Tebrau",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,780911-01-4497,60179155594,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Nabil Harun,15/1/1987,Male,"No. 83, Jalan SS2",Alor Setar,Kedah,Malaysia,800213-06-8365,60189980123,Malaysian,Single,Retired,NA,NA
+Muhammad Yusof,20/3/1986,Male,"No. 178, Jalan Pahang",Petaling Jaya,Selangor,Malaysia,760419-03-7235,60176666188,Malaysian,Single,Unemployed,NA,NA
+Amir Mahmud,21/1/1992,Male,"No. 102, Jalan Sultan",Melaka,Melaka,Malaysia,760901-15-5489,60186166051,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Nabil Sulaiman,24/10/1998,Female,"No. 98, Jalan Bukit Bintang",Miri,Sarawak,Malaysia,730409-12-4104,60128742507,Malaysian,Married,Employed,Teacher,MYR 2500 - 5000
+Izzat Latif,28/5/1990,Female,"No. 113, Jalan Ipoh",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,961027-06-6304,60159592534,Malaysian,Single,Student,Waiter/Waitress,MYR 800 - 1500
+Ahmad Kamal,21/11/1984,Male,"No. 3, Jalan Ipoh",Kota Bharu,Kelantan,Malaysia,910118-11-2627,60124648471,Malaysian,Married,Unemployed,NA,NA
+Aisyah Jamal,16/10/1982,Male,"No. 126, Jalan Setia Alam",Kuala Terengganu,Terengganu,Malaysia,870516-09-7511,60193519548,Malaysian,Single,Retired,NA,NA
+Nur Harun,11/2/1997,Female,"No. 125, Jalan Tun Razak",Ipoh,Perak,Malaysia,811223-10-8094,60111625428,Malaysian,Married,Self-Employed,Online Seller,MYR 2000 - 8000
+Nur Kamal,18/9/1990,Male,"No. 50, Jalan Bukit Bintang",George Town,Penang,Malaysia,830504-10-3131,60136521905,Malaysian,Married,Unemployed,NA,NA
+Izzat Rashid,21/9/1988,Male,"No. 79, Jalan Sultan",Seremban,Negeri Sembilan,Malaysia,750313-02-6095,60175308101,Malaysian,Single,Self-Employed,Online Seller,MYR 2000 - 8000
+Nur Salleh,28/11/1988,Female,"No. 11, Jalan Ampang",Melaka,Melaka,Malaysia,871002-01-7570,60162785371,Malaysian,Married,Employed,Software Engineer,MYR 4000 - 9000
+Ahmad Yusof,27/8/1984,Female,"No. 18, Jalan Ipoh",Kota Kinabalu,Sabah,Malaysia,950527-15-3696,60141311535,Malaysian,Married,Employed,Engineer,MYR 3500 - 8000
+Amir Harun,7/6/1991,Male,"No. 129, Jalan Tun Razak",Melaka,Melaka,Malaysia,740902-04-7947,60172301334,Malaysian,Married,Retired,NA,NA
+Hafiz Jamal,28/3/1982,Female,"No. 9, Jalan Setia Alam",Kota Bharu,Kelantan,Malaysia,781124-14-3640,60143054302,Malaysian,Married,Student,Waiter/Waitress,MYR 800 - 1500
+Hafiz Aziz,13/6/1993,Female,"No. 110, Jalan Setia Alam",George Town,Penang,Malaysia,750907-01-5528,60133375086,Malaysian,Married,Unemployed,NA,NA
+Nabil Latif,1/6/1988,Male,"No. 144, Jalan Bukit Bintang",Shah Alam,Selangor,Malaysia,710109-11-4893,60175762745,Malaysian,Single,Self-Employed,Online Seller,MYR 2000 - 8000
+Muhammad Fauzi,18/2/1998,Male,"No. 76, Jalan SS2",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,760513-08-9123,60118579947,Malaysian,Single,Self-Employed,Online Seller,MYR 2000 - 8000
+Amir Yusof,19/6/1997,Male,"No. 68, Jalan Setia Alam",Ipoh,Perak,Malaysia,890815-11-7095,60197835552,Malaysian,Single,Employed,Teacher,MYR 2500 - 5000
+Danial Latif,13/7/1982,Male,"No. 2, Jalan Raja Laut",Shah Alam,Selangor,Malaysia,970604-01-3533,60118893917,Malaysian,Single,Self-Employed,Online Seller,MYR 2000 - 8000
+Siti Yusof,1/6/1989,Male,"No. 115, Jalan Raja Laut",Johor Bahru,Johor,Malaysia,931202-07-9201,60137415033,Malaysian,Single,Retired,NA,NA
+Muhammad Mahmud,2/9/1985,Female,"No. 54, Jalan Tun Razak",George Town,Penang,Malaysia,891022-07-9794,60167492387,Malaysian,Single,Employed,Marketing Executive,MYR 2500 - 6000
+Azlan Hassan,7/1/1996,Female,"No. 79, Jalan SS2",Seremban,Negeri Sembilan,Malaysia,711126-04-7104,60199093914,Malaysian,Married,Employed,Marketing Executive,MYR 2500 - 6000
+Fatin Sulaiman,3/10/1981,Male,"No. 198, Jalan Raja Laut",Melaka,Melaka,Malaysia,971115-07-2463,60134797584,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Syafiq Rashid,19/3/1981,Male,"No. 141, Jalan Tun Razak",Melaka,Melaka,Malaysia,970915-03-4273,60154172082,Malaysian,Married,Student,Part-time Barista,MYR 800 - 1500
+Aqil Aziz,9/1/1990,Male,"No. 47, Jalan Sultan",Kuching,Sarawak,Malaysia,831116-06-3183,60155399615,Malaysian,Single,Unemployed,NA,NA
+Izzat Aziz,3/9/1983,Male,"No. 36, Jalan Ipoh",Miri,Sarawak,Malaysia,870102-04-6599,60111762503,Malaysian,Married,Retired,NA,NA
+Aqil Ismail,9/3/1991,Female,"No. 4, Jalan Merdeka",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,700117-03-6174,60174861651,Malaysian,Single,Retired,NA,NA
+Zul Razak,1/10/1992,Male,"No. 97, Jalan Sultan",Ipoh,Perak,Malaysia,730603-14-3925,60167902854,Malaysian,Single,Student,Waiter/Waitress,MYR 800 - 1500
+Danial Jamal,6/5/1997,Female,"No. 177, Jalan Bukit Bintang",Petaling Jaya,Selangor,Malaysia,750823-05-1746,60166108951,Malaysian,Single,Unemployed,NA,NA
+Aiman Sulaiman,10/7/1984,Female,"No. 80, Jalan Gurney",Miri,Sarawak,Malaysia,930425-14-4104,60196941728,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Fatin Latif,12/5/1990,Male,"No. 93, Jalan Ipoh",Kota Kinabalu,Sabah,Malaysia,961215-03-3495,60121068695,Malaysian,Married,Retired,NA,NA
+Nabil Rashid,18/11/1998,Female,"No. 56, Jalan Gurney",Miri,Sarawak,Malaysia,790410-16-3386,60198094503,Malaysian,Single,Unemployed,NA,NA
+Siti Basri,23/6/1987,Male,"No. 128, Jalan Raja Laut",Klang,Selangor,Malaysia,830401-03-6347,60146963688,Malaysian,Married,Employed,Teacher,MYR 2500 - 5000
+Izzat Zulkifli,7/12/1991,Male,"No. 32, Jalan Tun Razak",Miri,Sarawak,Malaysia,720501-13-8727,60123022813,Malaysian,Single,Unemployed,NA,NA
+Amir Razak,5/11/1982,Male,"No. 37, Jalan Setia Alam",Kota Bharu,Kelantan,Malaysia,850917-09-1843,60117335029,Malaysian,Married,Self-Employed,Grab Driver,MYR 1500 - 4000
+Ahmad Sulaiman,16/4/1983,Male,"No. 71, Jalan Setia Alam",Miri,Sarawak,Malaysia,890119-10-3157,60153997856,Malaysian,Married,Employed,Software Engineer,MYR 4000 - 9000
+Azlan Ismail,8/5/1987,Male,"No. 51, Jalan Bukit Bintang",Kuching,Sarawak,Malaysia,941219-11-7439,60189152044,Malaysian,Single,Employed,Teacher,MYR 2500 - 5000
+Afiq Zulkifli,26/9/1988,Female,"No. 71, Jalan Setia Alam",Melaka,Melaka,Malaysia,981003-11-9418,60116023981,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Fatin Harun,28/3/1993,Female,"No. 77, Jalan Tun Razak",Shah Alam,Selangor,Malaysia,820516-15-3432,60114995902,Malaysian,Single,Employed,Bank Officer,MYR 3000 - 7000
+Muhammad Razak,5/7/1988,Male,"No. 126, Jalan Ipoh",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,860528-02-8309,60186045671,Malaysian,Married,Employed,Engineer,MYR 3500 - 8000
+Fatin Rashid,19/2/1982,Male,"No. 78, Jalan Ipoh",Seremban,Negeri Sembilan,Malaysia,871118-14-2213,60134188423,Malaysian,Married,Employed,Sales Executive,MYR 2500 - 6500
+Muhammad Rahman,16/2/1991,Female,"No. 134, Jalan Bukit Bintang",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,790616-04-2164,60126135247,Malaysian,Married,Retired,NA,NA
+Zul Rahman,10/3/1985,Female,"No. 12, Jalan Gurney",George Town,Penang,Malaysia,700110-14-1336,60122599243,Malaysian,Single,Self-Employed,Online Seller,MYR 2000 - 8000
+Izzat Karim,5/10/1996,Male,"No. 140, Jalan Sultan",Petaling Jaya,Selangor,Malaysia,870711-04-8659,60157686391,Malaysian,Married,Student,Promoter,MYR 900 - 1600
+Aqil Karim,26/9/1996,Male,"No. 150, Jalan Ampang",Alor Setar,Kedah,Malaysia,781008-03-5321,60124077138,Malaysian,Single,Unemployed,NA,NA
+Afiq Kamal,17/2/1981,Female,"No. 194, Jalan Sultan",Petaling Jaya,Selangor,Malaysia,800212-13-7764,60174048873,Malaysian,Single,Student,Part-time Barista,MYR 800 - 1500
+Syafiq Hassan,3/9/1990,Male,"No. 132, Jalan Ipoh",Petaling Jaya,Selangor,Malaysia,760607-06-4589,60178762402,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Siti Rahman,20/5/1992,Male,"No. 96, Jalan Tebrau",Miri,Sarawak,Malaysia,740307-09-7043,60166023717,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Fatin Hassan,1/4/1991,Male,"No. 110, Jalan Ampang",Shah Alam,Selangor,Malaysia,830817-08-3543,60126579477,Malaysian,Married,Employed,Sales Executive,MYR 2500 - 6500
+Nur Rashid,26/6/1989,Male,"No. 163, Jalan Bukit Bintang",George Town,Penang,Malaysia,820106-01-1395,60197249965,Malaysian,Married,Retired,NA,NA
+Amir Hamid,18/7/1994,Male,"No. 161, Jalan SS2",Kuching,Sarawak,Malaysia,830228-16-9481,60144442624,Malaysian,Single,Employed,Teacher,MYR 2500 - 5000
+Hakimi Karim,19/9/1991,Female,"No. 43, Jalan Tebrau",Alor Setar,Kedah,Malaysia,700124-16-7434,60135854425,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Aqil Zulkifli,26/12/1997,Female,"No. 74, Jalan Merdeka",Petaling Jaya,Selangor,Malaysia,700811-12-1018,60158488862,Malaysian,Married,Retired,NA,NA
+Aisyah Omar,19/7/1985,Female,"No. 93, Jalan Ampang",Kuching,Sarawak,Malaysia,901209-15-3152,60187707480,Malaysian,Single,Employed,Sales Executive,MYR 2500 - 6500
+Aiman Fauzi,3/3/1995,Male,"No. 89, Jalan Ampang",Kuala Terengganu,Terengganu,Malaysia,900814-02-4915,60137013021,Malaysian,Married,Student,Part-time Barista,MYR 800 - 1500
+Nabil Zulkifli,16/1/1980,Male,"No. 101, Jalan Pahang",Ipoh,Perak,Malaysia,981025-06-4443,60186015155,Malaysian,Single,Employed,Teacher,MYR 2500 - 5000
+Izzat Hamid,6/12/1981,Male,"No. 155, Jalan Tebrau",Kuala Terengganu,Terengganu,Malaysia,731227-01-5821,60143380259,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Aisyah Rashid,6/4/1982,Female,"No. 169, Jalan Raja Laut",Petaling Jaya,Selangor,Malaysia,890207-06-4714,60124762833,Malaysian,Single,Employed,Accountant,MYR 3000 - 7000
+Izzat Sulaiman,17/1/1999,Male,"No. 58, Jalan Bukit Bintang",Kota Kinabalu,Sabah,Malaysia,790108-11-2301,60119632464,Malaysian,Married,Unemployed,NA,NA
+Aqil Jamal,7/6/1987,Female,"No. 101, Jalan Merdeka",Johor Bahru,Johor,Malaysia,930704-06-3426,60182374597,Malaysian,Single,Student,Waiter/Waitress,MYR 800 - 1500
+Rizky Salleh,18/11/1996,Female,"No. 132, Jalan Tebrau",Shah Alam,Selangor,Malaysia,971223-11-4966,60181594456,Malaysian,Single,Employed,Accountant,MYR 3000 - 7000
+Ahmad Zulkifli,12/7/1991,Male,"No. 53, Jalan Raja Laut",Kuching,Sarawak,Malaysia,740527-04-2623,60119677153,Malaysian,Single,Unemployed,NA,NA
+Muhammad Rashid,8/10/1990,Male,"No. 139, Jalan Tebrau",Melaka,Melaka,Malaysia,800618-09-1313,60115077287,Malaysian,Married,Self-Employed,Online Seller,MYR 2000 - 8000
+Nur Latif,4/1/1999,Male,"No. 194, Jalan Gurney",Klang,Selangor,Malaysia,920206-05-3575,60196796573,Malaysian,Single,Self-Employed,Freelance Designer,MYR 2500 - 7000
+Aqil Rashid,5/6/1984,Female,"No. 115, Jalan Merdeka",Petaling Jaya,Selangor,Malaysia,710912-09-4632,60149766028,Malaysian,Single,Retired,NA,NA
+Aqil Razak,7/7/1997,Female,"No. 73, Jalan Gurney",Klang,Selangor,Malaysia,800812-16-9120,60132917452,Malaysian,Married,Unemployed,NA,NA
+Fatin Razak,9/10/1997,Male,"No. 71, Jalan Ipoh",Petaling Jaya,Selangor,Malaysia,880102-06-9781,60155984912,Malaysian,Married,Unemployed,NA,NA
+Farhan Salleh,21/2/1989,Female,"No. 52, Jalan Setia Alam",Petaling Jaya,Selangor,Malaysia,921118-05-7480,60114194538,Malaysian,Single,Retired,NA,NA
+Aisyah Basri,13/12/1990,Male,"No. 104, Jalan Ampang",Melaka,Melaka,Malaysia,981223-01-8947,60166181017,Malaysian,Single,Retired,NA,NA
+Syafiq Rahman,8/12/1999,Female,"No. 134, Jalan Tun Razak",Kota Bharu,Kelantan,Malaysia,780302-07-6034,60152387586,Malaysian,Single,Self-Employed,Freelance Designer,MYR 2500 - 7000
+Rizky Zulkifli,9/4/1992,Female,"No. 104, Jalan Gurney",Kuching,Sarawak,Malaysia,930711-16-9024,60135580428,Malaysian,Married,Employed,Bank Officer,MYR 3000 - 7000
+Nabil Hamid,28/7/1994,Male,"No. 141, Jalan Tun Razak",George Town,Penang,Malaysia,970211-02-2553,60195043796,Malaysian,Married,Employed,Sales Executive,MYR 2500 - 6500
+Danial Hamid,14/11/1997,Male,"No. 23, Jalan Raja Laut",Seremban,Negeri Sembilan,Malaysia,980718-02-4255,60124992587,Malaysian,Single,Employed,Engineer,MYR 3500 - 8000
+Nur Yusof,20/5/1986,Female,"No. 78, Jalan SS2",Johor Bahru,Johor,Malaysia,780316-10-8120,60173189427,Malaysian,Single,Self-Employed,Freelance Designer,MYR 2500 - 7000
+Hakimi Ismail,14/6/1989,Male,"No. 197, Jalan SS2",Klang,Selangor,Malaysia,960811-05-6139,60154460087,Malaysian,Married,Student,Part-time Barista,MYR 800 - 1500
+Fatin Rahman,17/6/1983,Female,"No. 180, Jalan SS2",Klang,Selangor,Malaysia,700719-14-2714,60179335216,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Izzat Hassan,13/11/1987,Male,"No. 126, Jalan Raja Laut",Melaka,Melaka,Malaysia,700910-01-1689,60186389047,Malaysian,Married,Student,Part-time Barista,MYR 800 - 1500
+Ahmad Fauzi,10/7/1988,Male,"No. 33, Jalan Merdeka",Melaka,Melaka,Malaysia,790713-02-3635,60138233264,Malaysian,Single,Student,Part-time Barista,MYR 800 - 1500
+Amir Ismail,27/5/1989,Male,"No. 116, Jalan Tebrau",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,990627-06-1583,60177345204,Malaysian,Married,Self-Employed,Grab Driver,MYR 1500 - 4000
+Syafiq Ismail,11/1/1981,Female,"No. 180, Jalan Setia Alam",Miri,Sarawak,Malaysia,710101-01-5708,60116438540,Malaysian,Married,Student,Part-time Barista,MYR 800 - 1500
+Zul Ismail,22/7/1995,Male,"No. 10, Jalan Bukit Bintang",Kota Kinabalu,Sabah,Malaysia,870206-02-3669,60156004075,Malaysian,Married,Employed,Bank Officer,MYR 3000 - 7000
+Zul Latif,28/1/1991,Female,"No. 72, Jalan Pahang",Ipoh,Perak,Malaysia,980518-01-5318,60172015797,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Farhan Ismail,26/5/1999,Male,"No. 103, Jalan Sultan",Alor Setar,Kedah,Malaysia,960621-01-8835,60176851197,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Aiman Ismail,26/7/1996,Male,"No. 177, Jalan Ampang",Kuching,Sarawak,Malaysia,861012-15-7921,60133341933,Malaysian,Married,Self-Employed,Grab Driver,MYR 1500 - 4000
+Aqil Basri,17/11/1981,Male,"No. 88, Jalan Bukit Bintang",Johor Bahru,Johor,Malaysia,850415-05-9101,60147259494,Malaysian,Married,Retired,NA,NA
+Fatin Karim,25/3/1988,Male,"No. 36, Jalan Pahang",Alor Setar,Kedah,Malaysia,861224-10-8143,60151807713,Malaysian,Single,Unemployed,NA,NA
+Ahmad Rahman,26/3/1997,Female,"No. 128, Jalan Raja Laut",Petaling Jaya,Selangor,Malaysia,901012-16-4520,60114346846,Malaysian,Single,Retired,NA,NA
+Zul Hassan,8/1/1983,Male,"No. 90, Jalan Pahang",Seremban,Negeri Sembilan,Malaysia,750202-14-6639,60199363910,Malaysian,Married,Employed,Software Engineer,MYR 4000 - 9000
+Syafiq Harun,14/5/1993,Male,"No. 182, Jalan Pahang",Shah Alam,Selangor,Malaysia,890208-05-5321,60168800317,Malaysian,Single,Self-Employed,Online Seller,MYR 2000 - 8000
+Izzat Jamal,11/11/1987,Female,"No. 121, Jalan Ampang",Alor Setar,Kedah,Malaysia,710405-10-9350,60171908559,Malaysian,Single,Employed,Marketing Executive,MYR 2500 - 6000
+Nabil Razak,13/12/1996,Male,"No. 32, Jalan SS2",George Town,Penang,Malaysia,810821-02-4271,60168396419,Malaysian,Single,Student,Promoter,MYR 900 - 1600
+Syafiq Aziz,4/2/1994,Male,"No. 78, Jalan Gurney",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,780211-08-3393,60148011022,Malaysian,Single,Employed,Sales Executive,MYR 2500 - 6500
+Aqil Fauzi,15/10/1986,Male,"No. 78, Jalan SS2",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,970816-03-8191,60156355971,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Afiq Omar,9/11/1999,Female,"No. 144, Jalan Tebrau",Shah Alam,Selangor,Malaysia,791020-05-2212,60157441445,Malaysian,Married,Unemployed,NA,NA
+Farhan Kamal,28/11/1997,Male,"No. 193, Jalan Sultan",Kota Kinabalu,Sabah,Malaysia,710814-06-5811,60184708409,Malaysian,Married,Self-Employed,Online Seller,MYR 2000 - 8000
+Nur Razak,11/9/1998,Male,"No. 158, Jalan Sultan",Miri,Sarawak,Malaysia,700907-01-4193,60119082102,Malaysian,Married,Retired,NA,NA
+Aiman Basri,26/12/1998,Male,"No. 17, Jalan Tun Razak",Kuala Terengganu,Terengganu,Malaysia,901222-08-9087,60188150009,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Rizky Rahman,24/1/1996,Male,"No. 145, Jalan Sultan",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,760624-08-9167,60172907574,Malaysian,Married,Retired,NA,NA
+Aisyah Latif,23/10/1995,Male,"No. 95, Jalan Ampang",Shah Alam,Selangor,Malaysia,861105-02-5007,60125550979,Malaysian,Single,Employed,Accountant,MYR 3000 - 7000
+Afiq Aziz,3/5/1993,Male,"No. 104, Jalan Ampang",Alor Setar,Kedah,Malaysia,710506-05-9903,60196336820,Malaysian,Single,Employed,Engineer,MYR 3500 - 8000
+Afiq Mahmud,24/12/1999,Female,"No. 177, Jalan Ipoh",Kuala Terengganu,Terengganu,Malaysia,910526-08-7274,60189519411,Malaysian,Married,Retired,NA,NA
+Zul Omar,8/9/1983,Female,"No. 40, Jalan Raja Laut",Melaka,Melaka,Malaysia,781222-11-9092,60173233115,Malaysian,Single,Unemployed,NA,NA
+Hafiz Mahmud,12/8/1984,Female,"No. 165, Jalan Ipoh",Shah Alam,Selangor,Malaysia,700905-16-3622,60128782572,Malaysian,Single,Unemployed,NA,NA
+Hakimi Latif,2/8/1999,Female,"No. 58, Jalan Sultan",Kuala Terengganu,Terengganu,Malaysia,741226-02-9998,60168004590,Malaysian,Married,Unemployed,NA,NA
+Ahmad Rashid,24/11/1980,Female,"No. 159, Jalan Tebrau",Petaling Jaya,Selangor,Malaysia,910819-04-6912,60199083561,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Aisyah Rahman,5/2/1991,Female,"No. 65, Jalan Tun Razak",Seremban,Negeri Sembilan,Malaysia,910417-02-4484,60136338657,Malaysian,Married,Retired,NA,NA
+Muhammad Harun,12/7/1985,Male,"No. 48, Jalan Merdeka",Klang,Selangor,Malaysia,770509-16-8333,60131132307,Malaysian,Single,Self-Employed,Freelance Designer,MYR 2500 - 7000
+Ahmad Aziz,13/1/1982,Male,"No. 184, Jalan SS2",Kuching,Sarawak,Malaysia,920925-07-9143,60187943953,Malaysian,Married,Unemployed,NA,NA
+Izzat Fauzi,16/11/1982,Female,"No. 45, Jalan Pahang",Ipoh,Perak,Malaysia,980619-10-5776,60128201795,Malaysian,Single,Unemployed,NA,NA
+Danial Yusof,27/10/1982,Female,"No. 24, Jalan Bukit Bintang",Seremban,Negeri Sembilan,Malaysia,880502-12-4880,60162683704,Malaysian,Single,Employed,Accountant,MYR 3000 - 7000
+Aqil Omar,8/4/1980,Female,"No. 186, Jalan Tebrau",Seremban,Negeri Sembilan,Malaysia,950504-10-3846,60182451452,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Farhan Hassan,17/9/1989,Female,"No. 73, Jalan SS2",Melaka,Melaka,Malaysia,781020-16-6312,60176346100,Malaysian,Married,Retired,NA,NA
+Hafiz Kamal,14/1/1992,Male,"No. 24, Jalan Tebrau",Seremban,Negeri Sembilan,Malaysia,771212-07-4105,60115165250,Malaysian,Single,Employed,Software Engineer,MYR 4000 - 9000
+Rizky Mahmud,24/8/1985,Female,"No. 172, Jalan Sultan",Kuching,Sarawak,Malaysia,980322-10-4910,60192238801,Malaysian,Married,Retired,NA,NA
+Danial Rahman,24/9/1986,Female,"No. 23, Jalan Tun Razak",Petaling Jaya,Selangor,Malaysia,750813-03-4956,60127870554,Malaysian,Single,Retired,NA,NA
+Afiq Razak,15/4/1997,Female,"No. 26, Jalan Raja Laut",Miri,Sarawak,Malaysia,991005-03-4264,60174694416,Malaysian,Single,Retired,NA,NA
+Ahmad Latif,22/10/1985,Female,"No. 61, Jalan Merdeka",George Town,Penang,Malaysia,870512-02-1222,60135068766,Malaysian,Married,Student,Waiter/Waitress,MYR 800 - 1500
+Amir Salleh,6/1/1992,Female,"No. 65, Jalan Merdeka",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,930324-11-7108,60156533589,Malaysian,Single,Employed,Teacher,MYR 2500 - 5000
+Aiman Kamal,7/9/1989,Female,"No. 28, Jalan Ampang",Shah Alam,Selangor,Malaysia,880614-13-3276,60184207730,Malaysian,Married,Self-Employed,Freelance Designer,MYR 2500 - 7000
+Afiq Ismail,13/10/1997,Female,"No. 49, Jalan Tun Razak",Ipoh,Perak,Malaysia,851001-14-9276,60171419278,Malaysian,Single,Retired,NA,NA
+Nabil Basri,17/4/1989,Male,"No. 154, Jalan Setia Alam",Kuala Terengganu,Terengganu,Malaysia,770512-02-6539,60116751380,Malaysian,Married,Self-Employed,Freelance Designer,MYR 2500 - 7000
+Nabil Karim,11/5/1980,Male,"No. 43, Jalan Ampang",Miri,Sarawak,Malaysia,721124-14-4327,60196744636,Malaysian,Single,Employed,Teacher,MYR 2500 - 5000
+Zul Jamal,25/11/1985,Male,"No. 186, Jalan Merdeka",Klang,Selangor,Malaysia,950606-07-9939,60158126313,Malaysian,Married,Unemployed,NA,NA
+Azlan Basri,19/11/1994,Male,"No. 12, Jalan SS2",Kota Kinabalu,Sabah,Malaysia,800309-06-3627,60134026702,Malaysian,Single,Retired,NA,NA
+Aisyah Hamid,6/11/1982,Female,"No. 71, Jalan Ipoh",Kuching,Sarawak,Malaysia,940819-04-6598,60164900605,Malaysian,Single,Self-Employed,Grab Driver,MYR 1500 - 4000
+Aisyah Kamal,4/8/1980,Male,"No. 25, Jalan Pahang",Alor Setar,Kedah,Malaysia,911101-05-1267,60128868765,Malaysian,Single,Self-Employed,Grab Driver,MYR 1500 - 4000
+Zul Zulkifli,28/7/1984,Female,"No. 37, Jalan Tun Razak",Melaka,Melaka,Malaysia,951004-11-9430,60145296546,Malaysian,Married,Retired,NA,NA
+Syafiq Fauzi,22/4/1998,Female,"No. 185, Jalan Merdeka",Ipoh,Perak,Malaysia,780708-01-8108,60144752630,Malaysian,Married,Student,Part-time Barista,MYR 800 - 1500
+Hafiz Basri,14/7/1985,Female,"No. 116, Jalan Gurney",Kota Kinabalu,Sabah,Malaysia,880105-14-9264,60187421605,Malaysian,Married,Employed,Marketing Executive,MYR 2500 - 6000
+Danial Razak,2/9/1994,Male,"No. 59, Jalan Raja Laut",Kota Bharu,Kelantan,Malaysia,930424-05-7763,60167858296,Malaysian,Single,Retired,NA,NA
+Farhan Latif,19/11/1990,Male,"No. 80, Jalan Sultan",Kuching,Sarawak,Malaysia,850923-09-2117,60144945482,Malaysian,Single,Retired,NA,NA
+Nur Hassan,13/2/1993,Female,"No. 158, Jalan Bukit Bintang",Kuala Terengganu,Terengganu,Malaysia,760526-15-5106,60189248272,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Hakimi Zulkifli,26/10/1994,Male,"No. 98, Jalan Merdeka",Seremban,Negeri Sembilan,Malaysia,920706-02-2577,60146204081,Malaysian,Single,Unemployed,NA,NA
+Azlan Kamal,12/2/1987,Male,"No. 189, Jalan SS2",Johor Bahru,Johor,Malaysia,891109-03-5505,60199875574,Malaysian,Married,Unemployed,NA,NA
+Hakimi Sulaiman,12/1/1981,Male,"No. 129, Jalan Setia Alam",Ipoh,Perak,Malaysia,700714-07-4229,60194186261,Malaysian,Married,Self-Employed,Photographer,MYR 2000 - 5000
+Syafiq Yusof,20/7/1990,Female,"No. 195, Jalan Setia Alam",Ipoh,Perak,Malaysia,790807-09-8146,60154132584,Malaysian,Single,Employed,Teacher,MYR 2500 - 5000
+Aisyah Mahmud,19/2/1993,Female,"No. 177, Jalan Pahang",Miri,Sarawak,Malaysia,721010-03-6640,60135730989,Malaysian,Single,Employed,Bank Officer,MYR 3000 - 7000
+Nabil Jamal,18/6/1989,Female,"No. 92, Jalan Raja Laut",Kuala Terengganu,Terengganu,Malaysia,850718-02-9556,60123659507,Malaysian,Single,Employed,Accountant,MYR 3000 - 7000
+Hakimi Fauzi,10/2/1980,Male,"No. 5, Jalan Pahang",Shah Alam,Selangor,Malaysia,950426-15-7083,60132584218,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Siti Razak,28/7/1998,Female,"No. 91, Jalan Gurney",Seremban,Negeri Sembilan,Malaysia,841216-10-7232,60152088242,Malaysian,Married,Retired,NA,NA
+Fatin Aziz,8/8/1998,Female,"No. 108, Jalan Pahang",Kuching,Sarawak,Malaysia,890421-09-4394,60196316495,Malaysian,Single,Self-Employed,Photographer,MYR 2000 - 5000
+Rizky Jamal,9/1/1995,Female,"No. 53, Jalan Setia Alam",Melaka,Melaka,Malaysia,720526-14-3172,60113275905,Malaysian,Married,Retired,NA,NA
+Nabil Rahman,18/9/1987,Female,"No. 199, Jalan Sultan",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,890212-07-5514,60159894655,Malaysian,Single,Employed,HR Executive,MYR 3000 - 6000
+Azlan Salleh,28/8/1980,Female,"No. 27, Jalan Tun Razak",Petaling Jaya,Selangor,Malaysia,860521-13-9130,60115057502,Malaysian,Single,Self-Employed,Grab Driver,MYR 1500 - 4000
+Muhammad Hassan,13/10/1991,Male,"No. 64, Jalan Pahang",Kuala Terengganu,Terengganu,Malaysia,720111-07-4347,60118233948,Malaysian,Married,Unemployed,NA,NA
+Nur Karim,6/8/1980,Male,"No. 138, Jalan Sultan",Kuching,Sarawak,Malaysia,721205-02-2545,60165232099,Malaysian,Married,Retired,NA,NA
+Aiman Jamal,16/8/1984,Female,"No. 190, Jalan Gurney",Ipoh,Perak,Malaysia,720305-13-2130,60195390171,Malaysian,Single,Unemployed,NA,NA
+Nur Fauzi,20/6/1993,Male,"No. 83, Jalan Tebrau",Melaka,Melaka,Malaysia,910924-03-4993,60154649872,Malaysian,Married,Retired,NA,NA
+Farhan Fauzi,23/4/1988,Male,"No. 53, Jalan Merdeka",Johor Bahru,Johor,Malaysia,910323-11-7263,60165503426,Malaysian,Single,Student,Retail Assistant,MYR 800 - 1500
+Farhan Karim,11/10/1991,Female,"No. 122, Jalan SS2",Miri,Sarawak,Malaysia,971008-14-2074,60112733032,Malaysian,Married,Unemployed,NA,NA
+Aisyah Razak,16/7/1983,Female,"No. 144, Jalan Tun Razak",Miri,Sarawak,Malaysia,941125-08-1902,60122334517,Malaysian,Married,Self-Employed,Grab Driver,MYR 1500 - 4000
+Amir Fauzi,20/8/1986,Female,"No. 127, Jalan Tebrau",Johor Bahru,Johor,Malaysia,890228-07-2658,60112338457,Malaysian,Married,Unemployed,NA,NA
+Siti Latif,13/4/1981,Female,"No. 153, Jalan Merdeka",Shah Alam,Selangor,Malaysia,940217-06-2108,60194432420,Malaysian,Married,Retired,NA,NA
+Azlan Mahmud,10/2/1999,Male,"No. 42, Jalan Pahang",Kota Kinabalu,Sabah,Malaysia,970622-11-1649,60182080334,Malaysian,Single,Student,Promoter,MYR 900 - 1600
+Zul Aziz,9/10/1982,Female,"No. 41, Jalan Ipoh",George Town,Penang,Malaysia,750116-01-6584,60155076106,Malaysian,Single,Retired,NA,NA
+Farhan Omar,26/5/1994,Female,"No. 156, Jalan Ampang",Kuala Terengganu,Terengganu,Malaysia,870415-09-3222,60131693284,Malaysian,Single,Student,Part-time Barista,MYR 800 - 1500
+Azlan Zulkifli,9/7/1997,Female,"No. 198, Jalan Ampang",Kuching,Sarawak,Malaysia,700107-11-5966,60179721336,Malaysian,Married,Self-Employed,Grab Driver,MYR 1500 - 4000
+Aiman Rahman,7/2/1995,Male,"No. 65, Jalan Setia Alam",Ipoh,Perak,Malaysia,710126-13-2849,60153173551,Malaysian,Single,Unemployed,NA,NA
+Syafiq Jamal,11/7/1980,Male,"No. 130, Jalan Tun Razak",Kuala Terengganu,Terengganu,Malaysia,710503-06-2359,60156177796,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Zul Hamid,21/7/1997,Female,"No. 71, Jalan Merdeka",Kota Bharu,Kelantan,Malaysia,881118-12-3658,60114931494,Malaysian,Single,Unemployed,NA,NA
+Aisyah Sulaiman,22/10/1999,Female,"No. 159, Jalan SS2",Kuching,Sarawak,Malaysia,980615-06-3360,60144365355,Malaysian,Married,Retired,NA,NA
+Muhammad Omar,12/1/1983,Male,"No. 109, Jalan Bukit Bintang",Kuala Terengganu,Terengganu,Malaysia,780111-08-3241,60188643872,Malaysian,Single,Student,Retail Assistant,MYR 800 - 1500
+Hakimi Omar,1/11/1987,Female,"No. 58, Jalan Gurney",Johor Bahru,Johor,Malaysia,980808-11-8496,60175360243,Malaysian,Married,Retired,NA,NA
+Afiq Rahman,21/10/1994,Male,"No. 146, Jalan SS2",Seremban,Negeri Sembilan,Malaysia,760521-03-4259,60195294765,Malaysian,Married,Retired,NA,NA
+Danial Kamal,11/7/1989,Male,"No. 129, Jalan Pahang",Kota Kinabalu,Sabah,Malaysia,890713-03-5563,60173675694,Malaysian,Married,Student,Promoter,MYR 900 - 1600
+Aisyah Fauzi,15/3/1994,Female,"No. 5, Jalan Ampang",Klang,Selangor,Malaysia,971005-02-5680,60172745831,Malaysian,Single,Self-Employed,Grab Driver,MYR 1500 - 4000
+Aisyah Aziz,11/10/1997,Female,"No. 97, Jalan Pahang",Johor Bahru,Johor,Malaysia,930104-01-5776,60194217105,Malaysian,Single,Employed,Engineer,MYR 3500 - 8000
+Hakimi Jamal,8/9/1993,Female,"No. 66, Jalan Gurney",George Town,Penang,Malaysia,900204-16-3816,60198336321,Malaysian,Single,Student,Promoter,MYR 900 - 1600
+Syafiq Omar,27/1/1980,Male,"No. 47, Jalan Merdeka",Kuching,Sarawak,Malaysia,940625-02-3985,60153842232,Malaysian,Single,Self-Employed,Freelance Designer,MYR 2500 - 7000
+Amir Zulkifli,5/7/1996,Female,"No. 9, Jalan Merdeka",Shah Alam,Selangor,Malaysia,780328-12-5546,60196137386,Malaysian,Single,Retired,NA,NA
+Aiman Salleh,21/4/1980,Male,"No. 56, Jalan SS2",Kota Bharu,Kelantan,Malaysia,930411-09-3253,60156643117,Malaysian,Married,Self-Employed,Photographer,MYR 2000 - 5000
+Danial Aziz,5/2/1991,Male,"No. 83, Jalan Ampang",Alor Setar,Kedah,Malaysia,951228-09-8339,60148577940,Malaysian,Married,Self-Employed,Photographer,MYR 2000 - 5000
+Amir Aziz,15/1/1994,Female,"No. 25, Jalan Merdeka",Kota Bharu,Kelantan,Malaysia,771011-06-4488,60133376094,Malaysian,Married,Student,Retail Assistant,MYR 800 - 1500
+Zul Fauzi,28/7/1987,Male,"No. 162, Jalan Ampang",Alor Setar,Kedah,Malaysia,871109-11-4015,60158677066,Malaysian,Single,Student,Waiter/Waitress,MYR 800 - 1500
+Hakimi Kamal,10/5/1998,Female,"No. 160, Jalan Raja Laut",Kuala Terengganu,Terengganu,Malaysia,851003-07-7002,60185036294,Malaysian,Married,Employed,Bank Officer,MYR 3000 - 7000
+Rizky Fauzi,19/3/1989,Male,"No. 20, Jalan Pahang",Seremban,Negeri Sembilan,Malaysia,850412-02-6829,60173819317,Malaysian,Single,Retired,NA,NA
+Rizky Ismail,9/11/1994,Female,"No. 18, Jalan Sultan",Kuala Lumpur,Wilayah Persekutuan Kuala Lumpur,Malaysia,980109-09-4196,60199470767,Malaysian,Married,Employed,HR Executive,MYR 3000 - 6000
+Hakimi Rahman,14/7/1981,Female,"No. 131, Jalan Tebrau",Melaka,Melaka,Malaysia,810904-13-7524,60172046164,Malaysian,Single,Employed,Engineer,MYR 3500 - 8000
+Rizky Sulaiman,8/7/1989,Female,"No. 64, Jalan Ampang",Melaka,Melaka,Malaysia,710227-16-4944,60179581530,Malaysian,Married,Self-Employed,Online Seller,MYR 2000 - 8000
+Hafiz Yusof,15/8/1980,Male,"No. 144, Jalan Sultan",Kota Kinabalu,Sabah,Malaysia,760315-13-1491,60158045119,Malaysian,Married,Retired,NA,NA
+Farhan Rashid,15/5/1984,Female,"No. 7, Jalan Setia Alam",Ipoh,Perak,Malaysia,820102-04-6186,60126848206,Malaysian,Single,Self-Employed,Online Seller,MYR 2000 - 8000
+Siti Aziz,12/6/1982,Female,"No. 140, Jalan Ampang",Petaling Jaya,Selangor,Malaysia,951006-03-5506,60187207616,Malaysian,Single,Student,Part-time Barista,MYR 800 - 1500
+Hakimi Rashid,11/1/1992,Male,"No. 3, Jalan Raja Laut",Klang,Selangor,Malaysia,790824-07-7101,60184170057,Malaysian,Single,Retired,NA,NA
+Afiq Rashid,2/3/1983,Female,"No. 157, Jalan Bukit Bintang",Seremban,Negeri Sembilan,Malaysia,910214-05-2124,60126681445,Malaysian,Married,Self-Employed,Grab Driver,MYR 1500 - 4000
+Fatin Salleh,10/4/1998,Male,"No. 152, Jalan Ampang",Ipoh,Perak,Malaysia,740213-09-5949,60184389799,Malaysian,Married,Unemployed,NA,NA
+Hafiz Salleh,13/11/1988,Male,"No. 120, Jalan Bukit Bintang",Alor Setar,Kedah,Malaysia,950718-07-2301,60125737845,Malaysian,Married,Self-Employed,Photographer,MYR 2000 - 5000
+Muhammad Latif,16/8/1993,Female,"No. 41, Jalan Bukit Bintang",Kota Kinabalu,Sabah,Malaysia,860304-12-2924,60119962163,Malaysian,Married,Retired,NA,NA
+Afiq Sulaiman,10/4/1989,Female,"No. 38, Jalan Ipoh",Shah Alam,Selangor,Malaysia,800904-08-2200,60113200534,Malaysian,Single,Student,Retail Assistant,MYR 800 - 1500
+Danial Fauzi,16/9/1981,Male,"No. 62, Jalan Merdeka",Seremban,Negeri Sembilan,Malaysia,960618-15-1187,60118462802,Malaysian,Married,Employed,Marketing Executive,MYR 2500 - 6000
+Ahmad Hamid,9/10/1999,Male,"No. 199, Jalan Merdeka",Seremban,Negeri Sembilan,Malaysia,730627-02-1871,60199033804,Malaysian,Single,Employed,HR Executive,MYR 3000 - 6000
+Hakimi Yusof,20/11/1995,Female,"No. 64, Jalan Merdeka",Alor Setar,Kedah,Malaysia,910827-06-5536,60179780008,Malaysian,Married,Self-Employed,Freelance Designer,MYR 2500 - 7000
+Afiq Latif,13/11/1988,Female,"No. 60, Jalan Tun Razak",Shah Alam,Selangor,Malaysia,971127-05-5794,60116240859,Malaysian,Married,Student,Promoter,MYR 900 - 1600
+Siti Kamal,4/7/1987,Male,"No. 181, Jalan Tun Razak",Kuala Terengganu,Terengganu,Malaysia,801120-10-8445,60117766161,Malaysian,Single,Retired,NA,NA
+Nabil Ismail,17/5/1989,Female,"No. 35, Jalan Merdeka",Ipoh,Perak,Malaysia,850205-04-6104,60124206664,Malaysian,Married,Student,Part-time Barista,MYR 800 - 1500
+Siti Jamal,25/5/1986,Male,"No. 40, Jalan Bukit Bintang",Kota Kinabalu,Sabah,Malaysia,780921-03-2959,60157088046,Malaysian,Single,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Muhammad Aziz,9/7/1999,Female,"No. 67, Jalan Ampang",Petaling Jaya,Selangor,Malaysia,820804-16-3018,60179839763,Malaysian,Single,Retired,NA,NA
+Rizky Yusof,28/4/1995,Female,"No. 64, Jalan Ampang",Johor Bahru,Johor,Malaysia,851223-06-5024,60183639370,Malaysian,Married,Retired,NA,NA
+Aisyah Zulkifli,19/4/1987,Male,"No. 68, Jalan Tun Razak",George Town,Penang,Malaysia,940907-10-4987,60176552173,Malaysian,Married,Retired,NA,NA
+Amir Basri,9/3/1988,Female,"No. 182, Jalan Bukit Bintang",Kota Bharu,Kelantan,Malaysia,840907-02-8446,60191852473,Malaysian,Single,Unemployed,NA,NA
+Siti Fauzi,11/8/1984,Female,"No. 135, Jalan Raja Laut",Ipoh,Perak,Malaysia,820117-01-7356,60123126003,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Azlan Karim,10/6/1981,Male,"No. 6, Jalan Gurney",Petaling Jaya,Selangor,Malaysia,720203-08-6471,60184713423,Malaysian,Married,Self-Employed,Food Stall Owner,MYR 2000 - 6000
+Siti Harun,27/12/1999,Female,"No. 144, Jalan Tebrau",Kuala Terengganu,Terengganu,Malaysia,730517-12-9674,60125458405,Malaysian,Married,Employed,HR Executive,MYR 3000 - 6000
+Fatin Yusof,11/7/1984,Female,"No. 131, Jalan Tebrau",Kuching,Sarawak,Malaysia,930101-11-9386,60125673326,Malaysian,Single,Retired,NA,NA
+Hafiz Zulkifli,18/10/1989,Female,"No. 100, Jalan Ipoh",Kuching,Sarawak,Malaysia,850103-15-1556,60155768183,Malaysian,Single,Student,Part-time Barista,MYR 800 - 1500

@@ -1,17 +1,23 @@
 import os
+import csv
+import io
 import asyncio
 import json
+import joblib
 import psycopg2
-from datetime import datetime, timezone
-from fastapi import FastAPI, HTTPException, Query, Request
+from datetime import datetime, timezone, timedelta
+from fastapi import FastAPI, HTTPException, Query, Request, Header
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, Response
 from pydantic import BaseModel
 from typing import Optional
 from collections import defaultdict
+from jose import jwt, JWTError
 
 from src.fabric_client import FabricClient
 from src.private_store import PrivateRecordStore
+from src.kyc_store import KYCStore
+from src.user_store import UserStore, verify_password
 
 app = FastAPI(title="Fraud Detection API")
 
@@ -25,6 +31,9 @@ app.add_middleware(
 FABRIC_GATEWAY_URL = os.getenv("FABRIC_GATEWAY_URL", "http://localhost:8080")
 POSTGRES_DSN       = os.getenv("POSTGRES_DSN", "postgresql://fraud_user:fraud_pass@localhost:5432/fraud_private")
 ENCRYPTION_KEY     = os.getenv("ENCRYPTION_KEY", "").encode()
+JWT_SECRET         = os.getenv("JWT_SECRET", "fraud-detection-secret-change-in-prod")
+JWT_ALGORITHM      = "HS256"
+JWT_EXPIRE_HOURS   = 8
 
 fabric = FabricClient(gateway_url=FABRIC_GATEWAY_URL)
 
@@ -86,30 +95,29 @@ def _build_snapshot() -> dict:
             """)
             total, fraud_count, legit_count, pending, reviewed, avg_score = cur.fetchone()
 
-            # ── Trend ─────────────────────────────────────────────
+            # ── Trend (monthly) ───────────────────────────────────
             cur.execute("""
-                SELECT DATE(timestamp)::text, predicted_label, COUNT(*)
+                SELECT TO_CHAR(DATE_TRUNC('month', timestamp), 'YYYY-MM') AS month,
+                       predicted_label, COUNT(*)
                 FROM private_transactions
                 WHERE predicted_label IN ('FRAUD', 'LEGIT')
-                GROUP BY DATE(timestamp), predicted_label
+                GROUP BY DATE_TRUNC('month', timestamp), predicted_label
                 ORDER BY 1
             """)
             trend_map = defaultdict(lambda: {"FRAUD": 0, "LEGIT": 0})
-            for date, label, cnt in cur.fetchall():
-                trend_map[date][label] = int(cnt)
+            for month, label, cnt in cur.fetchall():
+                trend_map[month][label] = int(cnt)
 
-            # ── Score distribution ─────────────────────────────────
+            # ── Score distribution (FRAUD only, 3 buckets) ────────
             cur.execute("""
                 SELECT
-                    COUNT(*) FILTER (WHERE fraud_score < 0.2)                        AS b1,
-                    COUNT(*) FILTER (WHERE fraud_score >= 0.2 AND fraud_score < 0.4) AS b2,
-                    COUNT(*) FILTER (WHERE fraud_score >= 0.4 AND fraud_score < 0.6) AS b3,
-                    COUNT(*) FILTER (WHERE fraud_score >= 0.6 AND fraud_score < 0.8) AS b4,
-                    COUNT(*) FILTER (WHERE fraud_score >= 0.8)                       AS b5
+                    COUNT(*) FILTER (WHERE fraud_score < 0.6)                        AS low,
+                    COUNT(*) FILTER (WHERE fraud_score >= 0.6 AND fraud_score < 0.8) AS medium,
+                    COUNT(*) FILTER (WHERE fraud_score >= 0.8)                       AS high
                 FROM private_transactions
-                WHERE fraud_score IS NOT NULL
+                WHERE predicted_label = 'FRAUD' AND fraud_score IS NOT NULL
             """)
-            b1, b2, b3, b4, b5 = cur.fetchone()
+            low, medium, high = cur.fetchone()
 
             # ── Recent transactions ────────────────────────────────
             cur.execute("""
@@ -155,11 +163,9 @@ def _build_snapshot() -> dict:
             for d, c in sorted(trend_map.items())
         ],
         "score_distribution": [
-            {"range": "0.0-0.2", "count": int(b1)},
-            {"range": "0.2-0.4", "count": int(b2)},
-            {"range": "0.4-0.6", "count": int(b3)},
-            {"range": "0.6-0.8", "count": int(b4)},
-            {"range": "0.8-1.0", "count": int(b5)},
+            {"range": "Low",    "count": int(low)},
+            {"range": "Medium", "count": int(medium)},
+            {"range": "High",   "count": int(high)},
         ],
         "recent_transactions": recent,
     }
@@ -167,10 +173,56 @@ def _build_snapshot() -> dict:
 
 # ── Models ────────────────────────────────────────────────────
 
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+
 class ReviewRequest(BaseModel):
     ground_truth_label: int
     reviewer_id: str
     notes: Optional[str] = ""
+
+
+# ── Auth ──────────────────────────────────────────────────────
+
+@app.post("/api/auth/login")
+def login(body: LoginRequest):
+    conn = get_db()
+    try:
+        user = UserStore(conn).get_by_username(body.username)
+    finally:
+        conn.close()
+
+    if not user or not verify_password(body.password, user["password_hash"]):
+        raise HTTPException(status_code=401, detail="Invalid username or password")
+
+    payload = {
+        "sub":     user["username"],
+        "user_id": user["user_id"],
+        "role":    user["role"],
+        "exp":     datetime.now(timezone.utc) + timedelta(hours=JWT_EXPIRE_HOURS),
+    }
+    token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+    return {
+        "token": token,
+        "user":  {"user_id": user["user_id"], "username": user["username"], "role": user["role"]},
+    }
+
+
+@app.get("/api/auth/me")
+def get_me(authorization: Optional[str] = Header(None)):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    try:
+        payload = jwt.decode(authorization[7:], JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return {
+            "user_id":  payload.get("user_id"),
+            "username": payload.get("sub"),
+            "role":     payload.get("role"),
+        }
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
 
 
 # ── Transactions ──────────────────────────────────────────────
@@ -180,33 +232,425 @@ def list_transactions(
     decision: Optional[str] = Query(None),
     reviewed: Optional[bool] = Query(None),
     search: Optional[str] = Query(None),
-    limit: int = Query(50, le=200),
+    risk: Optional[str] = Query(None),
+    limit: int = Query(50, le=100000),
     offset: int = Query(0),
 ):
-    try:
-        result = fabric.get_all_transactions()
-        transactions = result if isinstance(result, list) else result.get("transactions", [])
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Fabric error: {e}")
+    conditions, params = ["1=1"], []
 
     if decision:
-        transactions = [t for t in transactions if t.get("predicted_label", "").upper() == decision.upper()]
-    if reviewed is not None:
-        if reviewed:
-            transactions = [t for t in transactions if t.get("reviewed_by", "") != ""]
-        else:
-            transactions = [t for t in transactions if t.get("reviewed_by", "") == ""]
+        conditions.append("predicted_label = %s")
+        params.append(decision.upper())
+    if reviewed is True:
+        conditions.append("reviewed_by IS NOT NULL AND reviewed_by != ''")
+    elif reviewed is False:
+        conditions.append("(reviewed_by IS NULL OR reviewed_by = '')")
     if search:
-        s = search.lower()
-        transactions = [
-            t for t in transactions
-            if s in t.get("transaction_id", "").lower()
-            or s in t.get("merchant_name", "").lower()
-            or s in t.get("customer_ref", "").lower()
-        ]
+        conditions.append(
+            "(transaction_id ILIKE %s OR merchant_name ILIKE %s OR customer_ref ILIKE %s)"
+        )
+        s = f"%{search}%"
+        params.extend([s, s, s])
+    if risk:
+        r = risk.upper()
+        if r == "LOW":
+            conditions.append("fraud_score < 0.6")
+        elif r == "MEDIUM":
+            conditions.append("fraud_score >= 0.6 AND fraud_score < 0.8")
+        elif r == "HIGH":
+            conditions.append("fraud_score >= 0.8")
 
-    total = len(transactions)
-    return {"total": total, "transactions": transactions[offset: offset + limit]}
+    where = " AND ".join(conditions)
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute(f"SELECT COUNT(*) FROM private_transactions WHERE {where}", params)
+            total = cur.fetchone()[0]
+            cur.execute(
+                f"""
+                SELECT transaction_id, customer_ref, timestamp, amount_myr,
+                       merchant_name, mcc, mode, location, ic_hash,
+                       masked_card_number, fraud_score, predicted_label,
+                       ml_prediction, rule_flag, risk_reasons,
+                       ground_truth_label, reviewed_by, reviewed_at, created_at
+                FROM private_transactions
+                WHERE {where}
+                ORDER BY timestamp DESC
+                LIMIT %s OFFSET %s
+                """,
+                params + [limit, offset],
+            )
+            rows = cur.fetchall()
+        conn.close()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+    def _row_to_txn(row):
+        try:
+            risk_reasons = json.loads(row[14]) if row[14] else []
+        except Exception:
+            risk_reasons = []
+        return {
+            "transaction_id":     row[0],
+            "customer_ref":       row[1] or "",
+            "timestamp":          row[2].isoformat() if row[2] else "",
+            "amount_myr":         float(row[3]) if row[3] is not None else 0.0,
+            "merchant_name":      row[4] or "",
+            "mcc":                row[5] or "",
+            "mode":               row[6] or "",
+            "location":           row[7] or "",
+            "ic_hash":            row[8] or "",
+            "masked_card_number": row[9] or "",
+            "fraud_score":        float(row[10]) if row[10] is not None else 0.0,
+            "predicted_label":    row[11] or "pending",
+            "ml_prediction":      int(row[12]) if row[12] is not None else 0,
+            "rule_flag":          int(row[13]) if row[13] is not None else 0,
+            "risk_reasons":       risk_reasons,
+            "ground_truth_label": int(row[15]) if row[15] is not None else 0,
+            "reviewed_by":        row[16] or "",
+            "reviewed_at":        row[17].isoformat() if row[17] else "",
+            "created_at":         row[18].isoformat() if row[18] else "",
+            "created_by":         "",
+        }
+
+    return {"total": int(total), "transactions": [_row_to_txn(r) for r in rows]}
+
+
+def _txn_filter(decision, reviewed, search, risk):
+    """Shared WHERE builder for transaction list / export / meta — returns
+    (conditions, params). Risk bands: Low <0.6, Med 0.6–0.8, High ≥0.8."""
+    conditions, params = ["1=1"], []
+    if decision:
+        conditions.append("predicted_label = %s")
+        params.append(decision.upper())
+    if reviewed is True:
+        conditions.append("reviewed_by IS NOT NULL AND reviewed_by != ''")
+    elif reviewed is False:
+        conditions.append("(reviewed_by IS NULL OR reviewed_by = '')")
+    if search:
+        conditions.append(
+            "(transaction_id ILIKE %s OR merchant_name ILIKE %s OR customer_ref ILIKE %s)"
+        )
+        s = f"%{search}%"
+        params.extend([s, s, s])
+    if risk:
+        r = risk.upper()
+        if r == "LOW":
+            conditions.append("fraud_score < 0.6")
+        elif r == "MEDIUM":
+            conditions.append("fraud_score >= 0.6 AND fraud_score < 0.8")
+        elif r == "HIGH":
+            conditions.append("fraud_score >= 0.8")
+    return conditions, params
+
+
+# Canonical export columns: key -> header. This list is also the output order.
+_EXPORT_COLUMNS = [
+    ("transaction_id",  "Transaction ID"),
+    ("timestamp",       "Timestamp"),
+    ("customer_ref",    "Customer Ref"),
+    ("masked_card",     "Masked Card"),
+    ("merchant",        "Merchant"),
+    ("mcc",             "MCC"),
+    ("mode",            "Mode"),
+    ("location",        "Location"),
+    ("amount",          "Amount (MYR)"),
+    ("fraud_score",     "Fraud Score"),
+    ("risk_level",      "Risk Level"),
+    ("decision",        "Decision"),
+    ("ml_prediction",   "ML Prediction"),
+    ("rule_flag",       "Rule Flag"),
+    ("rules_triggered", "Rules Triggered"),
+    ("ground_truth",    "Ground Truth"),
+    ("reviewed_by",     "Reviewed By"),
+    ("reviewed_at",     "Reviewed At"),
+]
+_EXPORT_KEYS = [k for k, _ in _EXPORT_COLUMNS]
+
+# Sensitive columns — only emitted for an authorized, consented PII export.
+_PII_COLUMNS = [
+    ("cardholder_name", "Cardholder Name"),
+    ("ic_number",       "IC Number"),
+    ("card_number",     "Card Number"),
+    ("card_expiration", "Card Expiration"),
+]
+_PII_KEYS = [k for k, _ in _PII_COLUMNS]
+_PII_ROLES = {"analyst", "admin"}   # roles allowed to export decrypted PII
+
+
+def _require_pii_role(authorization: Optional[str]):
+    """Validate the JWT and require an allowed role for a PII export."""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authentication required for PII export")
+    try:
+        payload = jwt.decode(authorization[7:], JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    if payload.get("role") not in _PII_ROLES:
+        raise HTTPException(status_code=403, detail="Your role is not permitted to export PII")
+    return payload
+
+
+@app.get("/api/export/transactions")
+def export_transactions(
+    decision: Optional[str] = Query(None),
+    reviewed: Optional[bool] = Query(None),
+    search: Optional[str] = Query(None),
+    risk: Optional[str] = Query(None),
+    date_from: Optional[str] = Query(None),
+    date_to: Optional[str] = Query(None),
+    columns: Optional[str] = Query(None),
+    pii: bool = Query(False),
+    format: str = Query("csv"),
+    authorization: Optional[str] = Header(None),
+):
+    """Export transactions matching the same filters as GET /api/transactions
+    (mirrors the table, all matching rows). `columns` (comma-separated keys),
+    `date_from`/`date_to` (YYYY-MM-DD), `format` csv|xlsx. Privacy-safe by
+    default; `pii=true` adds decrypted IC/card/cardholder and requires an
+    authenticated user with an allowed role."""
+    fmt = format.lower()
+    if fmt not in ("csv", "xlsx"):
+        raise HTTPException(status_code=400, detail="format must be 'csv' or 'xlsx'")
+
+    if pii:
+        _require_pii_role(authorization)
+
+    # Columns available depend on whether PII was authorized
+    available = _EXPORT_COLUMNS + (_PII_COLUMNS if pii else [])
+    available_keys = [k for k, _ in available]
+    headers_map = dict(available)
+
+    if columns:
+        requested = {c.strip() for c in columns.split(",") if c.strip()}
+        selected = [k for k in available_keys if k in requested]
+    else:
+        selected = list(_EXPORT_KEYS)   # default = non-PII columns only
+    if not selected:
+        raise HTTPException(status_code=400, detail="No valid columns selected.")
+
+    # Filters (shared with /api/transactions) + optional date range
+    conditions, params = _txn_filter(decision, reviewed, search, risk)
+    if date_from:
+        conditions.append("timestamp::date >= %s")
+        params.append(date_from)
+    if date_to:
+        conditions.append("timestamp::date <= %s")
+        params.append(date_to)
+    where = " AND ".join(conditions)
+
+    base_cols = ("transaction_id, timestamp, customer_ref, masked_card_number, "
+                 "merchant_name, mcc, mode, location, amount_myr, fraud_score, "
+                 "predicted_label, ml_prediction, rule_flag, risk_reasons, "
+                 "ground_truth_label, reviewed_by, reviewed_at")
+    pii_select = (", cardholder_name, card_expiration_date, ic_number_enc, card_number_enc"
+                  if pii else "")
+
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute(
+                f"SELECT {base_cols}{pii_select} FROM private_transactions "
+                f"WHERE {where} ORDER BY timestamp DESC",
+                params,
+            )
+            rows = cur.fetchall()
+        conn.close()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+    cipher = None
+    if pii and ENCRYPTION_KEY:
+        from cryptography.fernet import Fernet
+        cipher = Fernet(ENCRYPTION_KEY)
+
+    def _decrypt(value):
+        if not value or not cipher:
+            return ""
+        try:
+            return cipher.decrypt(value.encode()).decode()
+        except Exception:
+            return ""
+
+    def _risk_level(score):
+        if score is None:
+            return ""
+        if score >= 0.8:
+            return "High"
+        if score >= 0.6:
+            return "Medium"
+        return "Low"
+
+    def _values(row):
+        try:
+            reasons = json.loads(row[13]) if row[13] else []
+        except Exception:
+            reasons = []
+        reasons = [x for x in reasons if isinstance(x, str) and not x.startswith("ML score")]
+        score = float(row[9]) if row[9] is not None else None
+        v = {
+            "transaction_id":  row[0],
+            "timestamp":       row[1].isoformat() if row[1] else "",
+            "customer_ref":    row[2] or "",
+            "masked_card":     row[3] or "",
+            "merchant":        row[4] or "",
+            "mcc":             row[5] or "",
+            "mode":            row[6] or "",
+            "location":        row[7] or "",
+            "amount":          round(float(row[8]), 2) if row[8] is not None else "",
+            "fraud_score":     round(score, 4) if score is not None else "",
+            "risk_level":      _risk_level(score),
+            "decision":        row[10] or "",
+            "ml_prediction":   int(row[11]) if row[11] is not None else 0,
+            "rule_flag":       int(row[12]) if row[12] is not None else 0,
+            "rules_triggered": "; ".join(reasons),
+            "ground_truth":    int(row[14]) if row[14] is not None else "",
+            "reviewed_by":     row[15] or "",
+            "reviewed_at":     row[16].isoformat() if row[16] else "",
+        }
+        if pii:
+            v["cardholder_name"] = row[17] or ""
+            v["card_expiration"] = row[18] or ""
+            v["ic_number"]       = _decrypt(row[19])
+            v["card_number"]     = _decrypt(row[20])
+        return v
+
+    header   = [headers_map[k] for k in selected]
+    rows_out = [_values(r) for r in rows]
+    ts  = datetime.now().strftime("%Y%m%d-%H%M%S")
+    tag = "transactions-pii" if pii else "transactions"
+
+    if fmt == "xlsx":
+        from openpyxl import Workbook
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Transactions"
+        ws.append(header)
+        for v in rows_out:
+            ws.append([v[k] for k in selected])
+        bio = io.BytesIO()
+        wb.save(bio)
+        return Response(
+            content=bio.getvalue(),
+            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            headers={"Content-Disposition": f'attachment; filename="{tag}-{ts}.xlsx"'},
+        )
+
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(header)
+    for v in rows_out:
+        writer.writerow([v[k] for k in selected])
+    return Response(
+        content=buf.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{tag}-{ts}.csv"'},
+    )
+
+
+@app.get("/api/export/transactions/meta")
+def export_meta(
+    decision: Optional[str] = Query(None),
+    reviewed: Optional[bool] = Query(None),
+    search: Optional[str] = Query(None),
+    risk: Optional[str] = Query(None),
+    date_from: Optional[str] = Query(None),
+    date_to: Optional[str] = Query(None),
+):
+    """For the export modal: how many rows the export will contain (filters +
+    date range) and the selectable date window (min/max date over the filters,
+    ignoring the date range). Used to size the count + constrain the calendars."""
+    conditions, params = _txn_filter(decision, reviewed, search, risk)
+    filter_where = " AND ".join(conditions)
+
+    # COUNT applies the date range; MIN/MAX define the selectable bounds (no dates).
+    date_clause, date_params = "TRUE", []
+    if date_from:
+        date_clause += " AND timestamp::date >= %s"
+        date_params.append(date_from)
+    if date_to:
+        date_clause += " AND timestamp::date <= %s"
+        date_params.append(date_to)
+
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute(
+                f"""
+                SELECT COUNT(*) FILTER (WHERE {date_clause}),
+                       MIN(timestamp)::date,
+                       MAX(timestamp)::date
+                FROM private_transactions
+                WHERE {filter_where}
+                """,
+                date_params + params,
+            )
+            count, min_d, max_d = cur.fetchone()
+        conn.close()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+    return {
+        "count":    int(count or 0),
+        "min_date": min_d.isoformat() if min_d else None,
+        "max_date": max_d.isoformat() if max_d else None,
+    }
+
+
+@app.get("/api/transactions/customer/{customer_ref}")
+def get_customer_transactions(customer_ref: str, limit: int = Query(20, le=50)):
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT transaction_id, customer_ref, timestamp, amount_myr,
+                       merchant_name, mcc, mode, location, ic_hash,
+                       masked_card_number, fraud_score, predicted_label,
+                       ml_prediction, rule_flag, risk_reasons,
+                       ground_truth_label, reviewed_by, reviewed_at, created_at
+                FROM private_transactions
+                WHERE customer_ref = %s
+                ORDER BY timestamp DESC
+                LIMIT %s
+                """,
+                (customer_ref, limit),
+            )
+            rows = cur.fetchall()
+        conn.close()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+    def _row_to_txn(row):
+        try:
+            risk_reasons = json.loads(row[14]) if row[14] else []
+        except Exception:
+            risk_reasons = []
+        return {
+            "transaction_id":     row[0],
+            "customer_ref":       row[1] or "",
+            "timestamp":          row[2].isoformat() if row[2] else "",
+            "amount_myr":         float(row[3]) if row[3] is not None else 0.0,
+            "merchant_name":      row[4] or "",
+            "mcc":                row[5] or "",
+            "mode":               row[6] or "",
+            "location":           row[7] or "",
+            "ic_hash":            row[8] or "",
+            "masked_card_number": row[9] or "",
+            "fraud_score":        float(row[10]) if row[10] is not None else 0.0,
+            "predicted_label":    row[11] or "pending",
+            "ml_prediction":      int(row[12]) if row[12] is not None else 0,
+            "rule_flag":          int(row[13]) if row[13] is not None else 0,
+            "risk_reasons":       risk_reasons,
+            "ground_truth_label": int(row[15]) if row[15] is not None else 0,
+            "reviewed_by":        row[16] or "",
+            "reviewed_at":        row[17].isoformat() if row[17] else "",
+            "created_at":         row[18].isoformat() if row[18] else "",
+            "created_by":         "",
+        }
+
+    txns = [_row_to_txn(r) for r in rows]
+    return {"customer_ref": customer_ref, "total": len(txns), "transactions": txns}
 
 
 @app.get("/api/transactions/{transaction_id}")
@@ -217,10 +661,14 @@ def get_transaction(transaction_id: str):
         raise HTTPException(status_code=404, detail=f"Transaction not found: {e}")
 
     try:
+        from cryptography.fernet import Fernet, InvalidToken
+        cipher = Fernet(ENCRYPTION_KEY) if ENCRYPTION_KEY else None
+
         conn = get_db()
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT cardholder_name, card_expiration_date,
+                       ic_number_enc, card_number_enc,
                        reviewed_by, reviewed_at, notes
                 FROM private_transactions
                 WHERE transaction_id = %s
@@ -228,11 +676,22 @@ def get_transaction(transaction_id: str):
             row = cur.fetchone()
         conn.close()
         if row:
-            blockchain_data["cardholder_name"]      = row[0]
-            blockchain_data["card_expiration_date"]  = row[1]
-            blockchain_data["private_reviewed_by"]   = row[2]
-            blockchain_data["private_reviewed_at"]   = str(row[3]) if row[3] else ""
-            blockchain_data["notes"]                 = row[4]
+            blockchain_data["cardholder_name"]     = row[0]
+            blockchain_data["card_expiration_date"] = row[1]
+
+            def _decrypt(value: str) -> str | None:
+                if not value or not cipher:
+                    return None
+                try:
+                    return cipher.decrypt(value.encode()).decode()
+                except (InvalidToken, Exception):
+                    return None
+
+            blockchain_data["ic_number"]           = _decrypt(row[2])
+            blockchain_data["card_number"]         = _decrypt(row[3])
+            blockchain_data["private_reviewed_by"] = row[4]
+            blockchain_data["private_reviewed_at"] = str(row[5]) if row[5] else ""
+            blockchain_data["notes"]               = row[6]
     except Exception as e:
         blockchain_data["private_data_error"] = str(e)
 
@@ -282,6 +741,25 @@ def review_transaction(transaction_id: str, body: ReviewRequest):
     return {"status": "SUCCESS", "transaction_id": transaction_id}
 
 
+# ── Customers (KYC) ──────────────────────────────────────────
+
+@app.get("/api/customers/{customer_ref}")
+def get_customer_kyc(customer_ref: str):
+    conn = get_db()
+    try:
+        store   = KYCStore(conn, ENCRYPTION_KEY)
+        profile = store.get_by_customer_ref(customer_ref)
+        if not profile:
+            raise HTTPException(status_code=404, detail=f"Customer {customer_ref} not found")
+        return profile
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+    finally:
+        conn.close()
+
+
 # ── Stats ─────────────────────────────────────────────────────
 
 @app.get("/api/stats")
@@ -323,10 +801,11 @@ def fraud_trend():
         conn = get_db()
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT DATE(timestamp)::text, predicted_label, COUNT(*)
+                SELECT TO_CHAR(DATE_TRUNC('month', timestamp), 'YYYY-MM') AS month,
+                       predicted_label, COUNT(*)
                 FROM private_transactions
                 WHERE predicted_label IN ('FRAUD', 'LEGIT')
-                GROUP BY DATE(timestamp), predicted_label
+                GROUP BY DATE_TRUNC('month', timestamp), predicted_label
                 ORDER BY 1
             """)
             rows = cur.fetchall()
@@ -335,12 +814,12 @@ def fraud_trend():
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
     trend = defaultdict(lambda: {"FRAUD": 0, "LEGIT": 0})
-    for date, label, cnt in rows:
-        trend[date][label] = int(cnt)
+    for month, label, cnt in rows:
+        trend[month][label] = int(cnt)
 
     return [
-        {"date": d, "fraud": c["FRAUD"], "legit": c["LEGIT"]}
-        for d, c in sorted(trend.items())
+        {"date": m, "fraud": c["FRAUD"], "legit": c["LEGIT"]}
+        for m, c in sorted(trend.items())
     ]
 
 
@@ -351,26 +830,141 @@ def score_distribution():
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT
-                    COUNT(*) FILTER (WHERE fraud_score < 0.2)                        AS b1,
-                    COUNT(*) FILTER (WHERE fraud_score >= 0.2 AND fraud_score < 0.4) AS b2,
-                    COUNT(*) FILTER (WHERE fraud_score >= 0.4 AND fraud_score < 0.6) AS b3,
-                    COUNT(*) FILTER (WHERE fraud_score >= 0.6 AND fraud_score < 0.8) AS b4,
-                    COUNT(*) FILTER (WHERE fraud_score >= 0.8)                       AS b5
+                    COUNT(*) FILTER (WHERE fraud_score < 0.6)                        AS low,
+                    COUNT(*) FILTER (WHERE fraud_score >= 0.6 AND fraud_score < 0.8) AS medium,
+                    COUNT(*) FILTER (WHERE fraud_score >= 0.8)                       AS high
                 FROM private_transactions
-                WHERE fraud_score IS NOT NULL
+                WHERE predicted_label = 'FRAUD' AND fraud_score IS NOT NULL
             """)
-            b1, b2, b3, b4, b5 = cur.fetchone()
+            low, medium, high = cur.fetchone()
         conn.close()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
     return [
-        {"range": "0.0-0.2", "count": int(b1)},
-        {"range": "0.2-0.4", "count": int(b2)},
-        {"range": "0.4-0.6", "count": int(b3)},
-        {"range": "0.6-0.8", "count": int(b4)},
-        {"range": "0.8-1.0", "count": int(b5)},
+        {"range": "Low",    "count": int(low)},
+        {"range": "Medium", "count": int(medium)},
+        {"range": "High",   "count": int(high)},
     ]
+
+
+# ── Detection triggers (rule firing counts + ML feature importance) ──
+
+# Parent names of one-hot encoded categorical features. preprocess_data()
+# get_dummies() produces "<Parent>_<value>" columns; we sum a parent's dummies
+# back together so the chart shows ~12 meaningful signals, not fragmented dummies.
+_CATEGORICAL_PARENTS = [
+    "Date of Birth", "Employment Status", "Job Title", "Marital Status",
+    "Device Information", "IP Address", "Location", "City", "State",
+    "Country", "Nationality", "Gender", "Mode", "Card Type",
+]
+
+# Friendly labels + group for numeric (non-dummy) features. Anything not here
+# that isn't a categorical parent falls back to its raw name / "Other".
+_NUMERIC_FEATURES = {
+    "hours_since_last_txn":   ("Hours since last txn",        "Velocity"),
+    "amount_zscore_cust":     ("Amount vs customer norm (z)", "Velocity"),
+    "amount_vs_cust_avg":     ("Amount vs customer average",  "Velocity"),
+    "cust_avg_amount":        ("Customer average amount",     "Velocity"),
+    "cust_std_amount":        ("Customer amount spread",      "Velocity"),
+    "txn_count_history":      ("Customer history depth",      "Velocity"),
+    "new_mcc_flag":           ("New merchant category",       "Velocity"),
+    "location_changed":       ("Location changed",            "Velocity"),
+    "log_amount":             ("Amount (log)",                "Engineered"),
+    "amount_is_round":        ("Round-number amount",         "Engineered"),
+    "amount_to_income_ratio": ("Amount-to-income ratio",      "Engineered"),
+    "has_income_data":        ("Has income data",             "Engineered"),
+    "income_min":             ("Income (min)",                "Engineered"),
+    "income_max":             ("Income (max)",                "Engineered"),
+    "income_mid":             ("Income (midpoint)",           "Engineered"),
+    "Amount (MYR)":           ("Transaction amount",          "Transaction"),
+    "txn_hour":               ("Hour of day",                 "Transaction"),
+    "txn_dayofweek":          ("Day of week",                 "Transaction"),
+    "Merchant Category Code (MCC)": ("Merchant category (MCC)", "Transaction"),
+}
+
+_ml_importance_cache: Optional[list] = None
+
+
+def _parent_of(feature: str) -> str:
+    for parent in _CATEGORICAL_PARENTS:
+        if feature == parent or feature.startswith(parent + "_"):
+            return parent
+    return feature
+
+
+def _compute_ml_importances(top_n: int = 12) -> list:
+    global _ml_importance_cache
+    if _ml_importance_cache is not None:
+        return _ml_importance_cache
+
+    model = joblib.load("models/fraud_model.pkl")
+    cols  = joblib.load("models/feature_columns.pkl")
+
+    agg: dict[str, float] = defaultdict(float)
+    for col, imp in zip(cols, model.feature_importances_):
+        agg[_parent_of(col)] += float(imp)
+
+    ranked = sorted(agg.items(), key=lambda kv: kv[1], reverse=True)[:top_n]
+
+    result = []
+    for raw, importance in ranked:
+        if raw in _NUMERIC_FEATURES:
+            label, group = _NUMERIC_FEATURES[raw]
+        elif raw in _CATEGORICAL_PARENTS:
+            label, group = raw, "Profile"
+        else:
+            label, group = raw, "Other"
+        result.append({
+            "label":      label,
+            "raw":        raw,
+            "group":      group,
+            "importance": round(importance, 4),
+        })
+
+    _ml_importance_cache = result
+    return result
+
+
+@app.get("/api/triggers/stats")
+def trigger_stats():
+    """Live data for the Detection Triggers page: how often each rule has
+    fired across scored transactions + aggregated ML feature importances."""
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*), COUNT(*) FILTER (WHERE predicted_label = 'FRAUD') FROM private_transactions")
+            total, total_fraud = cur.fetchone()
+
+            cur.execute("SELECT risk_reasons FROM private_transactions WHERE risk_reasons IS NOT NULL")
+            rows = cur.fetchall()
+        conn.close()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+    rule_counts: dict[str, int] = defaultdict(int)
+    for (rr,) in rows:
+        reasons = json.loads(rr) if isinstance(rr, str) else (rr or [])
+        for reason in reasons:
+            # skip the "ML score = 0.xxxx" entries written for non-rule rows
+            if isinstance(reason, str) and not reason.startswith("ML score"):
+                rule_counts[reason] += 1
+
+    try:
+        importances = _compute_ml_importances()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Model load error: {e}")
+
+    return {
+        "total_transactions": int(total),
+        "total_fraud":        int(total_fraud),
+        "rule_counts":        dict(rule_counts),
+        "ml": {
+            "model":       "Random Forest",
+            "n_features":  93,
+            "importances": importances,
+        },
+    }
 
 
 # ── Audit: chain vs DB integrity ─────────────────────────────

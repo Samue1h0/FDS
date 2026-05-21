@@ -39,6 +39,7 @@ const othersItems: NavItem[] = [
   {
     icon: <BoltIcon />,
     name: "Triggers",
+    path: "/triggers",
   },
   {
     icon: <BoxCubeIcon />,
