@@ -77,7 +77,7 @@ export default function ReviewProgressCard({ stats }: ReviewProgressCardProps) {
         </div>
 
         <div className="relative">
-          <div className="max-h-[220px] pt-3.5">
+          <div className="max-h-[220px] pt-3.5 print:flex print:justify-center">
             <ReactApexChart options={options} series={series} type="radialBar" height={220} />
           </div>
           <span

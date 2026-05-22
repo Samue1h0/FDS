@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FraudMetrics }       from "@/components/dashboard/FraudMetrics";
 import ReviewProgressCard      from "@/components/dashboard/ReviewProgressCard";
 import RiskDistributionChart   from "@/components/dashboard/RiskDistributionChart";
@@ -9,7 +9,9 @@ import RecentTransactions      from "@/components/dashboard/RecentTransactions";
 import BlockchainAuditSection  from "@/components/dashboard/BlockchainAuditSection";
 import DashboardStatusBar      from "@/components/dashboard/DashboardStatusBar";
 import FraudAlertFeed          from "@/components/dashboard/FraudAlertFeed";
+import { ReportHeader, TopTriggersSection, TopRiskSection } from "@/components/dashboard/ReportSections";
 import { useDashboardData }    from "@/hooks/useDashboardData";
+import { useAuth }             from "@/context/AuthContext";
 
 // ── Skeletons ─────────────────────────────────────────────────────────────────
 
@@ -167,12 +169,38 @@ export default function DashboardPage() {
     status, lastUpdated, error, isSSE, refresh,
     alerts, clearAlerts,
   } = useDashboardData();
+  const { user } = useAuth();
 
   const isLoading = status === "loading";
   const monthName = new Date().toLocaleString("default", { month: "long" });
 
+  // Print-to-PDF: force light theme + reflow the ApexCharts to the print width
+  // for the duration of the print, then restore the user's theme afterward.
+  useEffect(() => {
+    let wasDark = false;
+    const before = () => {
+      wasDark = document.documentElement.classList.contains("dark");
+      if (wasDark) document.documentElement.classList.remove("dark");
+      window.dispatchEvent(new Event("resize"));
+    };
+    const after = () => {
+      if (wasDark) document.documentElement.classList.add("dark");
+    };
+    window.addEventListener("beforeprint", before);
+    window.addEventListener("afterprint", after);
+    return () => {
+      window.removeEventListener("beforeprint", before);
+      window.removeEventListener("afterprint", after);
+    };
+  }, []);
+
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
+
+      {/* Print-only report header */}
+      <div className="col-span-12 hidden print:block">
+        <ReportHeader username={user?.username} />
+      </div>
 
       {/* Header */}
       <div className="col-span-12">
@@ -184,13 +212,26 @@ export default function DashboardPage() {
             | &nbsp;&nbsp;{monthName}
           </p>
         </div>
-        <DashboardStatusBar
-          status={status}
-          lastUpdated={lastUpdated}
-          error={error}
-          isSSE={isSSE}
-          onRefresh={refresh}
-        />
+        <div className="flex items-center justify-between gap-3 print:hidden">
+          <div className="min-w-0 flex-1">
+            <DashboardStatusBar
+              status={status}
+              lastUpdated={lastUpdated}
+              error={error}
+              isSSE={isSSE}
+              onRefresh={refresh}
+            />
+          </div>
+          <button
+            onClick={() => window.print()}
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-600"
+          >
+            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <path d="M6 7V3h8v4M6 14H4v-4h12v4h-2M6 14h8v4H6v-4z" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Download PDF report
+          </button>
+        </div>
       </div>
 
       {status === "error" && error && <ErrorBanner error={error} />}
@@ -201,36 +242,44 @@ export default function DashboardPage() {
       </div>
 
       {/* Row 2 — Charts */}
-      <div className="col-span-12 xl:col-span-8">
+      <div className="col-span-12 xl:col-span-8 break-avoid">
         {isLoading
           ? <ChartSkeleton height="h-[320px]" />
           : <FraudTrendChart trend={trend} />}
       </div>
-      <div className="col-span-12 xl:col-span-4">
+      <div className="col-span-12 xl:col-span-4 break-avoid">
         {isLoading
           ? <ChartSkeleton height="h-[320px]" />
           : <RiskDistributionChart scoreDist={scoreDist} />}
       </div>
 
       {/* Row 3 — Table + Review Progress + Live Alerts */}
-      <div className="col-span-12 xl:col-span-6 xl:h-[460px]">
+      <div className="col-span-12 xl:col-span-6 xl:h-[460px] break-avoid">
         {isLoading
           ? <TableSkeleton />
           : <RecentTransactions transactions={recentTransactions} />}
       </div>
-      <div className="col-span-12 xl:col-span-3 xl:h-[460px]">
+      <div className="col-span-12 xl:col-span-3 xl:h-[460px] break-avoid">
         {isLoading
           ? <RadialSkeleton />
           : <ReviewProgressCard stats={stats} />}
       </div>
-      <div className="col-span-12 xl:col-span-3 xl:h-[460px]">
+      <div className="col-span-12 xl:col-span-3 xl:h-[460px] print:hidden">
         {isLoading
           ? <AlertSkeleton />
           : <FraudAlertFeed alerts={alerts} onClear={clearAlerts} />}
       </div>
 
+      {/* Print-only report sections — top rule triggers + top-risk transactions */}
+      <div className="col-span-12 hidden print:block">
+        <TopTriggersSection />
+      </div>
+      <div className="col-span-12 hidden print:block">
+        <TopRiskSection transactions={allTransactions} />
+      </div>
+
       {/* Row 4 — Blockchain Audit */}
-      <div className="col-span-12">
+      <div className="col-span-12 break-avoid">
         {isLoading
           ? <AuditSkeleton />
           : <BlockchainAuditSection transactions={allTransactions} stats={stats} />}

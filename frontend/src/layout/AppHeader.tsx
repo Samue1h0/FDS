@@ -44,6 +44,7 @@ const othersItems: NavItem[] = [
   {
     icon: <BoxCubeIcon />,
     name: "Blockchain",
+    path: "/blockchain",
   },
 ];
 
@@ -220,7 +221,7 @@ const AppHeader: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-99999 w-full border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+    <header className="sticky top-0 z-99999 w-full border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 print:hidden">
       <div className="relative mx-auto flex w-full max-w-(--breakpoint-2xl) flex-col px-3 lg:px-6">
         <div className="flex items-center justify-between gap-3 py-3 lg:py-4">
           <div className="flex items-center gap-3">

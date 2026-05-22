@@ -5,6 +5,7 @@ import { Modal } from "@/components/ui/modal";
 import { useAuth } from "@/context/AuthContext";
 import { exportTransactions, getExportMeta, type TransactionFilters } from "@/services/fraudApi";
 import FlatpickrInput from "@/components/form/FlatpickrInput";
+import CustomerFilterPanel from "./CustomerFilterPanel";
 
 // Keys must match the backend export column registry (api.py _EXPORT_COLUMNS).
 const EXPORT_COLUMNS: { key: string; label: string }[] = [
@@ -36,17 +37,35 @@ const PII_COLUMNS: { key: string; label: string }[] = [
 const PII_KEYS  = PII_COLUMNS.map((c) => c.key);
 const PII_ROLES = ["analyst", "admin"];
 
+// Sortable fields — keys must match the backend whitelist (api.py _SORT_COLUMNS).
+const SORT_OPTIONS: { key: string; label: string }[] = [
+  { key: "timestamp",       label: "Time" },
+  { key: "transaction_id",  label: "Transaction ID" },
+  { key: "customer_ref",    label: "Customer" },
+  { key: "merchant_name",   label: "Merchant" },
+  { key: "amount_myr",      label: "Amount" },
+  { key: "fraud_score",     label: "Fraud score" },
+  { key: "predicted_label", label: "Decision" },
+  { key: "reviewed_at",     label: "Reviewed date" },
+];
+
 type Decision = "ALL" | "FRAUD" | "LEGIT";
 type Status   = "ALL" | "PENDING" | "REVIEWED";
 type Risk     = "ALL" | "LOW" | "MEDIUM" | "HIGH";
 
 interface ExportModalProps {
-  isOpen:         boolean;
-  onClose:        () => void;
-  currentFilters: TransactionFilters;   // seeds the modal's filters from the table
+  isOpen:            boolean;
+  onClose:           () => void;
+  currentFilters:    TransactionFilters;   // seeds the modal's filters from the table
+  sort?:             string;               // table's current sort field (export follows it)
+  order?:            "asc" | "desc";       // table's current sort direction
+  selectedCustomers: string[];             // customer_refs (shared with the table filter)
+  onCustomersChange: (refs: string[]) => void;
 }
 
-export default function ExportModal({ isOpen, onClose, currentFilters }: ExportModalProps) {
+export default function ExportModal({
+  isOpen, onClose, currentFilters, sort, order, selectedCustomers, onCustomersChange,
+}: ExportModalProps) {
   const { user } = useAuth();
   const canExportPii = !!user?.role && PII_ROLES.includes(user.role);
 
@@ -56,6 +75,8 @@ export default function ExportModal({ isOpen, onClose, currentFilters }: ExportM
   const [risk,     setRisk]     = useState<Risk>("ALL");
 
   const [format,     setFormat]     = useState<"csv" | "xlsx">("csv");
+  const [sortField,  setSortField]  = useState<string>("timestamp");
+  const [sortDir,    setSortDir]    = useState<"asc" | "desc">("desc");
   const [selected,   setSelected]   = useState<string[]>(EXPORT_COLUMNS.map((c) => c.key));
   const [includePii, setIncludePii] = useState(false);
   const [consent,    setConsent]    = useState(false);
@@ -71,9 +92,10 @@ export default function ExportModal({ isOpen, onClose, currentFilters }: ExportM
   const [error,     setError]     = useState<string | null>(null);
 
   const filters: TransactionFilters = {
-    decision: decision !== "ALL" ? decision : undefined,
-    reviewed: status === "ALL" ? undefined : status === "REVIEWED",
-    risk:     risk !== "ALL" ? risk : undefined,
+    decision:  decision !== "ALL" ? decision : undefined,
+    reviewed:  status === "ALL" ? undefined : status === "REVIEWED",
+    risk:      risk !== "ALL" ? risk : undefined,
+    customers: selectedCustomers.length ? selectedCustomers : undefined,
   };
 
   // Seed filters from the table whenever the modal opens
@@ -82,6 +104,8 @@ export default function ExportModal({ isOpen, onClose, currentFilters }: ExportM
     setDecision(currentFilters.decision ?? "ALL");
     setStatus(currentFilters.reviewed === undefined ? "ALL" : currentFilters.reviewed ? "REVIEWED" : "PENDING");
     setRisk(currentFilters.risk ?? "ALL");
+    setSortField(sort ?? "timestamp");       // seed from the table's current sort
+    setSortDir(order ?? "desc");
     setError(null);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
@@ -103,7 +127,7 @@ export default function ExportModal({ isOpen, onClose, currentFilters }: ExportM
       .catch(() => { if (!cancelled) setCount(0); });
     return () => { cancelled = true; };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, decision, status, risk]);
+  }, [isOpen, decision, status, risk, selectedCustomers]);
 
   // Refresh the count when the user narrows the date range
   const refreshCount = useCallback((f: string, t: string) => {
@@ -111,7 +135,7 @@ export default function ExportModal({ isOpen, onClose, currentFilters }: ExportM
       .then((m) => setCount(m.count))
       .catch(() => setCount(null));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [decision, status, risk]);
+  }, [decision, status, risk, selectedCustomers]);
 
   const visibleColumns = includePii ? [...EXPORT_COLUMNS, ...PII_COLUMNS] : EXPORT_COLUMNS;
   const visibleKeys    = visibleColumns.map((c) => c.key);
@@ -139,6 +163,8 @@ export default function ExportModal({ isOpen, onClose, currentFilters }: ExportM
         columns:  visibleKeys.filter((k) => selected.includes(k)),
         dateFrom: from || undefined,
         dateTo:   to || undefined,
+        sort:     sortField,
+        order:    sortDir,
         format,
         pii:      includePii,
       });
@@ -171,6 +197,44 @@ export default function ExportModal({ isOpen, onClose, currentFilters }: ExportM
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="max-w-3xl mx-4 p-6 sm:p-8">
+      {/* Customers + Sort — panels docked to the left of the centered export card,
+          Customers stacked on top of Sort */}
+      <div className="absolute right-full top-1/2 mr-4 hidden w-72 -translate-y-1/2 space-y-4 lg:block">
+        {/* Customers (on top) */}
+        <div className="rounded-3xl bg-white p-6 shadow-theme-lg dark:bg-gray-900">
+          <CustomerFilterPanel selected={selectedCustomers} onChange={onCustomersChange} />
+        </div>
+
+        {/* Sort (below) */}
+        <div className="rounded-3xl bg-white p-6 shadow-theme-lg dark:bg-gray-900">
+          <h3 className="text-base font-semibold text-gray-800 dark:text-white/90">Sort</h3>
+          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            Choose how rows are ordered in the exported file.
+          </p>
+          <div className="mt-4 space-y-4">
+            <div>
+              <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-gray-400">Sort by</label>
+              <select
+                value={sortField}
+                onChange={(e) => setSortField(e.target.value)}
+                className={dateInput + " w-full"}
+              >
+                {SORT_OPTIONS.map((o) => (
+                  <option key={o.key} value={o.key}>{o.label}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-gray-400">Order</label>
+              <div className="flex gap-1 rounded-xl bg-gray-100 p-1 dark:bg-gray-800">
+                {seg<"asc" | "desc">("desc", sortDir, setSortDir, "Descending")}
+                {seg<"asc" | "desc">("asc", sortDir, setSortDir, "Ascending")}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <h2 className="text-lg font-semibold text-gray-800 dark:text-white/90">Export transactions</h2>
       <p className="mt-1 mb-5 text-sm text-gray-500 dark:text-gray-400">
         Privacy-safe by default — no decrypted card or IC numbers unless you enable PII below.

@@ -90,8 +90,22 @@ export interface TransactionFilters {
   reviewed?: boolean;
   search?: string;
   risk?: "LOW" | "MEDIUM" | "HIGH";
+  customers?: string[];   // restrict to these customer_refs
   limit?: number;
   offset?: number;
+}
+
+/** A customer typeahead hit from GET /api/customers/search. */
+export interface CustomerHit {
+  customer_ref: string;
+  name: string | null;
+}
+
+/** Search customers by ID (customer_ref) for the filter dropdown. */
+export async function searchCustomers(q: string, limit = 10): Promise<CustomerHit[]> {
+  if (!q.trim()) return [];
+  const params = new URLSearchParams({ q, limit: String(limit) });
+  return apiFetch<CustomerHit[]>(`/api/customers/search?${params.toString()}`);
 }
 
 /** GET /api/stats */
@@ -353,6 +367,130 @@ export async function getTriggerStats(): Promise<TriggerStats> {
   return apiFetch<TriggerStats>("/api/triggers/stats");
 }
 
+export interface ConfusionMatrix {
+  tp: number;   // fraud correctly caught
+  fp: number;   // legit wrongly flagged (false alarm)
+  tn: number;   // legit correctly cleared
+  fn: number;   // fraud missed
+}
+
+/** Held-out evaluation of the deployed model (offline, from model_metrics.json). */
+export interface ModelTestMetrics {
+  model:        string;
+  n_features:   number;
+  n_estimators: number;
+  class_weight: string;
+  methodology:  string;
+  test_size:    number;
+  train_size:   number;
+  positives:    number;   // actual fraud in the test set
+  negatives:    number;   // actual legit in the test set
+  confusion_matrix: ConfusionMatrix;
+  accuracy:     number;
+  precision:    number;
+  recall:       number;
+  f1:           number;
+  fpr:          number;
+  roc_auc:      number;
+  generated_at: string;
+}
+
+/** Same model's classification on all scored transactions in the DB right now. */
+export interface ModelLiveMetrics {
+  n_scored:   number;
+  positives:  number;
+  negatives:  number;
+  confusion_matrix: ConfusionMatrix;
+  accuracy:   number;
+  precision:  number;
+  recall:     number;
+  f1:         number;
+  fpr:        number;
+}
+
+export interface ModelPerformance {
+  test: ModelTestMetrics | null;   // null if the eval artifact hasn't been generated
+  live: ModelLiveMetrics;
+}
+
+/** Detection-model performance: held-out test metrics + live DB metrics. */
+export async function getModelPerformance(): Promise<ModelPerformance> {
+  return apiFetch<ModelPerformance>("/api/model/performance");
+}
+
+// ── Blockchain network ──────────────────────────────────────────────────────
+
+/** One Fabric node (orderer or peer) with its live operations-service status. */
+export interface BlockchainNode {
+  id:           string;
+  name:         string;
+  role:         "orderer" | "peer";
+  org:          string;
+  msp:          string;
+  endpoint:     string;
+  ops_port:     number;
+  status:       "up" | "unhealthy" | "down";
+  latency_ms:   number | null;
+  block_height: number | null;
+}
+
+export interface BlockchainNodes {
+  nodes:        BlockchainNode[];
+  nodes_up:     number;
+  nodes_total:  number;
+  all_healthy:  boolean;
+  channel:      string;
+  chaincode:    string;
+  block_height: number | null;
+  gateway_ok:   boolean;
+  checked_at:   string;
+}
+
+/** Live network health: per-node liveness + ledger height + gateway reachability. */
+export async function getBlockchainNodes(): Promise<BlockchainNodes> {
+  return apiFetch<BlockchainNodes>("/api/blockchain/nodes");
+}
+
+/** One block reduced to the header fields that form the hash chain. */
+export interface ChainBlock {
+  number:        number;
+  data_hash:     string;
+  previous_hash: string;
+  tx_count:      number;
+}
+
+export interface ChainState {
+  channel:             string;
+  height:              number;
+  current_block_hash:  string;
+  previous_block_hash: string;
+  blocks:              ChainBlock[];   // newest first
+  checked_at:          string;
+}
+
+/** Real ledger hash chain from qscc: tip hashes + the last N blocks. */
+export async function getChainState(blocks = 8): Promise<ChainState> {
+  return apiFetch<ChainState>(`/api/blockchain/chain?blocks=${blocks}`);
+}
+
+export interface IntegrityResult {
+  status:          "verified" | "tampered";
+  chain_total:     number;
+  db_total:        number;
+  checked:         number;
+  matched:         number;
+  mismatches:      number;
+  only_in_chain:   number;
+  only_in_db:      number;
+  mismatch_sample: { transaction_id: string; field: string; chain: unknown; db: unknown }[];
+  checked_at:      string;
+}
+
+/** Cross-check every on-chain record against the private DB (tamper evidence). */
+export async function getIntegrityCheck(): Promise<IntegrityResult> {
+  return apiFetch<IntegrityResult>("/api/audit/integrity-check");
+}
+
 // ── Export ────────────────────────────────────────────────────────────────────
 
 /**
@@ -365,6 +503,8 @@ export interface ExportOptions {
   dateTo?:   string;            // YYYY-MM-DD
   format?:   "csv" | "xlsx";    // default csv
   pii?:      boolean;           // include decrypted PII (server enforces role)
+  sort?:     string;            // sort field key (whitelisted server-side)
+  order?:    "asc" | "desc";    // sort direction; default desc
 }
 
 export interface ExportMeta {
@@ -383,6 +523,7 @@ export async function getExportMeta(
   if (filters.reviewed !== undefined) params.set("reviewed", String(filters.reviewed));
   if (filters.search) params.set("search", filters.search);
   if (filters.risk) params.set("risk", filters.risk);
+  if (filters.customers?.length) params.set("customers", filters.customers.join(","));
   if (dates.dateFrom) params.set("date_from", dates.dateFrom);
   if (dates.dateTo) params.set("date_to", dates.dateTo);
   return apiFetch<ExportMeta>(`/api/export/transactions/meta?${params.toString()}`);
@@ -397,9 +538,12 @@ export async function exportTransactions(
   if (filters.reviewed !== undefined) params.set("reviewed", String(filters.reviewed));
   if (filters.search) params.set("search", filters.search);
   if (filters.risk) params.set("risk", filters.risk);
+  if (filters.customers?.length) params.set("customers", filters.customers.join(","));
   if (opts.columns && opts.columns.length) params.set("columns", opts.columns.join(","));
   if (opts.dateFrom) params.set("date_from", opts.dateFrom);
   if (opts.dateTo) params.set("date_to", opts.dateTo);
+  if (opts.sort) params.set("sort", opts.sort);
+  if (opts.order) params.set("order", opts.order);
   if (opts.pii) params.set("pii", "true");
   params.set("format", opts.format ?? "csv");
 

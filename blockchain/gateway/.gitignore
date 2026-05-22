@@ -1,0 +1,2 @@
+# Compiled gateway binary — the gateway runs via `go run main.go`, never committed
+fraud-gateway

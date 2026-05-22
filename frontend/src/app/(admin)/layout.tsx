@@ -23,7 +23,7 @@ export default function AdminLayout({
     <div className="min-h-screen">
       <AppHeader />
       <div className="mx-auto max-w-(--breakpoint-2xl) p-4 md:p-6">
-        <div className="flex justify-end items-center gap-3 mb-2">
+        <div className="flex justify-end items-center gap-3 mb-2 print:hidden">
           <span className="text-sm text-gray-500 dark:text-gray-400">
             Signed in as <span className="font-medium text-gray-700 dark:text-gray-300">{user.username}</span>
             <span className="ml-1.5 text-xs text-gray-400 dark:text-gray-500">({user.role})</span>

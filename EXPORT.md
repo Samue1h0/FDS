@@ -71,5 +71,13 @@ NOT pre-aggregated (pre-aggregating locks ops into cuts they didn't choose).
   Expiration, requires a valid JWT with role in {analyst, admin} (else 401/403) and a
   consent checkbox in the modal. PII columns never emitted without `pii=true` (the keys
   are dropped if requested otherwise). PII files are named `transactions-pii-*`.
-- **Phase 3 — planned:** Dashboard "Download PDF report" button (print-to-PDF of the
-  dashboard: KPIs, top rule triggers, charts, integrity + top-risk).
+- **Phase 3 — DONE (2026-05-22):** Dashboard "Download PDF report" button (print-to-PDF).
+  `window.print()` + an `@media print` stylesheet in `globals.css` (A4, color-adjust,
+  `.break-avoid`). The dashboard page (`app/(admin)/page.tsx`) registers `beforeprint`/
+  `afterprint` to drop the `.dark` class (light theme on paper) and dispatch a `resize`
+  so the ApexCharts SVGs reflow to print width. Chrome hidden via `print:hidden`
+  (`AppHeader`, sign-out bar, status bar, live `FraudAlertFeed`, the button). Two
+  print-only sections in `components/dashboard/ReportSections.tsx` (`hidden print:block`):
+  **top rule triggers** (`/api/triggers/stats`) and **top-risk transactions** (derived
+  from `allTransactions` already on the page), plus a report header (title/timestamp/
+  user). No new dependency; charts reused as-is.

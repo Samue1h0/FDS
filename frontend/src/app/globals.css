@@ -773,3 +773,35 @@ span.flatpickr-weekday,
   opacity: 0.8;
   cursor: grabbing; /* Changes the cursor to indicate dragging */
 }
+
+/* ── Print-to-PDF: dashboard "Download PDF report" (Export Phase 3) ──────────
+   The button removes the .dark class and dispatches a resize before printing
+   (see DashboardPage), so the report prints in light theme with ApexCharts
+   reflowed. These rules set the page geometry and ensure colors/charts print. */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Reclaim the centered layout padding for full-width report content. */
+  main,
+  .mx-auto {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Keep a card, chart, or table from being split across a page break. */
+  .break-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

@@ -58,3 +58,19 @@ class FabricClient:
         )
         response.raise_for_status()
         return response.json()
+
+    def get_chain_info(self) -> dict:
+        """Latest ledger state: block height + tip block hashes (qscc GetChainInfo)."""
+        response = requests.get(f"{self.base_url}/chain-info", timeout=10)
+        response.raise_for_status()
+        return response.json()
+
+    def get_blocks(self, count: int = 8) -> dict:
+        """Last `count` blocks (newest first) with their hash-chain header fields."""
+        response = requests.get(
+            f"{self.base_url}/blocks",
+            params={"count": count},
+            timeout=15
+        )
+        response.raise_for_status()
+        return response.json()

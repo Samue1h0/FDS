@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
 import Badge from "../ui/badge/Badge";
@@ -19,6 +19,43 @@ function getRisk(score: number): { label: "Low" | "Medium" | "High"; color: "suc
   if (score >= 0.8) return { label: "High",   color: "error"   };
   if (score >= 0.6) return { label: "Medium", color: "warning" };
   return                    { label: "Low",    color: "success" };
+}
+
+// Sort field keys mirror the backend whitelist (api.py _SORT_COLUMNS).
+type SortField =
+  | "transaction_id" | "timestamp" | "customer_ref" | "merchant_name"
+  | "amount_myr" | "fraud_score" | "predicted_label";
+type SortDir = "asc" | "desc";
+
+const NUMERIC_FIELDS = new Set<SortField>(["amount_myr", "fraud_score"]);
+// Fields where the first click should sort high→low / newest→oldest.
+const DEFAULT_DESC = new Set<SortField>(["timestamp", "amount_myr", "fraud_score"]);
+
+// Column layout; `field` marks the sortable ones (label drives the header).
+const COLUMNS: { label: string; field?: SortField }[] = [
+  { label: "Transaction ID", field: "transaction_id" },
+  { label: "Date",           field: "timestamp" },
+  { label: "Customer",       field: "customer_ref" },
+  { label: "Merchant",       field: "merchant_name" },
+  { label: "Card" },
+  { label: "Amount (MYR)",   field: "amount_myr" },
+  { label: "Risk",           field: "fraud_score" },
+  { label: "Decision",       field: "predicted_label" },
+  { label: "Status" },
+  { label: "Action" },
+];
+
+function sortTxns(rows: Transaction[], field: SortField, dir: SortDir): Transaction[] {
+  const mul = dir === "asc" ? 1 : -1;
+  const val = (t: Transaction) => t[field] as string | number;
+  return [...rows].sort((a, b) => {
+    const av = val(a), bv = val(b);
+    const cmp = NUMERIC_FIELDS.has(field)
+      ? (av as number) - (bv as number)
+      : String(av).localeCompare(String(bv));
+    // Stable tiebreaker (transaction_id ASC) — matches the export's ORDER BY.
+    return cmp !== 0 ? cmp * mul : a.transaction_id.localeCompare(b.transaction_id);
+  });
 }
 
 function formatDate(ts: string) {
@@ -62,6 +99,9 @@ export default function TransactionTable() {
   const [searchInput,  setSearchInput]  = useState("");
   const [search,       setSearch]       = useState("");
   const [currentPage,  setCurrentPage]  = useState(1);
+  const [sortField,    setSortField]    = useState<SortField>("timestamp");
+  const [sortDir,      setSortDir]       = useState<SortDir>("desc");
+  const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
   const [selected,     setSelected]     = useState<Transaction | null>(null);
   const [modalOpen,       setModalOpen]       = useState(false);
   const [exportModalOpen, setExportModalOpen] = useState(false);
@@ -86,10 +126,24 @@ export default function TransactionTable() {
 
   useEffect(() => { fetchTransactions(); }, [fetchTransactions]);
 
-  // reset to page 1 whenever any filter changes
-  useEffect(() => { setCurrentPage(1); }, [decision, status, risk, search]);
+  // reset to page 1 whenever any filter or the sort changes
+  useEffect(() => { setCurrentPage(1); }, [decision, status, risk, search, sortField, sortDir, selectedCustomers]);
 
-  const visible = transactions;
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortField(field);
+      setSortDir(DEFAULT_DESC.has(field) ? "desc" : "asc");
+    }
+  };
+
+  const visible = useMemo(() => {
+    const filtered = selectedCustomers.length
+      ? transactions.filter((t) => selectedCustomers.includes(t.customer_ref))
+      : transactions;
+    return sortTxns(filtered, sortField, sortDir);
+  }, [transactions, sortField, sortDir, selectedCustomers]);
 
   const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
   const paginated  = visible.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
@@ -188,6 +242,35 @@ export default function TransactionTable() {
         </div>
       </div>
 
+      {/* Active customer filter (set via the Export → Customers panel) */}
+      {selectedCustomers.length > 0 && (
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <span className="text-xs font-medium uppercase tracking-wide text-gray-400">Customers:</span>
+          {selectedCustomers.map((ref) => (
+            <span
+              key={ref}
+              className="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400"
+            >
+              {ref}
+              <button
+                type="button"
+                onClick={() => setSelectedCustomers((prev) => prev.filter((r) => r !== ref))}
+                className="hover:text-brand-800 dark:hover:text-brand-200"
+              >
+                ×
+              </button>
+            </span>
+          ))}
+          <button
+            type="button"
+            onClick={() => setSelectedCustomers([])}
+            className="text-xs font-medium text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            Clear
+          </button>
+        </div>
+      )}
+
       {/* ── Table ────────────────────────────────────────────────────────── */}
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
         <div className="max-w-full overflow-x-auto">
@@ -195,16 +278,37 @@ export default function TransactionTable() {
             <Table>
               <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                 <TableRow>
-                  <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Transaction ID</TableCell>
-                  <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Date</TableCell>
-                  <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Customer</TableCell>
-                  <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Merchant</TableCell>
-                  <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Card</TableCell>
-                  <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Amount (MYR)</TableCell>
-                  <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Risk</TableCell>
-                  <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Decision</TableCell>
-                  <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Status</TableCell>
-                  <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Action</TableCell>
+                  {COLUMNS.map((col) => {
+                    const active = !!col.field && sortField === col.field;
+                    return (
+                      <TableCell
+                        key={col.label}
+                        isHeader
+                        className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                      >
+                        {col.field ? (
+                          <button
+                            type="button"
+                            onClick={() => handleSort(col.field!)}
+                            className={`group inline-flex items-center gap-1 transition-colors hover:text-gray-700 dark:hover:text-gray-200 ${
+                              active ? "text-gray-700 dark:text-gray-200" : ""
+                            }`}
+                          >
+                            {col.label}
+                            <span className="text-[10px] leading-none">
+                              {active ? (
+                                sortDir === "asc" ? "▲" : "▼"
+                              ) : (
+                                <span className="opacity-0 transition-opacity group-hover:opacity-40">▼</span>
+                              )}
+                            </span>
+                          </button>
+                        ) : (
+                          col.label
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               </TableHeader>
 
@@ -319,6 +423,10 @@ export default function TransactionTable() {
         isOpen={exportModalOpen}
         onClose={() => setExportModalOpen(false)}
         currentFilters={currentFilters}
+        sort={sortField}
+        order={sortDir}
+        selectedCustomers={selectedCustomers}
+        onCustomersChange={setSelectedCustomers}
       />
     </>
   );

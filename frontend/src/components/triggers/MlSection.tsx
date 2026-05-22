@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import type { TriggerStats } from "@/services/fraudApi";
 import MlFeatureChart from "./MlFeatureChart";
+import ModelPerformanceModal from "./ModelPerformanceModal";
 
 interface MlSectionProps {
   ml: TriggerStats["ml"] | null;   // null while loading
@@ -13,17 +17,33 @@ const GROUP_LEGEND: { label: string; color: string }[] = [
 ];
 
 export default function MlSection({ ml }: MlSectionProps) {
+  const [perfOpen, setPerfOpen] = useState(false);
+
   return (
     <section>
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-          Machine-Learning Model
-        </h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          Unlike the rules, the model produces no single &quot;reason&quot; — it weighs dozens of
-          signals into one fraud probability. Below are the signals it relies on most.
-        </p>
+      <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-white/90">
+            Machine-Learning Model
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Unlike the rules, the model produces no single &quot;reason&quot; — it weighs dozens of
+            signals into one fraud probability. Below are the signals it relies on most.
+          </p>
+        </div>
+        <button
+          onClick={() => setPerfOpen(true)}
+          className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-brand-200 bg-brand-50 px-3.5 py-2 text-sm font-medium text-brand-600 transition hover:bg-brand-100 dark:border-brand-500/30 dark:bg-brand-500/10 dark:text-brand-400 dark:hover:bg-brand-500/20"
+        >
+          <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <path d="M4 13l3-3 3 2 5-6" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M3 17h14" strokeLinecap="round" />
+          </svg>
+          View performance
+        </button>
       </div>
+
+      <ModelPerformanceModal isOpen={perfOpen} onClose={() => setPerfOpen(false)} />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* Model identity + how it combines with rules */}

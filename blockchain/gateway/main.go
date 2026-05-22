@@ -1,20 +1,24 @@
 package main
 
 import (
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"crypto/x509"
 	"encoding/pem"
 	"time"
 
 	"github.com/hyperledger/fabric-gateway/pkg/client"
 	"github.com/hyperledger/fabric-gateway/pkg/identity"
+	"github.com/hyperledger/fabric-protos-go-apiv2/common"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/protobuf/proto"
 )
 
 // Config loaded from environment variables
@@ -50,6 +54,11 @@ func getEnv(key, fallback string) string {
 }
 
 var contract *client.Contract
+
+// qscc is Fabric's built-in Query System Chaincode. We use it (read-only) to
+// expose the ledger's real block-hash chain — proof the records can't be edited.
+var qscc *client.Contract
+var channelName string
 
 func main() {
 	cfg := loadConfig()
@@ -87,6 +96,8 @@ func main() {
 
 	network := gw.GetNetwork(cfg.ChannelName)
 	contract = network.GetContract(cfg.ChaincodeName)
+	qscc = network.GetContract("qscc")
+	channelName = cfg.ChannelName
 
 	// Routes
 	http.HandleFunc("/submit", handleSubmit)
@@ -94,6 +105,8 @@ func main() {
 	http.HandleFunc("/all", handleGetAll)
 	http.HandleFunc("/update-ground-truth", handleUpdateGroundTruth)
 	http.HandleFunc("/history", handleHistory)
+	http.HandleFunc("/chain-info", handleChainInfo)
+	http.HandleFunc("/blocks", handleBlocks)
 
 	port := getEnv("GATEWAY_PORT", "8080")
 	log.Printf("Fabric Gateway REST API running on :%s", port)
@@ -234,6 +247,102 @@ func handleHistory(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
+}
+
+// GET /chain-info
+// Latest ledger state via qscc.GetChainInfo — block height and the hash of the
+// newest block plus its predecessor (the tip of the immutable hash chain).
+func handleChainInfo(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	result, err := qscc.EvaluateTransaction("GetChainInfo", channelName)
+	if err != nil {
+		writeError(w, fmt.Sprintf("Failed to get chain info: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	info := &common.BlockchainInfo{}
+	if err := proto.Unmarshal(result, info); err != nil {
+		writeError(w, fmt.Sprintf("Failed to decode chain info: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	writeJSON(w, map[string]interface{}{
+		"channel":             channelName,
+		"height":              info.GetHeight(),
+		"current_block_hash":  hex.EncodeToString(info.GetCurrentBlockHash()),
+		"previous_block_hash": hex.EncodeToString(info.GetPreviousBlockHash()),
+	})
+}
+
+// GET /blocks?count=N
+// The last N blocks (newest first) via qscc.GetBlockByNumber, reduced to the
+// header fields that form the hash chain: number, data hash, previous-block hash.
+func handleBlocks(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	count := 8
+	if c := r.URL.Query().Get("count"); c != "" {
+		if n, err := strconv.Atoi(c); err == nil && n > 0 && n <= 50 {
+			count = n
+		}
+	}
+
+	// Current height tells us where the tip is.
+	infoBytes, err := qscc.EvaluateTransaction("GetChainInfo", channelName)
+	if err != nil {
+		writeError(w, fmt.Sprintf("Failed to get chain info: %v", err), http.StatusInternalServerError)
+		return
+	}
+	info := &common.BlockchainInfo{}
+	if err := proto.Unmarshal(infoBytes, info); err != nil {
+		writeError(w, fmt.Sprintf("Failed to decode chain info: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	height := info.GetHeight() // number of blocks; newest block number is height-1
+	type blockSummary struct {
+		Number       uint64 `json:"number"`
+		DataHash     string `json:"data_hash"`
+		PreviousHash string `json:"previous_hash"`
+		TxCount      int    `json:"tx_count"`
+	}
+	var blocks []blockSummary
+
+	for i := 0; i < count && uint64(i) < height; i++ {
+		num := height - 1 - uint64(i)
+		blockBytes, err := qscc.EvaluateTransaction("GetBlockByNumber", channelName, strconv.FormatUint(num, 10))
+		if err != nil {
+			break
+		}
+		block := &common.Block{}
+		if err := proto.Unmarshal(blockBytes, block); err != nil {
+			continue
+		}
+		hdr := block.GetHeader()
+		txCount := 0
+		if data := block.GetData(); data != nil {
+			txCount = len(data.GetData())
+		}
+		blocks = append(blocks, blockSummary{
+			Number:       hdr.GetNumber(),
+			DataHash:     hex.EncodeToString(hdr.GetDataHash()),
+			PreviousHash: hex.EncodeToString(hdr.GetPreviousHash()),
+			TxCount:      txCount,
+		})
+	}
+
+	writeJSON(w, map[string]interface{}{
+		"channel": channelName,
+		"height":  height,
+		"blocks":  blocks,
+	})
 }
 
 // ── Helpers ──────────────────────────────────────────────────

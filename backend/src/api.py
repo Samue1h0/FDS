@@ -1,10 +1,13 @@
 import os
+import re
 import csv
 import io
+import time
 import asyncio
 import json
 import joblib
 import psycopg2
+import requests
 from datetime import datetime, timezone, timedelta
 from fastapi import FastAPI, HTTPException, Query, Request, Header
 from fastapi.middleware.cors import CORSMiddleware
@@ -316,13 +319,42 @@ def list_transactions(
     return {"total": int(total), "transactions": [_row_to_txn(r) for r in rows]}
 
 
-def _txn_filter(decision, reviewed, search, risk):
+# Whitelist of sortable keys -> safe SQL expression. Never interpolate a raw
+# client value into ORDER BY; only values in this map are allowed. Keys match
+# the frontend's sort field keys 1:1.
+_SORT_COLUMNS = {
+    "transaction_id":  "transaction_id",
+    "timestamp":       "timestamp",
+    "customer_ref":    "customer_ref",
+    "merchant_name":   "merchant_name",
+    "amount_myr":      "amount_myr",
+    "fraud_score":     "fraud_score",
+    "predicted_label": "predicted_label",
+    "reviewed_at":     "reviewed_at",
+}
+
+
+def _order_clause(sort, order):
+    """Safe ORDER BY for the transaction list/export. Falls back to timestamp.
+    NULLS LAST keeps unreviewed rows at the bottom; transaction_id is a stable
+    tiebreaker so equal values don't reshuffle between requests."""
+    col = _SORT_COLUMNS.get((sort or "").strip(), "timestamp")
+    direction = "ASC" if (order or "").lower() == "asc" else "DESC"
+    return f"ORDER BY {col} {direction} NULLS LAST, transaction_id ASC"
+
+
+def _txn_filter(decision, reviewed, search, risk, customers=None):
     """Shared WHERE builder for transaction list / export / meta — returns
-    (conditions, params). Risk bands: Low <0.6, Med 0.6–0.8, High ≥0.8."""
+    (conditions, params). Risk bands: Low <0.6, Med 0.6–0.8, High ≥0.8.
+    `customers` is an optional list of customer_refs to restrict to."""
     conditions, params = ["1=1"], []
     if decision:
         conditions.append("predicted_label = %s")
         params.append(decision.upper())
+    if customers:
+        placeholders = ",".join(["%s"] * len(customers))
+        conditions.append(f"customer_ref IN ({placeholders})")
+        params.extend(customers)
     if reviewed is True:
         conditions.append("reviewed_by IS NOT NULL AND reviewed_by != ''")
     elif reviewed is False:
@@ -400,6 +432,9 @@ def export_transactions(
     date_from: Optional[str] = Query(None),
     date_to: Optional[str] = Query(None),
     columns: Optional[str] = Query(None),
+    customers: Optional[str] = Query(None),
+    sort: Optional[str] = Query(None),
+    order: Optional[str] = Query(None),
     pii: bool = Query(False),
     format: str = Query("csv"),
     authorization: Optional[str] = Header(None),
@@ -430,7 +465,8 @@ def export_transactions(
         raise HTTPException(status_code=400, detail="No valid columns selected.")
 
     # Filters (shared with /api/transactions) + optional date range
-    conditions, params = _txn_filter(decision, reviewed, search, risk)
+    cust_list = [c.strip() for c in customers.split(",") if c.strip()] if customers else None
+    conditions, params = _txn_filter(decision, reviewed, search, risk, cust_list)
     if date_from:
         conditions.append("timestamp::date >= %s")
         params.append(date_from)
@@ -451,7 +487,7 @@ def export_transactions(
         with conn.cursor() as cur:
             cur.execute(
                 f"SELECT {base_cols}{pii_select} FROM private_transactions "
-                f"WHERE {where} ORDER BY timestamp DESC",
+                f"WHERE {where} {_order_clause(sort, order)}",
                 params,
             )
             rows = cur.fetchall()
@@ -556,11 +592,13 @@ def export_meta(
     risk: Optional[str] = Query(None),
     date_from: Optional[str] = Query(None),
     date_to: Optional[str] = Query(None),
+    customers: Optional[str] = Query(None),
 ):
     """For the export modal: how many rows the export will contain (filters +
     date range) and the selectable date window (min/max date over the filters,
     ignoring the date range). Used to size the count + constrain the calendars."""
-    conditions, params = _txn_filter(decision, reviewed, search, risk)
+    cust_list = [c.strip() for c in customers.split(",") if c.strip()] if customers else None
+    conditions, params = _txn_filter(decision, reviewed, search, risk, cust_list)
     filter_where = " AND ".join(conditions)
 
     # COUNT applies the date range; MIN/MAX define the selectable bounds (no dates).
@@ -742,6 +780,34 @@ def review_transaction(transaction_id: str, body: ReviewRequest):
 
 
 # ── Customers (KYC) ──────────────────────────────────────────
+
+@app.get("/api/customers/search")
+def search_customers(q: str = Query("", min_length=0), limit: int = Query(10, le=50)):
+    """Typeahead for the export/table customer filter. Matches customer_ref
+    (case-insensitive prefix/substring). Returns ref + name only — no PII.
+    Registered before /{customer_ref} so the literal path wins routing."""
+    term = q.strip()
+    if not term:
+        return []
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT customer_ref, name
+                FROM kyc_profiles
+                WHERE customer_ref ILIKE %s
+                ORDER BY customer_ref
+                LIMIT %s
+                """,
+                (f"%{term}%", limit),
+            )
+            rows = cur.fetchall()
+        conn.close()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+    return [{"customer_ref": r[0], "name": r[1]} for r in rows]
+
 
 @app.get("/api/customers/{customer_ref}")
 def get_customer_kyc(customer_ref: str):
@@ -967,6 +1033,76 @@ def trigger_stats():
     }
 
 
+def _metrics_from_counts(tp: int, fp: int, tn: int, fn: int) -> dict:
+    """Precision/recall/F1/FPR/accuracy from a confusion matrix (no AUC —
+    that needs probabilities, which the live DB path does not store)."""
+    precision = tp / (tp + fp) if (tp + fp) else 0.0
+    recall    = tp / (tp + fn) if (tp + fn) else 0.0
+    f1        = (2 * precision * recall / (precision + recall)
+                 if (precision + recall) else 0.0)
+    fpr       = fp / (fp + tn) if (fp + tn) else 0.0
+    total     = tp + fp + tn + fn
+    accuracy  = (tp + tn) / total if total else 0.0
+    return {
+        "accuracy":  round(accuracy, 4),
+        "precision": round(precision, 4),
+        "recall":    round(recall, 4),
+        "f1":        round(f1, 4),
+        "fpr":       round(fpr, 4),
+    }
+
+
+@app.get("/api/model/performance")
+def model_performance():
+    """Detection-model performance for the Triggers page modal.
+
+    `test` — honest held-out evaluation of the *deployed* model, generated
+    offline by `python -m src.eval_model` (20% stratified split the model never
+    saw during training); read from models/model_metrics.json.
+
+    `live` — the same model's classification on every scored transaction that
+    has a ground-truth label, computed from the DB right now (ml_prediction vs
+    ground_truth_label). No live AUC: the ML probability is not persisted.
+    """
+    # ── Held-out test metrics (from the offline eval artifact) ──
+    test = None
+    try:
+        with open("models/model_metrics.json") as fh:
+            test = json.load(fh)
+    except FileNotFoundError:
+        test = None
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Could not read metrics file: {e}")
+
+    # ── Live metrics from the DB (ML prediction vs ground truth) ──
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT
+                    COUNT(*) FILTER (WHERE ml_prediction = 1 AND ground_truth_label = 1),
+                    COUNT(*) FILTER (WHERE ml_prediction = 1 AND ground_truth_label = 0),
+                    COUNT(*) FILTER (WHERE ml_prediction = 0 AND ground_truth_label = 0),
+                    COUNT(*) FILTER (WHERE ml_prediction = 0 AND ground_truth_label = 1)
+                FROM private_transactions
+                WHERE ground_truth_label IS NOT NULL AND ml_prediction IS NOT NULL
+            """)
+            tp, fp, tn, fn = (int(v) for v in cur.fetchone())
+        conn.close()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+    live = {
+        "n_scored":   tp + fp + tn + fn,
+        "positives":  tp + fn,
+        "negatives":  tn + fp,
+        "confusion_matrix": {"tp": tp, "fp": fp, "tn": tn, "fn": fn},
+        **_metrics_from_counts(tp, fp, tn, fn),
+    }
+
+    return {"test": test, "live": live}
+
+
 # ── Audit: chain vs DB integrity ─────────────────────────────
 
 @app.get("/api/audit/integrity-check")
@@ -1059,6 +1195,94 @@ def integrity_check():
         "only_in_db":      len(only_db),
         "mismatch_sample": mismatch_details[:3],
         "checked_at":      datetime.now(timezone.utc).isoformat(),
+    }
+
+
+# ── Blockchain network view ──────────────────────────────────
+#
+# Fabric nodes expose an operations service (plain HTTP in this test-network):
+# /healthz for liveness and /metrics (Prometheus) for ledger block height.
+# Topology is fixed by the test-network compose; ports verified against the
+# running containers (orderer 9443, peer0.org1 9444, peer0.org2 9445).
+
+_OPS_HOST = os.getenv("FABRIC_OPS_HOST", "localhost")
+_BLOCKCHAIN_NODES = [
+    {"id": "orderer",    "name": "Orderer",      "role": "orderer", "org": "OrdererOrg", "msp": "OrdererMSP", "endpoint": "orderer.example.com:7050",   "ops_port": 9443},
+    {"id": "peer0-org1", "name": "Peer0 · Org1", "role": "peer",    "org": "Org1",       "msp": "Org1MSP",    "endpoint": "peer0.org1.example.com:7051", "ops_port": 9444},
+    {"id": "peer0-org2", "name": "Peer0 · Org2", "role": "peer",    "org": "Org2",       "msp": "Org2MSP",    "endpoint": "peer0.org2.example.com:9051", "ops_port": 9445},
+]
+_BLOCK_HEIGHT_RE = re.compile(r'^ledger_blockchain_height\{[^}]*\}\s+([0-9.e+]+)', re.MULTILINE)
+
+
+def _scrape_block_height(ops_port: int) -> Optional[int]:
+    """Pull ledger_blockchain_height for the channel from a node's /metrics."""
+    try:
+        r = requests.get(f"http://{_OPS_HOST}:{ops_port}/metrics", timeout=2)
+        if r.status_code != 200:
+            return None
+        vals = [int(float(v)) for v in _BLOCK_HEIGHT_RE.findall(r.text)]
+        return max(vals) if vals else None
+    except Exception:
+        return None
+
+
+@app.get("/api/blockchain/nodes")
+def blockchain_nodes():
+    """Live network health: per-node liveness (/healthz) + block height (/metrics),
+    plus gateway reachability. Powers the Blockchain page network view."""
+    nodes = []
+    heights = []
+    for spec in _BLOCKCHAIN_NODES:
+        status, latency_ms = "down", None
+        try:
+            t0 = time.perf_counter()
+            r = requests.get(f"http://{_OPS_HOST}:{spec['ops_port']}/healthz", timeout=2)
+            latency_ms = round((time.perf_counter() - t0) * 1000, 1)
+            status = "up" if r.status_code == 200 else "unhealthy"
+        except Exception:
+            status = "down"
+        height = _scrape_block_height(spec["ops_port"])
+        if height is not None:
+            heights.append(height)
+        nodes.append({**spec, "status": status, "latency_ms": latency_ms, "block_height": height})
+
+    gateway_ok = False
+    try:
+        requests.get(f"{FABRIC_GATEWAY_URL}/all", timeout=3).raise_for_status()
+        gateway_ok = True
+    except Exception:
+        gateway_ok = False
+
+    up = sum(1 for n in nodes if n["status"] == "up")
+    return {
+        "nodes":         nodes,
+        "nodes_up":      up,
+        "nodes_total":   len(nodes),
+        "all_healthy":   up == len(nodes) and gateway_ok,
+        "channel":       "mychannel",
+        "chaincode":     os.getenv("CHAINCODE_NAME", "fraud"),
+        "block_height":  max(heights) if heights else None,
+        "gateway_ok":    gateway_ok,
+        "checked_at":    datetime.now(timezone.utc).isoformat(),
+    }
+
+
+@app.get("/api/blockchain/chain")
+def blockchain_chain(blocks: int = Query(8, ge=1, le=50)):
+    """Real ledger hash chain from qscc: tip info + the last N blocks
+    (number, data hash, previous-block hash) — proof the chain is append-only."""
+    try:
+        info = fabric.get_chain_info()
+        recent = fabric.get_blocks(count=blocks)
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Fabric unavailable: {e}")
+    return {
+        "channel":             info.get("channel", "mychannel"),
+        "height":              info.get("height"),
+        "current_block_hash":  info.get("current_block_hash"),
+        "previous_block_hash": info.get("previous_block_hash"),
+        "blocks":              recent.get("blocks", []),
+        "checked_at":          datetime.now(timezone.utc).isoformat(),
     }
 
 
