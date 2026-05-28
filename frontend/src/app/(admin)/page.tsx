@@ -9,6 +9,7 @@ import RecentTransactions      from "@/components/dashboard/RecentTransactions";
 import BlockchainAuditSection  from "@/components/dashboard/BlockchainAuditSection";
 import DashboardStatusBar      from "@/components/dashboard/DashboardStatusBar";
 import FraudAlertFeed          from "@/components/dashboard/FraudAlertFeed";
+import DemoControls            from "@/components/dashboard/DemoControls";
 import { ReportHeader, TopTriggersSection, TopRiskSection } from "@/components/dashboard/ReportSections";
 import { useDashboardData }    from "@/hooks/useDashboardData";
 import { useAuth }             from "@/context/AuthContext";
@@ -222,15 +223,18 @@ export default function DashboardPage() {
               onRefresh={refresh}
             />
           </div>
-          <button
-            onClick={() => window.print()}
-            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-600"
-          >
-            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6">
-              <path d="M6 7V3h8v4M6 14H4v-4h12v4h-2M6 14h8v4H6v-4z" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            Download PDF report
-          </button>
+          <div className="inline-flex shrink-0 items-center gap-2">
+            <DemoControls />
+            <button
+              onClick={() => window.print()}
+              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-600"
+            >
+              <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <path d="M6 7V3h8v4M6 14H4v-4h12v4h-2M6 14h8v4H6v-4z" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Download PDF report
+            </button>
+          </div>
         </div>
       </div>
 

@@ -330,6 +330,7 @@ export default function TransactionTable() {
                     const riskInfo  = getRisk(txn.fraud_score);
                     const reviewed  = !!(txn.reviewed_by && txn.reviewed_by !== "");
                     const decColor  = txn.predicted_label === "FRAUD" ? "error" : txn.predicted_label === "LEGIT" ? "success" : "light";
+                    const postFreeze = !!(txn.card_frozen && txn.card_frozen_at && new Date(txn.timestamp) > new Date(txn.card_frozen_at));
 
                     return (
                       <TableRow key={txn.transaction_id}>
@@ -348,7 +349,14 @@ export default function TransactionTable() {
                           {txn.merchant_name}
                         </TableCell>
                         <TableCell className="px-5 py-3 text-theme-sm text-gray-500 dark:text-gray-400 font-mono">
-                          {txn.masked_card_number}
+                          <div className="flex flex-col gap-1">
+                            <span>{txn.masked_card_number}</span>
+                            {txn.card_frozen && (
+                              <span className="inline-flex w-fit items-center rounded-full bg-error-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-error-600 dark:bg-error-500/15 dark:text-error-500">
+                                {postFreeze ? "Post-freeze" : "Frozen"}
+                              </span>
+                            )}
+                          </div>
                         </TableCell>
                         <TableCell className="px-5 py-3 text-theme-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
                           RM {txn.amount_myr.toLocaleString("en-MY", { minimumFractionDigits: 2 })}

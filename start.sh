@@ -128,7 +128,7 @@ tmux send-keys -t "$SESSION:chain-consumer" \
   "cd '$BACKEND_DIR' && export \$(cat '$BASE_DIR/.env' | xargs) && echo '=== Blockchain Consumer ===' && python3 -m src.kafka_blockchain_consumer" Enter
 
 tmux send-keys -t "$SESSION:fastapi" \
-  "cd '$BACKEND_DIR' && export \$(cat '$BASE_DIR/.env' | xargs) && echo '=== FastAPI :8000 ===' && python3 -m uvicorn src.api:app --reload --port 8000" Enter
+  "cd '$BACKEND_DIR' && export \$(cat '$BASE_DIR/.env' | xargs) && echo '=== FastAPI :8000 ===' && python3 -m uvicorn src.api:app --reload --port 8000 --timeout-graceful-shutdown 2" Enter
 
 tmux send-keys -t "$SESSION:frontend" \
   "cd '$FRONTEND_DIR' && echo '=== Next.js :3000 ===' && npm run dev" Enter

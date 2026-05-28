@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import Badge from "@/components/ui/badge/Badge";
+import { LockIcon } from "@/icons";
 import { useAuth } from "@/context/AuthContext";
 import {
   getTransaction,
@@ -174,6 +175,11 @@ export default function ReviewModal({ transaction, isOpen, onClose, onSuccess }:
     );
   }
 
+  const cardFrozen    = detail?.card_frozen ?? transaction.card_frozen;
+  const cardFrozenAt  = detail?.card_frozen_at ?? transaction.card_frozen_at;
+  const frozenReasons = detail?.card_frozen_reasons ?? transaction.card_frozen_reasons ?? [];
+  const postFreeze    = !!(cardFrozen && cardFrozenAt && new Date(transaction.timestamp) > new Date(cardFrozenAt));
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose} className="max-w-2xl mx-4 p-6 sm:p-8">
 
@@ -184,6 +190,24 @@ export default function ReviewModal({ transaction, isOpen, onClose, onSuccess }:
       <p className="text-xs text-gray-400 dark:text-gray-500 font-mono mb-4">
         {transaction.transaction_id}
       </p>
+
+      {cardFrozen && (
+        <div className="mb-4 flex items-start gap-2 rounded-lg border border-error-200 bg-error-50 px-3 py-2.5 text-sm text-error-600 dark:border-error-500/30 dark:bg-error-500/10 dark:text-error-400">
+          <LockIcon className="mt-0.5 size-4 shrink-0" />
+          <div>
+            <p className="font-medium">
+              Card frozen on{" "}
+              {cardFrozenAt
+                ? new Date(cardFrozenAt).toLocaleDateString("en-MY", { day: "numeric", month: "short", year: "numeric" })
+                : "—"}
+              {postFreeze && " · this transaction was attempted after the freeze"}
+            </p>
+            {frozenReasons.length > 0 && (
+              <p className="mt-0.5 text-xs opacity-90">{frozenReasons.join(" · ")}</p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* ── Tab bar ────────────────────────────────────────────────── */}
       <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 mb-5">

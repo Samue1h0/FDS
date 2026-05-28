@@ -9,6 +9,7 @@ import {
   ChevronDownIcon,
   GridIcon,
   ListIcon,
+  LockIcon,
 } from "@/icons/index";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,6 +37,11 @@ const navItems: NavItem[] = [
 ];
 
 const othersItems: NavItem[] = [
+  {
+    icon: <LockIcon />,
+    name: "Frozen Cards",
+    path: "/frozen-cards",
+  },
   {
     icon: <BoltIcon />,
     name: "Triggers",

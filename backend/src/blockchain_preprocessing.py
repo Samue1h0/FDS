@@ -85,6 +85,7 @@ class BlockchainPreprocessor:
 
         customer_ref = self._get_customer_ref(cleaned["ic_number"], errors)
         ic_hash = self._hash_ic(cleaned["ic_number"])
+        card_hash = self._hash_card(cleaned["card_number"])
         masked_card_number = self._mask_card(cleaned["card_number"])
 
         if errors:
@@ -97,6 +98,7 @@ class BlockchainPreprocessor:
             "ic_number":            cleaned["ic_number"],
             "card_number":          cleaned["card_number"],
             "card_expiration_date": cleaned["card_expiration_date"],
+            "card_hash":            card_hash,
             "customer_ref":         customer_ref,
             "timestamp":            cleaned["timestamp"],
             "amount_myr":           cleaned["amount_myr"],
@@ -107,6 +109,7 @@ class BlockchainPreprocessor:
             "ip_address":           cleaned["ip_address"],
             "device_information":   cleaned["device_information"],
             "ground_truth_label":   cleaned["ground_truth_label"],
+            "is_demo":              bool(row.get("is_demo", False)),
         }
 
         blockchain_payload = {
@@ -274,6 +277,11 @@ class BlockchainPreprocessor:
 
     def _hash_ic(self, ic_number):
         return hashlib.sha256(str(ic_number).encode()).hexdigest()
+
+    # Hashes the cleaned card number (same value that gets encrypted into
+    # card_number_enc), so the backfill can reproduce this hash by decrypting.
+    def _hash_card(self, card_number):
+        return hashlib.sha256(str(card_number).encode()).hexdigest()
 
     def _mask_card(self, card_number):
         card_number = str(card_number).replace(" ", "").replace(".0", "").strip()

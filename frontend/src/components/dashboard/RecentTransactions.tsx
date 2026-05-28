@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
 import Badge from "../ui/badge/Badge";
+import { LockIcon } from "@/icons";
 import type { Transaction } from "@/services/fraudApi";
 
 interface RecentTransactionsProps {
@@ -77,7 +78,17 @@ export default function RecentTransactions({ transactions }: RecentTransactionsP
                   <TableRow key={txn.transaction_id}>
                     <TableCell className="py-3">
                       <div>
-                        <p className="font-medium text-gray-800 text-theme-sm dark:text-white/90">{txn.customer_ref}</p>
+                        <p className="flex items-center gap-1.5 font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                          {txn.customer_ref}
+                          {txn.card_frozen && (
+                            <LockIcon
+                              width={14}
+                              height={14}
+                              aria-label="Card frozen"
+                              className="shrink-0 text-error-500"
+                            />
+                          )}
+                        </p>
                         <span className="text-gray-500 text-theme-xs dark:text-gray-400">{formatDateTime(txn.timestamp)}</span>
                       </div>
                     </TableCell>

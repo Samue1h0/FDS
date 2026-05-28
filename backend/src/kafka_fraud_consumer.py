@@ -87,8 +87,22 @@ def run():
                     pr["risk_reasons"]       = bp["risk_reasons"]
                     pr["ic_hash"]            = bp["ic_hash"]
                     pr["masked_card_number"] = bp["masked_card_number"]
+                    pr["is_demo"]            = bool(row.get("is_demo", False))
 
                     private_store.save(pr)
+
+                    if bp["predicted_label"] == "FRAUD" and pr.get("card_hash"):
+                        masked = bp.get("masked_card_number") or ""
+                        private_store.freeze_card(
+                            card_hash=pr["card_hash"],
+                            customer_ref=pr.get("customer_ref"),
+                            cardholder_name=pr.get("cardholder_name"),
+                            card_last4=masked[-4:],
+                            frozen_at=pr.get("timestamp"),
+                            trigger_txn_id=bp["transaction_id"],
+                            trigger_reasons=bp.get("risk_reasons"),
+                        )
+
                     notify_fastapi(
                         transaction_id=bp["transaction_id"],
                         predicted_label=bp["predicted_label"],

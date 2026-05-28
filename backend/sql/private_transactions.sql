@@ -13,6 +13,7 @@ CREATE TABLE private_transactions (
     mode                 VARCHAR(50),
     location             VARCHAR(255),
     ic_hash              VARCHAR(64),
+    card_hash            VARCHAR(64),
     masked_card_number   VARCHAR(20),
     fraud_score          NUMERIC(6, 4),
     predicted_label      VARCHAR(10),
@@ -23,6 +24,7 @@ CREATE TABLE private_transactions (
     reviewed_by          VARCHAR(100),
     reviewed_at          TIMESTAMP,
     notes                TEXT,
+    is_demo              BOOLEAN DEFAULT FALSE NOT NULL,
     created_at           TIMESTAMP DEFAULT NOW()
 );
 
@@ -40,6 +42,9 @@ CREATE INDEX idx_private_ground_truth ON private_transactions(ground_truth_label
 CREATE INDEX idx_private_predicted_label ON private_transactions(predicted_label);
 CREATE INDEX idx_private_timestamp       ON private_transactions(timestamp DESC);
 
+-- Join key for frozen-card lookups (see frozen_cards.sql)
+CREATE INDEX idx_private_card_hash ON private_transactions(card_hash);
+
 -- ── Migration for existing databases ──────────────────────────────────────────
 -- Run these ALTER statements if the table already exists:
 --
@@ -53,7 +58,14 @@ CREATE INDEX idx_private_timestamp       ON private_transactions(timestamp DESC)
 --   ADD COLUMN IF NOT EXISTS predicted_label    VARCHAR(10),
 --   ADD COLUMN IF NOT EXISTS ml_prediction      SMALLINT,
 --   ADD COLUMN IF NOT EXISTS rule_flag          SMALLINT,
---   ADD COLUMN IF NOT EXISTS risk_reasons       TEXT;
+--   ADD COLUMN IF NOT EXISTS risk_reasons       TEXT,
+--   ADD COLUMN IF NOT EXISTS is_demo            BOOLEAN DEFAULT FALSE NOT NULL,
+--   ADD COLUMN IF NOT EXISTS card_hash          VARCHAR(64);
 --
 -- CREATE INDEX IF NOT EXISTS idx_private_predicted_label ON private_transactions(predicted_label);
 -- CREATE INDEX IF NOT EXISTS idx_private_timestamp       ON private_transactions(timestamp DESC);
+-- CREATE INDEX IF NOT EXISTS idx_private_is_demo         ON private_transactions(is_demo) WHERE is_demo = TRUE;
+-- CREATE INDEX IF NOT EXISTS idx_private_card_hash       ON private_transactions(card_hash);
+--
+-- After adding card_hash to an existing DB, run `python -m src.backfill_frozen_cards`
+-- to populate card_hash on historical rows and build the frozen_cards table.

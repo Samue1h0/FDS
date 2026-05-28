@@ -67,6 +67,11 @@ export interface Transaction {
   created_by: string;
   created_at: string;
 
+  // Card freeze (present on list + detail endpoints, not on customer-history)
+  card_frozen?: boolean;
+  card_frozen_at?: string;        // ISO; freeze time = first fraud on the card
+  card_frozen_reasons?: string[];
+
   // Private enrichment fields (only present on detail endpoint GET /api/transactions/{id})
   cardholder_name?: string;
   card_expiration_date?: string;
@@ -116,6 +121,10 @@ export interface Stats {
   pending_review: number;
   reviewed: number;
   avg_fraud_score: number;
+  /** SUM(amount_myr) of FRAUD transactions, in MYR */
+  balance_at_risk: number;
+  /** COUNT of auto-frozen cards */
+  compromised_cards: number;
 }
 
 /** Single entry in GET /api/charts/fraud-trend */
@@ -123,6 +132,7 @@ export interface FraudTrendEntry {
   date: string;   // "YYYY-MM-DD"
   fraud: number;
   legit: number;
+  amount_at_risk: number;   // SUM(amount_myr) of FRAUD txns in the bucket, MYR
 }
 
 /** Single bucket in GET /api/charts/score-distribution */
@@ -279,7 +289,7 @@ export async function getCustomerKyc(customerRef: string): Promise<KYCProfile> {
  *
  * @example
  * const stats = await getStats();
- * // { total, fraud_count, legit_count, pending_review, reviewed, avg_fraud_score }
+ * // { total, fraud_count, legit_count, pending_review, reviewed, avg_fraud_score, balance_at_risk, compromised_cards }
  */
 export async function getStats(): Promise<Stats> {
   return apiFetch<Stats>("/api/stats");
@@ -491,6 +501,70 @@ export async function getIntegrityCheck(): Promise<IntegrityResult> {
   return apiFetch<IntegrityResult>("/api/audit/integrity-check");
 }
 
+// ── Frozen cards ────────────────────────────────────────────────────────────
+
+/** One row in the Frozen Cards list (GET /api/frozen-cards). */
+export interface FrozenCard {
+  card_hash:       string;
+  customer_ref:    string;
+  cardholder_name: string;
+  card_last4:      string;
+  frozen_at:       string;   // ISO; timestamp of the first fraud on the card
+  trigger_txn_id:  string;
+  trigger_reasons: string[];
+  fraud_count:     number;   // FRAUD txns on this card
+  amount_at_risk:  number;   // SUM(amount_myr) of those frauds, MYR
+  total_txns:      number;
+}
+
+export interface FrozenCardsSummary {
+  total:         number;
+  this_month:    number;   // freezes in the latest data month
+  total_at_risk: number;   // MYR across all frozen cards
+}
+
+export interface FrozenCardsResponse {
+  summary: FrozenCardsSummary;
+  cards:   FrozenCard[];
+}
+
+/** One transaction in a frozen card's history (GET /api/frozen-cards/{hash}). */
+export interface FrozenCardTxn {
+  transaction_id:  string;
+  timestamp:       string;
+  amount_myr:      number;
+  merchant_name:   string;
+  mcc:             string;
+  mode:            string;
+  location:        string;
+  fraud_score:     number;
+  predicted_label: string;
+  risk_reasons:    string[];
+  reviewed_by:     string;
+  is_post_freeze:  boolean;  // timestamp strictly after frozen_at
+}
+
+export interface FrozenCardDetail {
+  card_hash:       string;
+  customer_ref:    string;
+  cardholder_name: string;
+  card_last4:      string;
+  frozen_at:       string;
+  trigger_txn_id:  string;
+  trigger_reasons: string[];
+  transactions:    FrozenCardTxn[];  // oldest first
+}
+
+/** All auto-frozen cards + summary. */
+export async function getFrozenCards(): Promise<FrozenCardsResponse> {
+  return apiFetch<FrozenCardsResponse>("/api/frozen-cards");
+}
+
+/** One frozen card + its full transaction history (oldest first). */
+export async function getFrozenCard(cardHash: string): Promise<FrozenCardDetail> {
+  return apiFetch<FrozenCardDetail>(`/api/frozen-cards/${encodeURIComponent(cardHash)}`);
+}
+
 // ── Export ────────────────────────────────────────────────────────────────────
 
 /**
@@ -568,4 +642,27 @@ export async function exportTransactions(
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+}
+
+// ── Demo deck controls ──────────────────────────────────────────────────────
+
+export interface DemoStatus { running: boolean; pid: number | null; }
+
+export async function getDemoStatus(): Promise<DemoStatus> {
+  return apiFetch<DemoStatus>("/internal/demo-status");
+}
+
+export async function runDemo(opts?: { delay?: number }): Promise<{ status: string; pid: number; delay: number }> {
+  const params = new URLSearchParams();
+  if (opts?.delay !== undefined) params.set("delay", String(opts.delay));
+  const qs = params.toString() ? `?${params.toString()}` : "";
+  return apiFetch(`/internal/run-demo${qs}`, { method: "POST" });
+}
+
+export async function stopDemo(): Promise<{ status: string }> {
+  return apiFetch("/internal/stop-demo", { method: "POST" });
+}
+
+export async function resetDemoData(): Promise<{ status: string; deleted: number }> {
+  return apiFetch("/internal/reset-demo-data", { method: "POST" });
 }

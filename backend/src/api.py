@@ -9,7 +9,7 @@ import joblib
 import psycopg2
 import requests
 from datetime import datetime, timezone, timedelta
-from fastapi import FastAPI, HTTPException, Query, Request, Header
+from fastapi import FastAPI, HTTPException, Query, Request, Header, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, Response
 from pydantic import BaseModel
@@ -93,23 +93,29 @@ def _build_snapshot() -> dict:
                     COUNT(*) FILTER (WHERE predicted_label = 'FRAUD'
                                      AND reviewed_by IS NULL)                          AS pending_review,
                     COUNT(*) FILTER (WHERE reviewed_by IS NOT NULL)                    AS reviewed,
-                    COALESCE(AVG(fraud_score), 0)                                      AS avg_fraud_score
+                    COALESCE(AVG(fraud_score), 0)                                      AS avg_fraud_score,
+                    COALESCE(SUM(amount_myr) FILTER (WHERE predicted_label = 'FRAUD'), 0) AS balance_at_risk
                 FROM private_transactions
             """)
-            total, fraud_count, legit_count, pending, reviewed, avg_score = cur.fetchone()
+            total, fraud_count, legit_count, pending, reviewed, avg_score, balance_at_risk = cur.fetchone()
+            cur.execute("SELECT COUNT(*) FROM frozen_cards")
+            compromised_cards = cur.fetchone()[0]
 
             # ── Trend (monthly) ───────────────────────────────────
             cur.execute("""
                 SELECT TO_CHAR(DATE_TRUNC('month', timestamp), 'YYYY-MM') AS month,
-                       predicted_label, COUNT(*)
+                       COUNT(*) FILTER (WHERE predicted_label = 'FRAUD')                     AS fraud,
+                       COUNT(*) FILTER (WHERE predicted_label = 'LEGIT')                     AS legit,
+                       COALESCE(SUM(amount_myr) FILTER (WHERE predicted_label = 'FRAUD'), 0) AS amount_at_risk
                 FROM private_transactions
                 WHERE predicted_label IN ('FRAUD', 'LEGIT')
-                GROUP BY DATE_TRUNC('month', timestamp), predicted_label
+                GROUP BY DATE_TRUNC('month', timestamp)
                 ORDER BY 1
             """)
-            trend_map = defaultdict(lambda: {"FRAUD": 0, "LEGIT": 0})
-            for month, label, cnt in cur.fetchall():
-                trend_map[month][label] = int(cnt)
+            trend_list = [
+                {"date": m, "fraud": int(f), "legit": int(l), "amount_at_risk": float(a)}
+                for m, f, l, a in cur.fetchall()
+            ]
 
             # ── Score distribution (FRAUD only, 3 buckets) ────────
             cur.execute("""
@@ -129,7 +135,9 @@ def _build_snapshot() -> dict:
                     customer_ref, fraud_score, predicted_label, ml_prediction,
                     rule_flag, risk_reasons, ground_truth_label,
                     reviewed_by, reviewed_at::text,
-                    mcc, mode, location, ic_hash, masked_card_number
+                    mcc, mode, location, ic_hash, masked_card_number,
+                    EXISTS (SELECT 1 FROM frozen_cards fc
+                            WHERE fc.card_hash = private_transactions.card_hash) AS card_frozen
                 FROM private_transactions
                 ORDER BY timestamp DESC
                 LIMIT 8
@@ -140,6 +148,7 @@ def _build_snapshot() -> dict:
                 "rule_flag", "risk_reasons", "ground_truth_label",
                 "reviewed_by", "reviewed_at",
                 "mcc", "mode", "location", "ic_hash", "masked_card_number",
+                "card_frozen",
             ]
             recent = []
             for r in cur.fetchall():
@@ -154,17 +163,16 @@ def _build_snapshot() -> dict:
 
     return {
         "stats": {
-            "total":           int(total),
-            "fraud_count":     int(fraud_count),
-            "legit_count":     int(legit_count),
-            "pending_review":  int(pending),
-            "reviewed":        int(reviewed),
-            "avg_fraud_score": round(float(avg_score), 4),
+            "total":             int(total),
+            "fraud_count":       int(fraud_count),
+            "legit_count":       int(legit_count),
+            "pending_review":    int(pending),
+            "reviewed":          int(reviewed),
+            "avg_fraud_score":   round(float(avg_score), 4),
+            "balance_at_risk":   float(balance_at_risk),
+            "compromised_cards": int(compromised_cards),
         },
-        "trend": [
-            {"date": d, "fraud": c["FRAUD"], "legit": c["LEGIT"]}
-            for d, c in sorted(trend_map.items())
-        ],
+        "trend": trend_list,
         "score_distribution": [
             {"range": "Low",    "count": int(low)},
             {"range": "Medium", "count": int(medium)},
@@ -275,7 +283,11 @@ def list_transactions(
                        merchant_name, mcc, mode, location, ic_hash,
                        masked_card_number, fraud_score, predicted_label,
                        ml_prediction, rule_flag, risk_reasons,
-                       ground_truth_label, reviewed_by, reviewed_at, created_at
+                       ground_truth_label, reviewed_by, reviewed_at, created_at,
+                       (SELECT fc.frozen_at FROM frozen_cards fc
+                          WHERE fc.card_hash = private_transactions.card_hash) AS card_frozen_at,
+                       (SELECT fc.trigger_reasons FROM frozen_cards fc
+                          WHERE fc.card_hash = private_transactions.card_hash) AS card_frozen_reasons
                 FROM private_transactions
                 WHERE {where}
                 ORDER BY timestamp DESC
@@ -293,6 +305,11 @@ def list_transactions(
             risk_reasons = json.loads(row[14]) if row[14] else []
         except Exception:
             risk_reasons = []
+        frozen_at = row[19]
+        try:
+            frozen_reasons = json.loads(row[20]) if row[20] else []
+        except Exception:
+            frozen_reasons = []
         return {
             "transaction_id":     row[0],
             "customer_ref":       row[1] or "",
@@ -314,6 +331,9 @@ def list_transactions(
             "reviewed_at":        row[17].isoformat() if row[17] else "",
             "created_at":         row[18].isoformat() if row[18] else "",
             "created_by":         "",
+            "card_frozen":         frozen_at is not None,
+            "card_frozen_at":      frozen_at.isoformat() if frozen_at else "",
+            "card_frozen_reasons": frozen_reasons,
         }
 
     return {"total": int(total), "transactions": [_row_to_txn(r) for r in rows]}
@@ -705,11 +725,13 @@ def get_transaction(transaction_id: str):
         conn = get_db()
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT cardholder_name, card_expiration_date,
-                       ic_number_enc, card_number_enc,
-                       reviewed_by, reviewed_at, notes
-                FROM private_transactions
-                WHERE transaction_id = %s
+                SELECT pt.cardholder_name, pt.card_expiration_date,
+                       pt.ic_number_enc, pt.card_number_enc,
+                       pt.reviewed_by, pt.reviewed_at, pt.notes,
+                       fc.frozen_at, fc.trigger_reasons
+                FROM private_transactions pt
+                LEFT JOIN frozen_cards fc ON fc.card_hash = pt.card_hash
+                WHERE pt.transaction_id = %s
             """, (transaction_id,))
             row = cur.fetchone()
         conn.close()
@@ -730,6 +752,14 @@ def get_transaction(transaction_id: str):
             blockchain_data["private_reviewed_by"] = row[4]
             blockchain_data["private_reviewed_at"] = str(row[5]) if row[5] else ""
             blockchain_data["notes"]               = row[6]
+
+            frozen_at = row[7]
+            blockchain_data["card_frozen"]    = frozen_at is not None
+            blockchain_data["card_frozen_at"] = frozen_at.isoformat() if frozen_at else ""
+            try:
+                blockchain_data["card_frozen_reasons"] = json.loads(row[8]) if row[8] else []
+            except Exception:
+                blockchain_data["card_frozen_reasons"] = []
     except Exception as e:
         blockchain_data["private_data_error"] = str(e)
 
@@ -769,6 +799,16 @@ def review_transaction(transaction_id: str, body: ReviewRequest):
             reviewer_id=body.reviewer_id,
             notes=body.notes or "",
         )
+        # A review can clear a false-positive fraud → recompute the card's
+        # freeze (unfreezes when no standing fraud remains on the card).
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT card_hash FROM private_transactions WHERE transaction_id = %s",
+                (transaction_id,),
+            )
+            r = cur.fetchone()
+        if r and r[0]:
+            private_store.reconcile_card_freeze(r[0])
         private_store.close()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Postgres update failed: {e}")
@@ -841,21 +881,158 @@ def get_stats():
                     COUNT(*) FILTER (WHERE predicted_label = 'FRAUD'
                                      AND reviewed_by IS NULL)                          AS pending_review,
                     COUNT(*) FILTER (WHERE reviewed_by IS NOT NULL)                    AS reviewed,
-                    COALESCE(AVG(fraud_score), 0)                                      AS avg_fraud_score
+                    COALESCE(AVG(fraud_score), 0)                                      AS avg_fraud_score,
+                    COALESCE(SUM(amount_myr) FILTER (WHERE predicted_label = 'FRAUD'), 0) AS balance_at_risk
                 FROM private_transactions
             """)
-            total, fraud_count, legit_count, pending, reviewed, avg_score = cur.fetchone()
+            total, fraud_count, legit_count, pending, reviewed, avg_score, balance_at_risk = cur.fetchone()
+            cur.execute("SELECT COUNT(*) FROM frozen_cards")
+            compromised_cards = cur.fetchone()[0]
         conn.close()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
     return {
-        "total":           int(total),
-        "fraud_count":     int(fraud_count),
-        "legit_count":     int(legit_count),
-        "pending_review":  int(pending),
-        "reviewed":        int(reviewed),
-        "avg_fraud_score": round(float(avg_score), 4),
+        "total":             int(total),
+        "fraud_count":       int(fraud_count),
+        "legit_count":       int(legit_count),
+        "pending_review":    int(pending),
+        "reviewed":          int(reviewed),
+        "avg_fraud_score":   round(float(avg_score), 4),
+        "balance_at_risk":   float(balance_at_risk),
+        "compromised_cards": int(compromised_cards),
+    }
+
+
+# ── Frozen cards ──────────────────────────────────────────────
+
+def _json_list(value):
+    try:
+        return json.loads(value) if value else []
+    except Exception:
+        return []
+
+
+@app.get("/api/frozen-cards")
+def list_frozen_cards():
+    """List every auto-frozen card with per-card fraud count + amount at risk,
+    plus a summary (total, frozen in the latest data month, total at risk)."""
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT fc.card_hash, fc.customer_ref, fc.cardholder_name, fc.card_last4,
+                       fc.frozen_at, fc.trigger_txn_id, fc.trigger_reasons,
+                       COUNT(pt.transaction_id) FILTER (WHERE pt.predicted_label = 'FRAUD') AS fraud_count,
+                       COALESCE(SUM(pt.amount_myr) FILTER (WHERE pt.predicted_label = 'FRAUD'), 0) AS amount_at_risk,
+                       COUNT(pt.transaction_id) AS total_txns
+                FROM frozen_cards fc
+                LEFT JOIN private_transactions pt ON pt.card_hash = fc.card_hash
+                GROUP BY fc.card_hash, fc.customer_ref, fc.cardholder_name, fc.card_last4,
+                         fc.frozen_at, fc.trigger_txn_id, fc.trigger_reasons
+                ORDER BY fc.frozen_at DESC
+            """)
+            rows = cur.fetchall()
+            cur.execute("""
+                SELECT COUNT(*),
+                       COUNT(*) FILTER (
+                         WHERE DATE_TRUNC('month', frozen_at) =
+                               (SELECT DATE_TRUNC('month', MAX(frozen_at)) FROM frozen_cards)
+                       )
+                FROM frozen_cards
+            """)
+            total, this_month = cur.fetchone()
+            cur.execute(
+                "SELECT COALESCE(SUM(amount_myr) FILTER (WHERE predicted_label = 'FRAUD'), 0) "
+                "FROM private_transactions"
+            )
+            total_at_risk = cur.fetchone()[0]
+        conn.close()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+    cards = [{
+        "card_hash":       r[0],
+        "customer_ref":    r[1] or "",
+        "cardholder_name": r[2] or "",
+        "card_last4":      r[3] or "",
+        "frozen_at":       r[4].isoformat() if r[4] else "",
+        "trigger_txn_id":  r[5] or "",
+        "trigger_reasons": _json_list(r[6]),
+        "fraud_count":     int(r[7]),
+        "amount_at_risk":  float(r[8]),
+        "total_txns":      int(r[9]),
+    } for r in rows]
+
+    return {
+        "summary": {
+            "total":         int(total or 0),
+            "this_month":    int(this_month or 0),
+            "total_at_risk": float(total_at_risk or 0),
+        },
+        "cards": cards,
+    }
+
+
+@app.get("/api/frozen-cards/{card_hash}")
+def get_frozen_card(card_hash: str):
+    """One frozen card + all its transactions oldest-first, each tagged
+    is_post_freeze (timestamp after the freeze) so the UI can draw a
+    'frozen here' divider. 404 if the card isn't frozen."""
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT card_hash, customer_ref, cardholder_name, card_last4,
+                       frozen_at, trigger_txn_id, trigger_reasons
+                FROM frozen_cards WHERE card_hash = %s
+            """, (card_hash,))
+            card = cur.fetchone()
+            if not card:
+                raise HTTPException(status_code=404, detail="Card is not frozen")
+            cur.execute("""
+                SELECT transaction_id, timestamp, amount_myr, merchant_name,
+                       mcc, mode, location, fraud_score, predicted_label,
+                       risk_reasons, reviewed_by
+                FROM private_transactions
+                WHERE card_hash = %s
+                ORDER BY timestamp ASC
+            """, (card_hash,))
+            txn_rows = cur.fetchall()
+        conn.close()
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+    frozen_at = card[4]
+    txns = []
+    for t in txn_rows:
+        ts = t[1]
+        txns.append({
+            "transaction_id":  t[0],
+            "timestamp":       ts.isoformat() if ts else "",
+            "amount_myr":      float(t[2]) if t[2] is not None else 0.0,
+            "merchant_name":   t[3] or "",
+            "mcc":             t[4] or "",
+            "mode":            t[5] or "",
+            "location":        t[6] or "",
+            "fraud_score":     float(t[7]) if t[7] is not None else 0.0,
+            "predicted_label": t[8] or "pending",
+            "risk_reasons":    _json_list(t[9]),
+            "reviewed_by":     t[10] or "",
+            "is_post_freeze":  bool(frozen_at and ts and ts > frozen_at),
+        })
+
+    return {
+        "card_hash":       card[0],
+        "customer_ref":    card[1] or "",
+        "cardholder_name": card[2] or "",
+        "card_last4":      card[3] or "",
+        "frozen_at":       frozen_at.isoformat() if frozen_at else "",
+        "trigger_txn_id":  card[5] or "",
+        "trigger_reasons": _json_list(card[6]),
+        "transactions":    txns,
     }
 
 
@@ -868,10 +1045,12 @@ def fraud_trend():
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT TO_CHAR(DATE_TRUNC('month', timestamp), 'YYYY-MM') AS month,
-                       predicted_label, COUNT(*)
+                       COUNT(*) FILTER (WHERE predicted_label = 'FRAUD')                     AS fraud,
+                       COUNT(*) FILTER (WHERE predicted_label = 'LEGIT')                     AS legit,
+                       COALESCE(SUM(amount_myr) FILTER (WHERE predicted_label = 'FRAUD'), 0) AS amount_at_risk
                 FROM private_transactions
                 WHERE predicted_label IN ('FRAUD', 'LEGIT')
-                GROUP BY DATE_TRUNC('month', timestamp), predicted_label
+                GROUP BY DATE_TRUNC('month', timestamp)
                 ORDER BY 1
             """)
             rows = cur.fetchall()
@@ -879,13 +1058,9 @@ def fraud_trend():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
-    trend = defaultdict(lambda: {"FRAUD": 0, "LEGIT": 0})
-    for month, label, cnt in rows:
-        trend[month][label] = int(cnt)
-
     return [
-        {"date": m, "fraud": c["FRAUD"], "legit": c["LEGIT"]}
-        for m, c in sorted(trend.items())
+        {"date": m, "fraud": int(f), "legit": int(l), "amount_at_risk": float(a)}
+        for m, f, l, a in rows
     ]
 
 
@@ -1286,32 +1461,144 @@ def blockchain_chain(blocks: int = Query(8, ge=1, le=50)):
     }
 
 
+# ── Internal endpoints: local-only guard ─────────────────────
+# /internal/* must never be reachable through the public tunnel. A localhost
+# client.host is NOT enough — cloudflared forwards from localhost, so every
+# tunneled request looks local (127.0.0.1). Cloudflare/any proxy adds a
+# forwarding header the caller can't remove, so reject whenever one is present.
+_FORWARD_HEADERS = ("x-forwarded-for", "cf-connecting-ip", "x-real-ip", "forwarded")
+
+
+def require_local(request: Request):
+    client_host = request.client.host if request.client else ""
+    if client_host not in ("127.0.0.1", "::1", "localhost") or \
+       any(h in request.headers for h in _FORWARD_HEADERS):
+        raise HTTPException(status_code=403, detail="Internal endpoint — local access only")
+
+
 # ── Internal reset (demo only) ───────────────────────────────
 
 @app.post("/internal/reset-demo")
-def reset_demo():
+def reset_demo(_local: None = Depends(require_local)):
     conn = get_db()
     with conn.cursor() as cur:
-        cur.execute("TRUNCATE TABLE private_transactions RESTART IDENTITY")
+        # frozen_cards is derived from private_transactions — wipe both so a
+        # nuclear reset doesn't leave orphaned freezes pointing at gone rows.
+        cur.execute("TRUNCATE TABLE private_transactions, frozen_cards RESTART IDENTITY")
     conn.commit()
     conn.close()
     _notify_clients("reset", {})
     return {"status": "cleared"}
 
 
+# ── Run / reset the demo deck ────────────────────────────────
+# These manage just the curated demo data (is_demo=true rows), leaving the
+# historical backfill untouched.
+
+import subprocess
+import sys
+
+_demo_proc: subprocess.Popen | None = None
+
+
+def _demo_running() -> bool:
+    global _demo_proc
+    return _demo_proc is not None and _demo_proc.poll() is None
+
+
+@app.post("/internal/run-demo")
+def run_demo(delay: float = 2.0, _local: None = Depends(require_local)):
+    """
+    Spawn the demo deck producer as a background subprocess. Plays through
+    the deck once and exits. If a demo is already running, returns 409.
+    """
+    global _demo_proc
+    if _demo_running():
+        raise HTTPException(status_code=409, detail="Demo already running")
+
+    backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    cmd = [sys.executable, "-m", "src.kafka_producer", "--demo",
+           "--delay", str(delay)]
+
+    _demo_proc = subprocess.Popen(
+        cmd,
+        cwd=backend_dir,
+        env={**os.environ},
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    return {"status": "started", "pid": _demo_proc.pid, "delay": delay}
+
+
+@app.post("/internal/stop-demo")
+def stop_demo(_local: None = Depends(require_local)):
+    """Stops the running demo producer (if any). Idempotent."""
+    global _demo_proc
+    if not _demo_running():
+        return {"status": "not_running"}
+    _demo_proc.terminate()
+    try:
+        _demo_proc.wait(timeout=3)
+    except subprocess.TimeoutExpired:
+        _demo_proc.kill()
+    return {"status": "stopped"}
+
+
+@app.get("/internal/demo-status")
+def demo_status(_local: None = Depends(require_local)):
+    """Returns whether the demo producer is currently running."""
+    return {"running": _demo_running(),
+            "pid": _demo_proc.pid if _demo_running() else None}
+
+
+@app.post("/internal/reset-demo-data")
+def reset_demo_data(_local: None = Depends(require_local)):
+    """
+    Delete only the demo rows (is_demo=true). Historical data is untouched.
+    Also stops the demo if it's currently running.
+    """
+    global _demo_proc
+    if _demo_running():
+        _demo_proc.terminate()
+        try:
+            _demo_proc.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            _demo_proc.kill()
+
+    conn = get_db()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM private_transactions WHERE is_demo = TRUE")
+            deleted = cur.rowcount
+            # Demo timestamps always fall after all historical data, so a demo
+            # fraud is never a card's *earliest* fraud — any frozen_cards row
+            # triggered by a (now-deleted) demo txn belongs to a card with no
+            # remaining fraud. Drop those orphans; historical-triggered freezes
+            # keep their still-present trigger row and are untouched.
+            cur.execute("""
+                DELETE FROM frozen_cards
+                WHERE trigger_txn_id NOT IN (
+                    SELECT transaction_id FROM private_transactions
+                )
+            """)
+            unfrozen = cur.rowcount
+        conn.commit()
+    finally:
+        conn.close()
+
+    _notify_clients("reset", {})
+    return {"status": "cleared", "deleted": deleted, "unfrozen": unfrozen}
+
+
 # ── Internal notify (called by Kafka consumer) ────────────────
 
 @app.post("/internal/notify")
-async def internal_notify(request: Request):
+async def internal_notify(request: Request, _local: None = Depends(require_local)):
     """
     Called by kafka_fraud_consumer after saving a new transaction.
     Triggers an immediate SSE push to all connected dashboard clients.
-    Restricted to localhost only.
+    Restricted to local access only (see require_local).
     """
-    client_host = request.client.host if request.client else ""
-    if client_host not in ("127.0.0.1", "::1", "localhost"):
-        raise HTTPException(status_code=403, detail="Internal endpoint only")
-
     body = await request.json()
     _notify_clients("new_transaction", body)
     return {"notified": len(_sse_clients)}

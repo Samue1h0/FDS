@@ -66,10 +66,9 @@ export default function CustomerFilterPanel({ selected, onChange }: Props) {
                       type="button"
                       onClick={() => add(hit.customer_ref)}
                       disabled={picked}
-                      className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm hover:bg-gray-50 disabled:opacity-40 dark:hover:bg-white/5"
+                      className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-gray-50 disabled:opacity-40 dark:hover:bg-white/5"
                     >
                       <span className="font-mono text-gray-700 dark:text-gray-300">{hit.customer_ref}</span>
-                      <span className="truncate text-xs text-gray-400">{hit.name ?? ""}</span>
                     </button>
                   </li>
                 );

@@ -118,8 +118,23 @@ The frontend is always live on Vercel; it only needs the tunnel up to fetch data
   the hosted API URL. Vercel uses its own dashboard env var instead.
 - **The site is only up while your machine + tunnel are running.** Laptop off =
   site down. Fine for a demo / presentation.
-- **The tunnel exposes your backend to the internet.** JWT login gates the data
-  and `/internal/*` endpoints reject non-localhost callers, but don't leave it
-  running 24/7.
+- **The tunnel exposes your backend to the internet.** JWT login gates the data.
+  `/internal/*` is now **local-only and tunnel-proof** (2026-05-29): `require_local`
+  rejects any request carrying a proxy/forwarding header (`cf-connecting-ip`,
+  `x-forwarded-for`, …), which every tunneled request has — a plain `client.host`
+  localhost check is NOT enough since cloudflared forwards from localhost.
+  **Side effect:** the hosted dashboard's demo controls (Run/Stop/Reset) will 403;
+  drive the demo from a local browser instead. Still, don't leave the tunnel up 24/7.
+- **Defense in depth at the tunnel:** also 404 `/internal` in the cloudflared
+  ingress so those routes never even reach the backend:
+  ```yaml
+  ingress:
+    - hostname: api.yourdomain.com
+      path: ^/internal/.*
+      service: http_status:404
+    - hostname: api.yourdomain.com
+      service: http://localhost:8000
+    - service: http_status:404
+  ```
 - **Optional hardening:** tighten backend CORS from `["*"]` to just
   `https://your-app.vercel.app`.
