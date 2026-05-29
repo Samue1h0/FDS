@@ -20,6 +20,7 @@ export default function FrozenCardsClient() {
   const [modalOpen, setModalOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -45,6 +46,19 @@ export default function FrozenCardsClient() {
   const safePage = Math.min(page, totalPages);
   const start = (safePage - 1) * PAGE_SIZE;
   const pageCards = filtered.slice(start, start + PAGE_SIZE);
+
+  // Autocomplete suggestions: frozen cards' own customer IDs matching the query.
+  const suggestions = q
+    ? Array.from(new Set(allCards.map((c) => c.customer_ref)))
+        .filter((ref) => ref.toLowerCase().includes(q) && ref.toLowerCase() !== q)
+        .slice(0, 8)
+    : [];
+
+  const pickCustomer = (ref: string) => {
+    setQuery(ref);
+    setPage(1);
+    setOpen(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -82,10 +96,27 @@ export default function FrozenCardsClient() {
               <input
                 type="text"
                 value={query}
-                onChange={(e) => { setQuery(e.target.value); setPage(1); }}
+                onChange={(e) => { setQuery(e.target.value); setPage(1); setOpen(true); }}
+                onFocus={() => setOpen(true)}
+                onBlur={() => setTimeout(() => setOpen(false), 120)}
                 placeholder="Search customer ID…"
                 className="w-full rounded-lg border border-gray-200 bg-white py-2 pl-9 pr-3 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
               />
+              {open && suggestions.length > 0 && (
+                <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white py-1 shadow-theme-lg dark:border-gray-700 dark:bg-gray-900">
+                  {suggestions.map((ref) => (
+                    <li key={ref}>
+                      <button
+                        type="button"
+                        onMouseDown={(e) => { e.preventDefault(); pickCustomer(ref); }}
+                        className="flex w-full items-center px-3 py-2 text-left text-sm hover:bg-gray-50 dark:hover:bg-white/5"
+                      >
+                        <span className="font-mono text-gray-700 dark:text-gray-300">{ref}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <span className="shrink-0 text-sm text-gray-500 dark:text-gray-400">
               {filtered.length} card{filtered.length === 1 ? "" : "s"}
