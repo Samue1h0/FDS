@@ -805,3 +805,12 @@ span.flatpickr-weekday,
     page-break-inside: avoid;
   }
 }
+
+/* Dynamic Island notification pill — slide/scale in from the top. */
+@keyframes island-in {
+  from { transform: translateY(-1.5rem) scale(0.96); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+.animate-island-in {
+  animation: island-in 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
