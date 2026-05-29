@@ -275,7 +275,7 @@ export default function DashboardPage() {
       <div className="col-span-12 xl:col-span-4 break-avoid">
         {isLoading
           ? <ChartSkeleton height="h-[320px]" />
-          : <PeriodSummary trend={trend} granularity={granularity} />}
+          : <PeriodSummary key={granularity} trend={trend} granularity={granularity} />}
       </div>
 
       {/* Print-only report sections — top rule triggers + top-risk transactions */}
