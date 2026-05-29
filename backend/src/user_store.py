@@ -42,3 +42,13 @@ class UserStore:
             "password_hash": row[2],
             "role":          row[3],
         }
+
+    def update_password(self, username: str, new_password: str) -> bool:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                "UPDATE users SET password_hash = %s WHERE username = %s AND is_active = TRUE",
+                (hash_password(new_password), username),
+            )
+            updated = cur.rowcount
+        self.conn.commit()
+        return updated > 0

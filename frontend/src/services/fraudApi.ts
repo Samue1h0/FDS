@@ -666,3 +666,28 @@ export async function stopDemo(): Promise<{ status: string }> {
 export async function resetDemoData(): Promise<{ status: string; deleted: number }> {
   return apiFetch("/internal/reset-demo-data", { method: "POST" });
 }
+
+// ── Profile ──────────────────────────────────────────────────────────────────
+
+/** Per-analyst review activity (keyed on the logged-in user). */
+export interface ReviewStats {
+  reviews_done: number;
+  confirmed_fraud: number;
+  cleared: number;          // marked legitimate
+  amount_approved: number;  // sum of amount_myr for cleared txns
+  cards_unfrozen: number;
+}
+
+export async function getMyReviewStats(): Promise<ReviewStats> {
+  return apiFetch<ReviewStats>("/api/auth/me/review-stats");
+}
+
+export async function changePassword(
+  current_password: string,
+  new_password: string
+): Promise<{ status: string }> {
+  return apiFetch<{ status: string }>("/api/auth/change-password", {
+    method: "POST",
+    body: JSON.stringify({ current_password, new_password }),
+  });
+}

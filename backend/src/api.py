@@ -203,6 +203,11 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+
 class ReviewRequest(BaseModel):
     ground_truth_label: int
     reviewer_id: str
@@ -248,6 +253,89 @@ def get_me(authorization: Optional[str] = Header(None)):
         }
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+
+def _require_username(authorization: Optional[str]) -> str:
+    """Decode the Bearer token and return the username (sub), or 401."""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    try:
+        payload = jwt.decode(authorization[7:], JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    username = payload.get("sub")
+    if not username:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return username
+
+
+@app.get("/api/auth/me/review-stats")
+def my_review_stats(authorization: Optional[str] = Header(None)):
+    """Review activity for the logged-in analyst (keyed on reviewed_by = their
+    username). Honest, per-user metrics — follows the account, not a hardcoded name."""
+    username = _require_username(authorization)
+    conn = get_db()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT
+                    COUNT(*)                                                    AS reviews_done,
+                    COUNT(*) FILTER (WHERE ground_truth_label = 1)              AS confirmed_fraud,
+                    COUNT(*) FILTER (WHERE ground_truth_label = 0)              AS cleared,
+                    COALESCE(SUM(amount_myr) FILTER (WHERE ground_truth_label = 0), 0) AS amount_approved
+                FROM private_transactions
+                WHERE reviewed_by = %s AND reviewed_by <> ''
+                """,
+                (username,),
+            )
+            reviews_done, confirmed_fraud, cleared, amount_approved = cur.fetchone()
+
+            # Cards this analyst cleared (marked legitimate) that are no longer frozen.
+            cur.execute(
+                """
+                SELECT COUNT(DISTINCT pt.card_hash)
+                FROM private_transactions pt
+                WHERE pt.reviewed_by = %s
+                  AND pt.ground_truth_label = 0
+                  AND pt.card_hash IS NOT NULL
+                  AND NOT EXISTS (
+                      SELECT 1 FROM frozen_cards f WHERE f.card_hash = pt.card_hash
+                  )
+                """,
+                (username,),
+            )
+            cards_unfrozen = cur.fetchone()[0]
+    finally:
+        conn.close()
+
+    return {
+        "reviews_done":    int(reviews_done),
+        "confirmed_fraud": int(confirmed_fraud),
+        "cleared":         int(cleared),
+        "amount_approved": float(amount_approved or 0),
+        "cards_unfrozen":  int(cards_unfrozen or 0),
+    }
+
+
+@app.post("/api/auth/change-password")
+def change_password(body: ChangePasswordRequest, authorization: Optional[str] = Header(None)):
+    username = _require_username(authorization)
+    if len(body.new_password) < 6:
+        raise HTTPException(status_code=400, detail="New password must be at least 6 characters")
+    if body.new_password == body.current_password:
+        raise HTTPException(status_code=400, detail="New password must differ from the current one")
+
+    conn = get_db()
+    try:
+        store = UserStore(conn)
+        user = store.get_by_username(username)
+        if not user or not verify_password(body.current_password, user["password_hash"]):
+            raise HTTPException(status_code=401, detail="Current password is incorrect")
+        store.update_password(username, body.new_password)
+    finally:
+        conn.close()
+    return {"status": "SUCCESS"}
 
 
 # ── Transactions ──────────────────────────────────────────────
