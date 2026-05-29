@@ -15,6 +15,7 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: {
     default: "Dashboard | Fraud Analysis System",
+    template: "%s",
   },
   description: "Real-time fraud detection and review dashboard",
 };
