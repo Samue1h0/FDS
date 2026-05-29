@@ -24,9 +24,23 @@ from src.user_store import UserStore, verify_password
 
 app = FastAPI(title="Fraud Detection API")
 
+# Allowed browser origins for the hosted frontend.
+#  - myfaid.com / www.myfaid.com : the Vercel production domain
+#  - localhost                   : local dev (frontend on :3000)
+#  - *.vercel.app                : Vercel preview/initial deploy URLs
+# Extra origins can be added via CORS_EXTRA_ORIGINS (comma-separated).
+_cors_origins = [
+    "https://myfaid.com",
+    "https://www.myfaid.com",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+_cors_origins += [o.strip() for o in os.getenv("CORS_EXTRA_ORIGINS", "").split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_methods=["*"],
     allow_headers=["*"],
 )

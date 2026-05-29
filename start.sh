@@ -106,11 +106,12 @@ log "Creating tmux session '$SESSION'..."
 # Window 0: gateway (created with the session)
 tmux new-session -d -s "$SESSION" -n "gateway"
 
-# Windows 1-4: insert after the previous window index
+# Windows 1-5: insert after the previous window index
 tmux new-window -a -t "$SESSION:0" -n "fraud-consumer"
 tmux new-window -a -t "$SESSION:1" -n "chain-consumer"
 tmux new-window -a -t "$SESSION:2" -n "fastapi"
 tmux new-window -a -t "$SESSION:3" -n "frontend"
+tmux new-window -a -t "$SESSION:4" -n "tunnel"
 
 log "All tmux windows created. Sending commands..."
 
@@ -132,6 +133,12 @@ tmux send-keys -t "$SESSION:fastapi" \
 
 tmux send-keys -t "$SESSION:frontend" \
   "cd '$FRONTEND_DIR' && echo '=== Next.js :3000 ===' && npm run dev" Enter
+
+# Cloudflare named tunnel (token-managed). Foreground run — no systemd, so it
+# survives WSL's slow-DNS startup race (see HOSTING.md). Skips gracefully if
+# cloudflared isn't installed or CLOUDFLARE_TUNNEL_TOKEN isn't set in .env.
+tmux send-keys -t "$SESSION:tunnel" \
+  "export \$(cat '$BASE_DIR/.env' | xargs) && echo '=== Cloudflare Tunnel (api.myfaid.com) ===' && if ! command -v cloudflared >/dev/null; then echo 'cloudflared not installed — skipping tunnel'; elif [ -z \"\$CLOUDFLARE_TUNNEL_TOKEN\" ]; then echo 'CLOUDFLARE_TUNNEL_TOKEN not set in .env — skipping tunnel'; else cloudflared tunnel run --token \"\$CLOUDFLARE_TUNNEL_TOKEN\"; fi" Enter
 
 # Go back to gateway window
 tmux select-window -t "$SESSION:gateway"
@@ -162,6 +169,7 @@ echo ""
 echo "  Fabric Gateway  → http://localhost:8080"
 echo "  FastAPI         → http://localhost:8000/api/stats"
 echo "  Frontend        → http://localhost:3000"
+echo "  Public API      → https://api.myfaid.com (Cloudflare tunnel window)"
 echo ""
 echo "  Attach:         tmux attach -t $SESSION"
 echo "  Switch windows: Ctrl+B then W (pick from list)"
