@@ -12,6 +12,14 @@ import { getDemoStatus, runDemo, stopDemo, resetDemoData } from "@/services/frau
 export default function DemoControls() {
   const [running, setRunning] = useState(false);
   const [busy, setBusy]       = useState(false);
+  // /internal/* (incl. demo-status) is local-only and 403s through the tunnel,
+  // so these controls only work — and only show — when served from a local host.
+  const [isLocal, setIsLocal] = useState(false);
+
+  useEffect(() => {
+    const h = window.location.hostname;
+    setIsLocal(h === "localhost" || h === "127.0.0.1");
+  }, []);
 
   const refresh = useCallback(async () => {
     try {
@@ -23,10 +31,13 @@ export default function DemoControls() {
   }, []);
 
   useEffect(() => {
+    if (!isLocal) return;
     refresh();
     const id = setInterval(refresh, 5000);
     return () => clearInterval(id);
-  }, [refresh]);
+  }, [isLocal, refresh]);
+
+  if (!isLocal) return null;
 
   const onRun = async () => {
     setBusy(true);
