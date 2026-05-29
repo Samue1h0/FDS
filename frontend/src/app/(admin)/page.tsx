@@ -177,7 +177,6 @@ export default function DashboardPage() {
   const [granularity, setGranularity] = useState<Granularity>("monthly");
 
   const isLoading = status === "loading";
-  const monthName = new Date().toLocaleString("default", { month: "long" });
 
   // Print-to-PDF: force light theme + reflow the ApexCharts to the print width
   // for the duration of the print, then restore the user's theme afterward.
@@ -209,14 +208,9 @@ export default function DashboardPage() {
 
       {/* Header */}
       <div className="col-span-12">
-        <div className="flex items-end gap-4">
-          <h1 className="text-2xl font-semibold text-gray-800 dark:text-white/90">
-            Dashboard
-          </h1>
-          <p className="text-2xl font-normal text-gray-500 dark:text-gray-400">
-            | &nbsp;&nbsp;{monthName}
-          </p>
-        </div>
+        <h1 className="text-2xl font-semibold text-gray-800 dark:text-white/90">
+          Dashboard
+        </h1>
         <div className="flex items-center justify-between gap-3 print:hidden">
           <div className="min-w-0 flex-1">
             <DashboardStatusBar
