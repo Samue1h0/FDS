@@ -5,12 +5,10 @@ import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import { EyeCloseIcon, EyeIcon } from "@/icons";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function SignInForm() {
   const { login }                = useAuth();
-  const router                   = useRouter();
   const [username,  setUsername] = useState("");
   const [password,  setPassword] = useState("");
   const [showPass,  setShowPass] = useState(false);
@@ -24,7 +22,10 @@ export default function SignInForm() {
     setLoading(true);
     try {
       await login(username.trim(), password);
-      router.replace("/");
+      // Hard navigation (not router.replace): forces a fresh top-level request
+      // that carries the new auth cookie and bypasses any cached RSC redirect
+      // the proxy/middleware produced while we were unauthenticated on /signin.
+      window.location.assign("/");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Login failed. Try again.");
     } finally {
