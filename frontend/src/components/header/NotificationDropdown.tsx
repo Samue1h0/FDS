@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
-import { useNotifications, type NotificationType } from "@/context/NotificationsContext";
+import { useNotifications, type NotificationType } from "@/context/LiveContext";
 
 function timeAgo(d: Date): string {
   const s = Math.floor((Date.now() - d.getTime()) / 1000);

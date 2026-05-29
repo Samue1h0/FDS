@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useNotifications, type NotificationType } from "@/context/NotificationsContext";
+import { useNotifications, type NotificationType } from "@/context/LiveContext";
 
 const ACCENT: Record<NotificationType, string> = {
   fraud:  "bg-red-500",

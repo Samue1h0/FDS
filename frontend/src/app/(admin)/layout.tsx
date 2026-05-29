@@ -4,7 +4,7 @@ import AppHeader from "@/layout/AppHeader";
 import React, { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { NotificationsProvider } from "@/context/NotificationsContext";
+import { LiveProvider } from "@/context/LiveContext";
 import DynamicIsland from "@/components/notifications/DynamicIsland";
 
 export default function AdminLayout({
@@ -22,7 +22,7 @@ export default function AdminLayout({
   if (loading || !user) return null;
 
   return (
-    <NotificationsProvider>
+    <LiveProvider>
       <div className="min-h-screen">
         <AppHeader />
         <div className="mx-auto max-w-(--breakpoint-2xl) p-4 md:p-6">
@@ -30,6 +30,6 @@ export default function AdminLayout({
         </div>
         <DynamicIsland />
       </div>
-    </NotificationsProvider>
+    </LiveProvider>
   );
 }
