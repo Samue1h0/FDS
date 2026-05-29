@@ -1,14 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import { getMyReviewStats, changePassword, type ReviewStats } from "@/services/fraudApi";
-
-// Initials for the avatar, e.g. "analyst1" → "AN", "jane doe" → "JD".
-function initials(name: string): string {
-  const parts = name.trim().split(/[\s._-]+/).filter(Boolean);
-  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
-  return name.slice(0, 2).toUpperCase();
-}
+import { userMeta, initials } from "@/lib/userDirectory";
 
 // JWT expiry (exp claim, seconds) straight from the stored token.
 function sessionExpiry(): Date | null {
@@ -69,6 +64,7 @@ export default function AnalystProfile() {
 
   const expiry = sessionExpiry();
   const roleLabel = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+  const meta = userMeta(user.username);
 
   const submitPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,16 +92,20 @@ export default function AnalystProfile() {
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-500 text-xl font-semibold text-white">
-              {initials(user.username)}
+            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-brand-500 text-xl font-semibold text-white">
+              {meta.avatar ? (
+                <Image width={64} height={64} src={meta.avatar} alt={meta.name} className="h-16 w-16 object-cover" />
+              ) : (
+                initials(meta.name)
+              )}
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90">{user.username}</h4>
+              <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90">{meta.name}</h4>
               <div className="mt-1 flex items-center gap-2">
+                <span className="text-sm text-gray-500 dark:text-gray-400">@{user.username}</span>
                 <span className="inline-flex items-center rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">
                   {roleLabel}
                 </span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">Fraud Analyst</span>
               </div>
             </div>
           </div>

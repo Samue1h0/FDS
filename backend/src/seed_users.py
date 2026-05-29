@@ -20,6 +20,11 @@ USERS = [
     {"username": "analyst1", "password": "analyst123", "role": "analyst"},
     {"username": "analyst2", "password": "analyst123", "role": "analyst"},
     {"username": "admin",    "password": "admin123",   "role": "admin"},
+    # Team accounts (display name + avatar mapped in frontend userDirectory.ts)
+    {"username": "CCX",  "password": "ccx12345",  "role": "analyst"},  # Chun Xian
+    {"username": "Hong", "password": "hong12345", "role": "analyst"},  # Mun Hong
+    {"username": "Sam",  "password": "sam12345",  "role": "analyst"},  # Sam
+    {"username": "Siew", "password": "siew12345", "role": "analyst"},  # Yat Fei
 ]
 
 
