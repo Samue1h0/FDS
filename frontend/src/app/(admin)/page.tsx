@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FraudMetrics }       from "@/components/dashboard/FraudMetrics";
 import ReviewProgressCard      from "@/components/dashboard/ReviewProgressCard";
-import RiskDistributionChart   from "@/components/dashboard/RiskDistributionChart";
+import PeriodSummary           from "@/components/dashboard/PeriodSummary";
 import FraudTrendChart         from "@/components/dashboard/FraudTrendChart";
+import type { Granularity }    from "@/components/dashboard/trendRollup";
 import RecentTransactions      from "@/components/dashboard/RecentTransactions";
 import BlockchainAuditSection  from "@/components/dashboard/BlockchainAuditSection";
 import DashboardStatusBar      from "@/components/dashboard/DashboardStatusBar";
@@ -165,12 +166,15 @@ function ErrorBanner({ error }: { error: string }) {
 
 export default function DashboardPage() {
   const {
-    stats, trend, scoreDist,
+    stats, trend,
     recentTransactions, allTransactions,
     status, lastUpdated, error, isSSE, refresh,
     alerts, clearAlerts,
   } = useDashboardData();
   const { user } = useAuth();
+
+  // Shared granularity for the Fraud Trend chart + Period Summary panel.
+  const [granularity, setGranularity] = useState<Granularity>("monthly");
 
   const isLoading = status === "loading";
   const monthName = new Date().toLocaleString("default", { month: "long" });
@@ -245,19 +249,7 @@ export default function DashboardPage() {
         {isLoading ? <MetricsSkeleton /> : <FraudMetrics stats={stats} />}
       </div>
 
-      {/* Row 2 — Charts */}
-      <div className="col-span-12 xl:col-span-8 break-avoid">
-        {isLoading
-          ? <ChartSkeleton height="h-[320px]" />
-          : <FraudTrendChart trend={trend} />}
-      </div>
-      <div className="col-span-12 xl:col-span-4 break-avoid">
-        {isLoading
-          ? <ChartSkeleton height="h-[320px]" />
-          : <RiskDistributionChart scoreDist={scoreDist} />}
-      </div>
-
-      {/* Row 3 — Table + Review Progress + Live Alerts */}
+      {/* Row 2 — Table + Review Progress + Live Alerts */}
       <div className="col-span-12 xl:col-span-6 xl:h-[460px] break-avoid">
         {isLoading
           ? <TableSkeleton />
@@ -272,6 +264,18 @@ export default function DashboardPage() {
         {isLoading
           ? <AlertSkeleton />
           : <FraudAlertFeed alerts={alerts} onClear={clearAlerts} />}
+      </div>
+
+      {/* Row 3 — Fraud Trend + Period Summary */}
+      <div className="col-span-12 xl:col-span-8 break-avoid">
+        {isLoading
+          ? <ChartSkeleton height="h-[320px]" />
+          : <FraudTrendChart trend={trend} granularity={granularity} onGranularityChange={setGranularity} />}
+      </div>
+      <div className="col-span-12 xl:col-span-4 break-avoid">
+        {isLoading
+          ? <ChartSkeleton height="h-[320px]" />
+          : <PeriodSummary trend={trend} granularity={granularity} />}
       </div>
 
       {/* Print-only report sections — top rule triggers + top-risk transactions */}
