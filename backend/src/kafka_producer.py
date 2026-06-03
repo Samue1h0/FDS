@@ -109,7 +109,10 @@ def produce_demo_deck(
 
         message = {
             "Transaction ID": f"DEMO{i:04d}",
-            "Date & Time":    real_ts.strftime("%Y-%m-%d %H:%M:%S"),
+            # Must match the scorer's enrichment parser (fraud_scorer
+            # ._build_enriched_row uses format="%d/%m/%Y %H:%M"); any other
+            # format coerces to NaT and every demo row gets REJECTED.
+            "Date & Time":    real_ts.strftime("%d/%m/%Y %H:%M"),
             "is_demo":        True,
         }
         for k, v in deck_row.items():

@@ -106,12 +106,13 @@ log "Creating tmux session '$SESSION'..."
 # Window 0: gateway (created with the session)
 tmux new-session -d -s "$SESSION" -n "gateway"
 
-# Windows 1-5: insert after the previous window index
+# Windows 1-6: insert after the previous window index
 tmux new-window -a -t "$SESSION:0" -n "fraud-consumer"
 tmux new-window -a -t "$SESSION:1" -n "chain-consumer"
 tmux new-window -a -t "$SESSION:2" -n "fastapi"
 tmux new-window -a -t "$SESSION:3" -n "frontend"
 tmux new-window -a -t "$SESSION:4" -n "tunnel"
+tmux new-window -a -t "$SESSION:5" -n "iot-watch"
 
 log "All tmux windows created. Sending commands..."
 
@@ -139,6 +140,12 @@ tmux send-keys -t "$SESSION:frontend" \
 # cloudflared isn't installed or CLOUDFLARE_TUNNEL_TOKEN isn't set in .env.
 tmux send-keys -t "$SESSION:tunnel" \
   "export \$(cat '$BASE_DIR/.env' | xargs) && echo '=== Cloudflare Tunnel (api.myfaid.com) ===' && if ! command -v cloudflared >/dev/null; then echo 'cloudflared not installed — skipping tunnel'; elif [ -z \"\$CLOUDFLARE_TUNNEL_TOKEN\" ]; then echo 'CLOUDFLARE_TUNNEL_TOKEN not set in .env — skipping tunnel'; else cloudflared tunnel run --token \"\$CLOUDFLARE_TUNNEL_TOKEN\"; fi" Enter
+
+# IoT tap monitor. The bridge itself runs on Windows (needs COM7); this WSL-side
+# window just tails IoT taps as they hit the backend via --watch. Harmless when
+# no IoT demo is running — it idles polling the API.
+tmux send-keys -t "$SESSION:iot-watch" \
+  "cd '$BASE_DIR/iot' && echo '=== IoT tap monitor (run the bridge on Windows: python iot_bridge.py --port COM7) ===' && python3 iot_bridge.py --watch" Enter
 
 # Go back to gateway window
 tmux select-window -t "$SESSION:gateway"
@@ -175,6 +182,7 @@ echo "  Attach:         tmux attach -t $SESSION"
 echo "  Switch windows: Ctrl+B then W (pick from list)"
 echo "  Detach:         Ctrl+B then D"
 echo "  Load data:      cd backend && python3 -m src.kafka_producer"
+echo "  IoT monitor:    'iot-watch' window (bridge runs on Windows: python iot_bridge.py --port COM7)"
 echo "  Stop:           ./stop.sh"
 echo ""
 
