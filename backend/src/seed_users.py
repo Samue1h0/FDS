@@ -16,15 +16,17 @@ from src.user_store import hash_password
 
 POSTGRES_DSN = os.getenv("POSTGRES_DSN", "postgresql://fraud_user:fraud_pass@localhost:5432/fraud_private")
 
+# `email` = the Google account allowed to "Sign in with Google" as this user
+# (must match exactly). Leave None for accounts without Google login.
 USERS = [
-    {"username": "analyst1", "password": "analyst123", "role": "analyst"},
-    {"username": "analyst2", "password": "analyst123", "role": "analyst"},
-    {"username": "admin",    "password": "admin123",   "role": "admin"},
+    {"username": "analyst1", "password": "analyst123", "role": "analyst", "email": None},
+    {"username": "analyst2", "password": "analyst123", "role": "analyst", "email": None},
+    {"username": "admin",    "password": "admin123",   "role": "admin",   "email": None},
     # Team accounts (display name + avatar mapped in frontend userDirectory.ts)
-    {"username": "CCX",  "password": "ccx12345",  "role": "analyst"},  # Chun Xian
-    {"username": "Hong", "password": "hong12345", "role": "analyst"},  # Mun Hong
-    {"username": "Sam",  "password": "sam12345",  "role": "analyst"},  # Sam
-    {"username": "Siew", "password": "siew12345", "role": "analyst"},  # Yat Fei
+    {"username": "CCX",  "password": "ccx12345",  "role": "analyst", "email": None},  # Chun Xian
+    {"username": "Hong", "password": "hong12345", "role": "analyst", "email": None},  # Mun Hong
+    {"username": "Sam",  "password": "sam12345",  "role": "analyst", "email": "143samuelho@gmail.com"},  # Sam
+    {"username": "Siew", "password": "siew12345", "role": "analyst", "email": None},  # Yat Fei
 ]
 
 
@@ -33,16 +35,19 @@ def main():
     for u in USERS:
         try:
             with conn.cursor() as cur:
+                # Insert new accounts; for existing ones, keep the password but
+                # refresh the email (so adding an SSO email here + re-running
+                # this script is enough to enable Google login for that user).
                 cur.execute(
                     """
-                    INSERT INTO users (username, password_hash, role)
-                    VALUES (%s, %s, %s)
-                    ON CONFLICT (username) DO NOTHING
+                    INSERT INTO users (username, password_hash, role, email)
+                    VALUES (%s, %s, %s, %s)
+                    ON CONFLICT (username) DO UPDATE SET email = EXCLUDED.email
                     """,
-                    (u["username"], hash_password(u["password"]), u["role"]),
+                    (u["username"], hash_password(u["password"]), u["role"], u["email"]),
                 )
             conn.commit()
-            print(f"  Seeded: {u['username']} ({u['role']})")
+            print(f"  Seeded: {u['username']} ({u['role']}) email={u['email'] or '-'}")
         except Exception as e:
             print(f"  Error seeding {u['username']}: {e}")
             conn.rollback()

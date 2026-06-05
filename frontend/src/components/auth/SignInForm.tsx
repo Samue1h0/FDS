@@ -5,15 +5,21 @@ import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import { EyeCloseIcon, EyeIcon } from "@/icons";
 import { useAuth } from "@/context/AuthContext";
+import GoogleSignInButton from "./GoogleSignInButton";
 import React, { useState } from "react";
 
 export default function SignInForm() {
-  const { login }                = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const [username,  setUsername] = useState("");
   const [password,  setPassword] = useState("");
   const [showPass,  setShowPass] = useState(false);
   const [error,     setError]    = useState<string | null>(null);
   const [loading,   setLoading]  = useState(false);
+
+  // Hard navigation (not router.replace): forces a fresh top-level request that
+  // carries the new auth cookie and bypasses any cached RSC redirect the
+  // proxy/middleware produced while we were unauthenticated on /signin.
+  const goHome = () => window.location.assign("/");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,12 +28,22 @@ export default function SignInForm() {
     setLoading(true);
     try {
       await login(username.trim(), password);
-      // Hard navigation (not router.replace): forces a fresh top-level request
-      // that carries the new auth cookie and bypasses any cached RSC redirect
-      // the proxy/middleware produced while we were unauthenticated on /signin.
-      window.location.assign("/");
+      goHome();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Login failed. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogle = async (credential: string) => {
+    setError(null);
+    setLoading(true);
+    try {
+      await loginWithGoogle(credential);
+      goHome();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Google sign-in failed. Try again.");
     } finally {
       setLoading(false);
     }
@@ -93,6 +109,15 @@ export default function SignInForm() {
               </div>
             </div>
           </form>
+
+          {/* Divider + Google SSO. The button renders only when a Client ID is
+              configured (NEXT_PUBLIC_GOOGLE_CLIENT_ID). */}
+          <div className="my-5 flex items-center gap-3">
+            <span className="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
+            <span className="text-xs text-gray-400">or</span>
+            <span className="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
+          </div>
+          <GoogleSignInButton onCredential={handleGoogle} onError={setError} />
         </div>
       </div>
     </div>

@@ -15,6 +15,7 @@ interface AuthContextType {
   loading:         boolean;
   piiConsented:    boolean;
   login:           (username: string, password: string) => Promise<void>;
+  loginWithGoogle: (credential: string) => Promise<void>;
   logout:          () => void;
   grantPiiConsent: () => void;
 }
@@ -59,6 +60,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(err.detail ?? "Login failed");
     }
     const data = await res.json();
+    persistSession(data);
+  };
+
+  // Sign in with Google: send the Google credential to the backend, which
+  // verifies it and returns the same app session as a password login.
+  const loginWithGoogle = async (credential: string) => {
+    const res = await fetch(`${API_URL}/api/auth/google`, {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ credential }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: "Google sign-in failed" }));
+      throw new Error(err.detail ?? "Google sign-in failed");
+    }
+    const data = await res.json();
+    persistSession(data);
+  };
+
+  const persistSession = (data: { token: string; user: AuthUser }) => {
     localStorage.setItem("auth_token", data.token);
     document.cookie = `auth_token=${data.token}; path=/; max-age=${8 * 60 * 60}; SameSite=Lax`;
     setUser(data.user);
@@ -75,7 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const grantPiiConsent = () => setPiiConsented(true);
 
   return (
-    <AuthContext.Provider value={{ user, loading, piiConsented, login, logout, grantPiiConsent }}>
+    <AuthContext.Provider value={{ user, loading, piiConsented, login, loginWithGoogle, logout, grantPiiConsent }}>
       {children}
     </AuthContext.Provider>
   );

@@ -51,6 +51,8 @@ ENCRYPTION_KEY     = os.getenv("ENCRYPTION_KEY", "").encode()
 JWT_SECRET         = os.getenv("JWT_SECRET", "fraud-detection-secret-change-in-prod")
 JWT_ALGORITHM      = "HS256"
 JWT_EXPIRE_HOURS   = 8
+# Google "Sign in with Google" (SSO). Same Client ID as the frontend button.
+GOOGLE_CLIENT_ID   = os.getenv("GOOGLE_CLIENT_ID", "")
 
 fabric = FabricClient(gateway_url=FABRIC_GATEWAY_URL)
 
@@ -203,6 +205,11 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class GoogleLoginRequest(BaseModel):
+    # The signed ID token the Google "Sign in" button hands back in the browser.
+    credential: str
+
+
 class ChangePasswordRequest(BaseModel):
     current_password: str
     new_password: str
@@ -227,6 +234,13 @@ def login(body: LoginRequest):
     if not user or not verify_password(body.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
+    return _issue_token(user)
+
+
+def _issue_token(user: dict) -> dict:
+    """Mint the app's own JWT for a resolved user row. Both password login and
+    Google SSO funnel through here, so everything downstream (roles, /me, review
+    attribution) is identical regardless of how the user authenticated."""
     payload = {
         "sub":     user["username"],
         "user_id": user["user_id"],
@@ -238,6 +252,43 @@ def login(body: LoginRequest):
         "token": token,
         "user":  {"user_id": user["user_id"], "username": user["username"], "role": user["role"]},
     }
+
+
+@app.post("/api/auth/google")
+def google_login(body: GoogleLoginRequest):
+    """Sign in with Google (SSO). The browser button returns a signed Google ID
+    token; we verify it with Google, then map the verified email to a local user
+    (email column = allowlist). No matching email → not authorized. Either way the
+    user ends up with the same app JWT as a password login."""
+    if not GOOGLE_CLIENT_ID:
+        raise HTTPException(status_code=503, detail="Google sign-in is not configured on the server.")
+
+    # Verify signature, audience (our Client ID), issuer and expiry against Google.
+    try:
+        from google.oauth2 import id_token as google_id_token
+        from google.auth.transport import requests as google_requests
+        info = google_id_token.verify_oauth2_token(
+            body.credential, google_requests.Request(), GOOGLE_CLIENT_ID
+        )
+    except Exception:
+        raise HTTPException(status_code=401, detail="Could not verify your Google sign-in.")
+
+    email = (info.get("email") or "").strip().lower()
+    if not email or not info.get("email_verified"):
+        raise HTTPException(status_code=401, detail="Your Google account has no verified email.")
+
+    conn = get_db()
+    try:
+        user = UserStore(conn).get_by_email(email)
+    finally:
+        conn.close()
+
+    if not user:
+        raise HTTPException(
+            status_code=403,
+            detail=f"{email} isn't authorized. Ask an admin to add your email to an account.",
+        )
+    return _issue_token(user)
 
 
 @app.get("/api/auth/me")
