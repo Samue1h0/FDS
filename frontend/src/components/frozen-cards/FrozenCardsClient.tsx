@@ -1,10 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   getFrozenCards,
   type FrozenCard,
   type FrozenCardsResponse,
 } from "@/services/fraudApi";
+import { useLive } from "@/context/LiveContext";
 import FrozenCardsStats from "./FrozenCardsStats";
 import FrozenCardsTable from "./FrozenCardsTable";
 import FrozenCardDetailModal from "./FrozenCardDetailModal";
@@ -22,14 +23,33 @@ export default function FrozenCardsClient() {
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    let active = true;
-    getFrozenCards()
-      .then((d) => { if (active) { setData(d); setError(null); } })
-      .catch((e) => { if (active) setError(e instanceof Error ? e.message : "Failed to load frozen cards"); })
-      .finally(() => { if (active) setLoading(false); });
-    return () => { active = false; };
+  // Live updates: every SSE event (new scored txn / freeze / review) bumps
+  // lastUpdated, which we use to silently re-pull the frozen-cards list.
+  const { lastUpdated } = useLive();
+
+  const fetchCards = useCallback(async (silent: boolean) => {
+    if (!silent) setLoading(true);
+    try {
+      const d = await getFrozenCards();
+      setData(d);
+      setError(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to load frozen cards");
+    } finally {
+      if (!silent) setLoading(false);
+    }
   }, []);
+
+  // Initial load (with spinner).
+  useEffect(() => { fetchCards(false); }, [fetchCards]);
+
+  // Live refresh on each SSE event — silent so the table/search/page don't flicker.
+  // Skip the first run; the mount effect above already covers it.
+  const firstLive = useRef(true);
+  useEffect(() => {
+    if (firstLive.current) { firstLive.current = false; return; }
+    fetchCards(true);
+  }, [lastUpdated, fetchCards]);
 
   const openCard = (c: FrozenCard) => {
     setSelected(c);

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getTriggerStats, type TriggerStats } from "@/services/fraudApi";
+import { useLive } from "@/context/LiveContext";
 import RuleEngineSection from "./RuleEngineSection";
 import MlSection from "./MlSection";
 
@@ -9,13 +10,16 @@ export default function TriggersClient() {
   const [stats, setStats] = useState<TriggerStats | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Re-pull the trigger stats whenever the live feed reports new data.
+  const { lastUpdated } = useLive();
+
   useEffect(() => {
     let active = true;
     getTriggerStats()
       .then((data) => { if (active) setStats(data); })
       .catch((e) => { if (active) setError(e instanceof Error ? e.message : "Failed to load trigger stats"); });
     return () => { active = false; };
-  }, []);
+  }, [lastUpdated]);
 
   return (
     <div className="space-y-8">

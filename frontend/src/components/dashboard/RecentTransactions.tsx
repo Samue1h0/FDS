@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
 import Badge from "../ui/badge/Badge";
@@ -36,6 +38,18 @@ function formatDateTime(timestamp: string): string {
 }
 
 export default function RecentTransactions({ transactions }: RecentTransactionsProps) {
+  // Animate only rows that are genuinely new since the last render (not the
+  // whole list on first mount), so a freshly scored txn eases in instead of
+  // popping. seenRef holds the ids from the previous render.
+  const seenRef = useRef<Set<string>>(new Set());
+  const firstRef = useRef(true);
+  const isNew = (id: string) => !firstRef.current && !seenRef.current.has(id);
+
+  useEffect(() => {
+    seenRef.current = new Set(transactions.map((t) => t.transaction_id));
+    firstRef.current = false;
+  });
+
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 h-full">
       <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between shrink-0">
@@ -75,7 +89,7 @@ export default function RecentTransactions({ transactions }: RecentTransactionsP
                 const risk = getRiskLevel(txn.fraud_score);
                 const status = getStatusInfo(txn);
                 return (
-                  <TableRow key={txn.transaction_id}>
+                  <TableRow key={txn.transaction_id} className={isNew(txn.transaction_id) ? "animate-row-in" : ""}>
                     <TableCell className="py-3">
                       <div>
                         <p className="flex items-center gap-1.5 font-medium text-gray-800 text-theme-sm dark:text-white/90">

@@ -814,3 +814,22 @@ span.flatpickr-weekday,
 .animate-island-in {
   animation: island-in 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
+/* …and fade/slide back up when it auto-dismisses (phone-style). */
+@keyframes island-out {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to   { transform: translateY(-1rem) scale(0.96); opacity: 0; }
+}
+.animate-island-out {
+  animation: island-out 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* New row flowing into a live table — fade up + a brief brand highlight, so it
+   eases in instead of popping. (Highlight, not transform, to avoid <tr> jitter.) */
+@keyframes row-in {
+  0%   { opacity: 0; background-color: rgba(70, 95, 255, 0.12); }
+  60%  { opacity: 1; background-color: rgba(70, 95, 255, 0.08); }
+  100% { opacity: 1; background-color: transparent; }
+}
+.animate-row-in {
+  animation: row-in 0.7s ease-out;
+}

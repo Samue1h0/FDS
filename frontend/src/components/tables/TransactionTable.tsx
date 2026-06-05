@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
 import Badge from "../ui/badge/Badge";
 import Pagination from "./Pagination";
 import { getTransactions, type Transaction, type TransactionFilters } from "@/services/fraudApi";
+import { useLive } from "@/context/LiveContext";
 import ExportModal from "./ExportModal";
 import ReviewModal from "../dashboard/ReviewModal";
 
@@ -106,6 +107,25 @@ export default function TransactionTable() {
   const [modalOpen,       setModalOpen]       = useState(false);
   const [exportModalOpen, setExportModalOpen] = useState(false);
 
+  // Live "new transactions" cue. This table is interactive (filters, search,
+  // pagination, open review modal), so we never silently mutate the list — we
+  // surface a count and let the analyst refresh on their terms. Baseline = the
+  // global txn total captured at the last fetch; newCount = how many have landed
+  // since. (The count is system-wide; with a filter active it's an upper bound
+  // on what would actually appear — still an honest "data changed" cue.)
+  const { stats } = useLive();
+  const liveTotal = stats?.total ?? null;
+  const liveTotalRef = useRef<number | null>(null);
+  useEffect(() => { liveTotalRef.current = liveTotal; }, [liveTotal]);
+  const [baselineTotal, setBaselineTotal] = useState<number | null>(null);
+  // Seed the baseline once the first live total arrives (the mount fetch may
+  // finish before the SSE snapshot does).
+  useEffect(() => {
+    if (baselineTotal == null && liveTotal != null) setBaselineTotal(liveTotal);
+  }, [liveTotal, baselineTotal]);
+  const newCount =
+    liveTotal != null && baselineTotal != null ? Math.max(0, liveTotal - baselineTotal) : 0;
+
   const fetchTransactions = useCallback(async () => {
     setLoading(true);
     try {
@@ -120,6 +140,7 @@ export default function TransactionTable() {
     } catch {
       setTransactions([]);
     } finally {
+      setBaselineTotal(liveTotalRef.current);
       setLoading(false);
     }
   }, [decision, status, search, risk]);
@@ -168,6 +189,20 @@ export default function TransactionTable() {
 
   return (
     <>
+      {/* ── Live "new transactions" cue — never auto-mutates the list ──────── */}
+      {newCount > 0 && (
+        <button
+          type="button"
+          onClick={() => fetchTransactions()}
+          className="mb-4 flex w-full items-center justify-center gap-2 rounded-lg border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-medium text-brand-700 transition hover:bg-brand-100 dark:border-brand-500/30 dark:bg-brand-500/10 dark:text-brand-400 dark:hover:bg-brand-500/20"
+        >
+          <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <path d="M16 10a6 6 0 1 1-1.76-4.24M16 4v3h-3" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          {newCount} new transaction{newCount === 1 ? "" : "s"} — click to refresh
+        </button>
+      )}
+
       {/* ── Filters ──────────────────────────────────────────────────────── */}
       <div className="mb-4 flex flex-wrap gap-3 items-center">
 

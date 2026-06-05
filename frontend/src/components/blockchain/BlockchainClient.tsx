@@ -7,6 +7,7 @@ import {
   type BlockchainNodes,
   type ChainState,
 } from "@/services/fraudApi";
+import { useLive } from "@/context/LiveContext";
 import NetworkHealthCards from "./NetworkHealthCards";
 import LedgerStatusCard from "./LedgerStatusCard";
 import BlockHashChain from "./BlockHashChain";
@@ -18,6 +19,12 @@ export default function BlockchainClient() {
   const [chain, setChain] = useState<ChainState | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // A new scored txn bumps lastUpdated; re-pull promptly so the block height /
+  // hash chain catch up without waiting for the next poll tick. (The block
+  // itself commits a beat after the SSE event, so the intervals below still
+  // backstop the eventual commit.)
+  const { lastUpdated } = useLive();
+
   // Network health — poll every 10s for live up/down + climbing block height.
   useEffect(() => {
     let active = true;
@@ -28,7 +35,7 @@ export default function BlockchainClient() {
     load();
     const id = setInterval(load, 10_000);
     return () => { active = false; clearInterval(id); };
-  }, []);
+  }, [lastUpdated]);
 
   // Hash chain — poll a little slower; it only changes when a block commits.
   useEffect(() => {
@@ -40,7 +47,7 @@ export default function BlockchainClient() {
     load();
     const id = setInterval(load, 15_000);
     return () => { active = false; clearInterval(id); };
-  }, []);
+  }, [lastUpdated]);
 
   return (
     <div className="space-y-8">
