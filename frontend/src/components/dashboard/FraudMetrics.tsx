@@ -30,15 +30,15 @@ export const FraudMetrics = ({ stats }: FraudMetricsProps) => {
   const pendingReview = stats?.pending_review ?? 0;
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 md:gap-6 print:gap-2">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6 print:gap-2 print:grid-cols-4">
       {/* Flagged Transactions */}
       <div className="rounded-2xl border flex items-end justify-between mt-5 border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 print:mt-0 print:p-3 break-avoid">
-        <div className="flex items-end justify-between gap-6">
-          <div className="flex items-center justify-center w-17 h-17 bg-gray-100 rounded-xl dark:bg-gray-800 print:hidden">
+        <div className="flex items-end gap-4 min-w-0">
+          <div className="flex items-center justify-center w-17 h-17 shrink-0 bg-gray-100 rounded-xl dark:bg-gray-800 print:hidden">
             <ListIcon className="text-gray-800 size-6 dark:text-white/90" />
           </div>
           <div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="block truncate text-sm text-gray-500 dark:text-gray-400">
               Flagged Transactions
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90 print:mt-0 print:text-2xl whitespace-nowrap">
@@ -46,7 +46,7 @@ export const FraudMetrics = ({ stats }: FraudMetricsProps) => {
             </h4>
           </div>
         </div>
-        <Badge color="error" className="print:hidden">
+        <Badge color="error" className="shrink-0 whitespace-nowrap xl:hidden 2xl:inline-flex print:hidden">
           <ArrowUpIcon />
           Fraud
         </Badge>
@@ -54,12 +54,12 @@ export const FraudMetrics = ({ stats }: FraudMetricsProps) => {
 
       {/* Balance at Risk */}
       <div className="rounded-2xl border flex items-end justify-between mt-5 border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 print:mt-0 print:p-3 break-avoid">
-        <div className="flex items-end justify-between gap-6">
-          <div className="flex items-center justify-center w-17 h-17 bg-gray-100 rounded-xl dark:bg-gray-800 print:hidden">
+        <div className="flex items-end gap-4 min-w-0">
+          <div className="flex items-center justify-center w-17 h-17 shrink-0 bg-gray-100 rounded-xl dark:bg-gray-800 print:hidden">
             <DollarLineIcon className="text-gray-800 size-6 dark:text-white/90" />
           </div>
           <div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="block truncate text-sm text-gray-500 dark:text-gray-400">
               Balance at Risk
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90 print:mt-0 print:text-2xl whitespace-nowrap">
@@ -67,7 +67,7 @@ export const FraudMetrics = ({ stats }: FraudMetricsProps) => {
             </h4>
           </div>
         </div>
-        <Badge color="error" className="print:hidden">
+        <Badge color="error" className="shrink-0 whitespace-nowrap xl:hidden 2xl:inline-flex print:hidden">
           <ArrowUpIcon className="text-error-500" />
           At Risk
         </Badge>
@@ -75,12 +75,12 @@ export const FraudMetrics = ({ stats }: FraudMetricsProps) => {
 
       {/* Compromised Cards */}
       <div className="rounded-2xl border flex items-end justify-between mt-5 border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 print:mt-0 print:p-3 break-avoid">
-        <div className="flex items-end justify-between gap-6">
-          <div className="flex items-center justify-center w-17 h-17 bg-gray-100 rounded-xl dark:bg-gray-800 print:hidden">
+        <div className="flex items-end gap-4 min-w-0">
+          <div className="flex items-center justify-center w-17 h-17 shrink-0 bg-gray-100 rounded-xl dark:bg-gray-800 print:hidden">
             <LockIcon className="text-gray-800 size-6 dark:text-white/90" />
           </div>
           <div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="block truncate text-sm text-gray-500 dark:text-gray-400">
               Compromised Cards
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90 print:mt-0 print:text-2xl whitespace-nowrap">
@@ -88,7 +88,7 @@ export const FraudMetrics = ({ stats }: FraudMetricsProps) => {
             </h4>
           </div>
         </div>
-        <Badge color={compromisedCards > 0 ? "error" : "success"} className="print:hidden">
+        <Badge color={compromisedCards > 0 ? "error" : "success"} className="shrink-0 whitespace-nowrap xl:hidden 2xl:inline-flex print:hidden">
           <ArrowUpIcon className="text-error-500" />
           Frozen
         </Badge>
@@ -96,12 +96,12 @@ export const FraudMetrics = ({ stats }: FraudMetricsProps) => {
 
       {/* Pending Review */}
       <div className="rounded-2xl border flex items-end justify-between mt-5 border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 print:mt-0 print:p-3 break-avoid">
-        <div className="flex items-end justify-between gap-6">
-          <div className="flex items-center justify-center w-17 h-17 bg-gray-100 rounded-xl dark:bg-gray-800 print:hidden">
+        <div className="flex items-end gap-4 min-w-0">
+          <div className="flex items-center justify-center w-17 h-17 shrink-0 bg-gray-100 rounded-xl dark:bg-gray-800 print:hidden">
             <PaperPlaneIcon className="text-gray-800 dark:text-white/90" />
           </div>
           <div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="block truncate text-sm text-gray-500 dark:text-gray-400">
               Pending Review
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90 print:mt-0 print:text-2xl whitespace-nowrap">
@@ -109,7 +109,7 @@ export const FraudMetrics = ({ stats }: FraudMetricsProps) => {
             </h4>
           </div>
         </div>
-        <Badge color={pendingReview > 0 ? "error" : "success"} className="print:hidden">
+        <Badge color={pendingReview > 0 ? "error" : "success"} className="shrink-0 whitespace-nowrap xl:hidden 2xl:inline-flex print:hidden">
           {pendingReview > 0 ? <ArrowUpIcon className="text-error-500" /> : <ArrowDownIcon />}
           {pendingReview > 0 ? "Pending" : "Clear"}
         </Badge>
