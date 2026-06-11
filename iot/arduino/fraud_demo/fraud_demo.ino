@@ -1,20 +1,25 @@
 /*
  * Fraud-detection IoT demo terminal
  * ---------------------------------
- * Reads an RFID card, lets the user pick a scenario with two buttons, sends one
- * line over USB serial to iot_bridge.py, then shows the verdict on the LCD.
+ * Reads an RFID card and sends ONE line over USB serial to iot_bridge.py, then
+ * shows the verdict on the LCD + RGB LED + buzzer. The "what you're buying"
+ * scenario (incl. amount) is chosen on the /shop web page; the bridge fires the
+ * real transaction and sends the verdict (with the amount) back here.
  *
- * Serial protocol (must match backend/src/iot_bridge.py):
- *   Arduino -> PC :  TAP:<UID>:<SCENARIO>        e.g.  TAP:04A3F2B1:B
- *   PC -> Arduino :  RESULT:<STATE>:<SCORE>       e.g.  RESULT:FROZEN:0.79
+ * Serial protocol (must match iot/iot_bridge.py):
+ *   Arduino -> PC :  TAP:<UID>                         e.g.  TAP:04A3F2B1
+ *   PC -> Arduino :  RESULT:<STATE>:<SCORE>:<AMOUNT>    e.g.  RESULT:FROZEN:0.79:9500
  *                    STATE in {APPROVED, FROZEN, UNKNOWN, TIMEOUT}
  *
  * Hardware (Arduino Uno):
- *   MFRC522 RFID : SDA/SS=10  SCK=13  MOSI=11  MISO=12  RST=9   (SPI, 3.3V!)
- *   LCD 16x2 I2C : SDA=A4  SCL=A5   (addr 0x27)
- *   Button A     : D2 -> GND  (normal purchase,  scenario "A")
- *   Button B     : D3 -> GND  (out-of-ordinary,  scenario "B")
- *   Buzzer       : D8 (optional)
+ *   I2C LCD 16x2 : SDA=A4  SCL=A5   (addr 0x27),  VCC=5V  GND=GND
+ *   MFRC522 RFID : SDA/SS=10  SCK=13  MOSI=11  MISO=12  RST=9  3.3V (SPI, 3.3V!)
+ *   RGB LED      : R=6  G=5  B=3   common cathode (common leg -> GND)
+ *   Passive buzz : (+)=4   (-)=GND   (tone() for two distinct sounds)
+ *
+ * NOTE: tone() uses Timer2 (shared with PWM on pins 3 & 11). We drive the RGB
+ * with digitalWrite (full on/off colours), which is unaffected by tone(), so
+ * the buzzer and LED never fight over the timer.
  *
  * Libraries (Library Manager): "MFRC522" by GithubCommunity,
  *   "LiquidCrystal I2C" by Frank de Brabander.
@@ -27,14 +32,21 @@
 
 #define RST_PIN   9
 #define SS_PIN    10
-#define BTN_A     2
-#define BTN_B     3
-#define BUZZER    8
+#define LED_R     6
+#define LED_G     5
+#define LED_B     3
+#define BUZZER    4
 
 MFRC522 rfid(SS_PIN, RST_PIN);
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 const unsigned long VERDICT_TIMEOUT_MS = 9000;
+
+void setColor(bool r, bool g, bool b) {
+  digitalWrite(LED_R, r ? HIGH : LOW);
+  digitalWrite(LED_G, g ? HIGH : LOW);
+  digitalWrite(LED_B, b ? HIGH : LOW);
+}
 
 void lcdShow(const char* l1, const char* l2) {
   lcd.clear();
@@ -42,10 +54,35 @@ void lcdShow(const char* l1, const char* l2) {
   lcd.setCursor(0, 1); lcd.print(l2);
 }
 
-void beep(int ms, int times) {
-  for (int i = 0; i < times; i++) {
-    tone(BUZZER, 2000); delay(ms); noTone(BUZZER); delay(80);
-  }
+// One frequency for durMs, then a short gap (tone() is non-blocking).
+void note(int freq, int durMs, int gapMs) {
+  tone(BUZZER, freq, durMs);
+  delay(durMs + gapMs);
+}
+
+// Short blip the instant a card is read, so the user knows the tap registered.
+void beepDetected() {
+  note(1568, 70, 0);   // quick G6 blip
+  noTone(BUZZER);
+}
+
+// "dee-doo" payment-accepted chime (passive buzzer).
+void chimeApproved() {
+  note(2349, 140, 30);  // dee (D7)
+  note(1760, 200, 0);   // doo (A6)
+  noTone(BUZZER);
+}
+
+// Harsh repeated low buzz = rejected / frozen.
+void chimeRejected() {
+  for (int i = 0; i < 3; i++) note(440, 180, 90);  // A4 x3
+  noTone(BUZZER);
+}
+
+// Return to the idle "ready" state: blue LED, prompt on the LCD.
+void goIdle() {
+  setColor(false, false, true);   // blue = ready
+  lcdShow("Fraud Demo", "Tap a card...");
 }
 
 void setup() {
@@ -54,10 +91,11 @@ void setup() {
   rfid.PCD_Init();
   lcd.init();
   lcd.backlight();
-  pinMode(BTN_A, INPUT_PULLUP);
-  pinMode(BTN_B, INPUT_PULLUP);
+  pinMode(LED_R, OUTPUT);
+  pinMode(LED_G, OUTPUT);
+  pinMode(LED_B, OUTPUT);
   pinMode(BUZZER, OUTPUT);
-  lcdShow("Fraud Demo", "Tap a card...");
+  goIdle();
   Serial.println("READY");
 }
 
@@ -73,12 +111,39 @@ String readUID() {
   return uid;
 }
 
-// Scenario = whichever button is held at tap time; default "B" (the dramatic
-// out-of-ordinary one) so a bare tap still demonstrates a freeze.
-char pickScenario() {
-  if (digitalRead(BTN_A) == LOW) return 'A';
-  if (digitalRead(BTN_B) == LOW) return 'B';
-  return 'B';
+void showVerdict(String line) {
+  // line = RESULT:<STATE>:<SCORE>:<AMOUNT>
+  int p1 = line.indexOf(':');
+  int p2 = line.indexOf(':', p1 + 1);
+  int p3 = line.indexOf(':', p2 + 1);
+  String state  = line.substring(p1 + 1, p2);
+  String amount = (p3 > 0) ? line.substring(p3 + 1) : "";
+  String amtLine = amount.length() ? ("RM" + amount) : "";
+
+  if (state == "APPROVED") {
+    setColor(false, true, false);             // green
+    lcdShow("SUCCESSFUL", amtLine.c_str());
+    chimeApproved();
+  } else if (state == "FROZEN") {
+    setColor(true, false, false);             // red
+    lcdShow("REJECTED", amtLine.c_str());
+    chimeRejected();
+  } else if (state == "NOITEM") {
+    setColor(false, false, true);             // blue (not a fraud — just nothing picked)
+    lcdShow("Pick an item", "on the screen");
+    note(294, 130, 70); note(294, 130, 0);    // low double "nope"
+    noTone(BUZZER);
+  } else if (state == "UNKNOWN") {
+    setColor(true, false, false);             // red
+    lcdShow("Unknown card", "Map its UID");
+    note(440, 400, 0); noTone(BUZZER);
+  } else {                                    // TIMEOUT / anything else
+    setColor(true, false, false);             // red
+    lcdShow("Timeout", "Pipeline down?");
+    note(440, 400, 0); noTone(BUZZER);
+  }
+  delay(3500);
+  goIdle();
 }
 
 void waitForVerdict() {
@@ -95,46 +160,24 @@ void waitForVerdict() {
       }
     }
   }
+  setColor(true, false, false);
   lcdShow("No response", "Check bridge PC");
-  beep(400, 1);
-}
-
-void showVerdict(String line) {
-  // line = RESULT:<STATE>:<SCORE>
-  int p1 = line.indexOf(':');
-  int p2 = line.indexOf(':', p1 + 1);
-  String state = line.substring(p1 + 1, p2);
-  String score = line.substring(p2 + 1);
-
-  if (state == "FROZEN") {
-    lcdShow("** FRAUD **", ("FROZEN s=" + score).c_str());
-    beep(250, 3);
-  } else if (state == "APPROVED") {
-    lcdShow("Approved :)", ("score=" + score).c_str());
-    beep(120, 1);
-  } else if (state == "UNKNOWN") {
-    lcdShow("Unknown card", "Map its UID");
-    beep(400, 2);
-  } else {
-    lcdShow("Timeout", "Pipeline down?");
-    beep(400, 1);
-  }
-  delay(3500);
-  lcdShow("Fraud Demo", "Tap a card...");
+  note(440, 400, 0); noTone(BUZZER);
+  delay(2000);
+  goIdle();
 }
 
 void loop() {
   if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) return;
 
   String uid = readUID();
-  char scn = pickScenario();
+  beepDetected();                        // immediate "card read" feedback
 
   Serial.print("TAP:");
-  Serial.print(uid);
-  Serial.print(":");
-  Serial.println(scn);
+  Serial.println(uid);
 
-  lcdShow("Processing...", (uid + " [" + scn + "]").c_str());
+  setColor(false, false, true);          // blue while we wait
+  lcdShow("Processing...", uid.c_str());
   waitForVerdict();
 
   rfid.PICC_HaltA();

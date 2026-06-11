@@ -4,14 +4,17 @@ IoT bridge: Arduino (RFID + LCD) <--USB serial--> fraud pipeline.
 One RFID tap == one transaction injected into the SAME Kafka pipeline the
 dashboard/demo uses. Nothing here is a special-case fraud path:
 
-  Arduino sends   "TAP:<UID>:<SCENARIO>[:<amount>]"  over serial
+  Arduino sends   "TAP:<UID>"  over serial (one card tap)
         -> bridge maps UID -> a real KYC cardholder (with spending history)
+        -> bridge reads the scenario the /shop page armed (GET /api/iot/cart),
+           or falls back to the default dramatic scenario if nothing's armed
         -> builds a txn message (exact field names the pipeline expects)
         -> produces to Kafka topic "raw-transactions"
         -> kafka_fraud_consumer scores it, saves it, freezes-on-fraud,
            and pushes the live SSE that lights up the dashboard
         -> bridge polls GET /api/transactions?search=<id> for the verdict
-        -> bridge sends "RESULT:<APPROVED|FROZEN>:<score>" back to the LCD
+        -> bridge sends "RESULT:<APPROVED|FROZEN>:<score>:<amount>" back to the
+           Arduino (LCD shows SUCCESSFUL/REJECTED + RM amount; LED green/red)
 
 Usage (run inside WSL, where Kafka/API live):
   python3 iot_bridge.py --port /dev/ttyACM0     # live: listen for taps
@@ -113,6 +116,45 @@ def _api_get(path: str):
         return json.loads(r.read().decode())
 
 
+def _api_delete(path: str):
+    req = urllib.request.Request(f"{API_BASE}{path}", method="DELETE")
+    with urllib.request.urlopen(req, timeout=2) as r:
+        return json.loads(r.read().decode())
+
+
+def _fetch_cart():
+    """Read the scenario the /shop page armed (or None if nothing's armed)."""
+    try:
+        return _api_get("/api/iot/cart").get("cart")
+    except Exception as e:
+        print(f"  cart fetch error: {e}", file=sys.stderr)
+        return None
+
+
+def _clear_cart():
+    try:
+        _api_delete("/api/iot/cart")
+    except Exception:
+        pass
+
+
+def _scn_from_cart(cart: dict) -> dict:
+    """Turn the page's semantic cart into the scorer-shaped scenario dict.
+    foreign -> foreign IP + cross-location; online -> Online mode + desktop."""
+    foreign = bool(cart.get("foreign"))
+    online  = bool(cart.get("online"))
+    return dict(
+        amount=float(cart["amount"]),
+        merchant=cart.get("merchant", "Unknown"),
+        mcc=str(cart.get("mcc", "5999")),
+        mode="Online" if online else "In-Person",
+        location=cart.get("location", "Kuala Lumpur"),
+        ip=IP_FOREIGN if foreign else IP_MY,
+        device=DEV_DESKTOP if online else DEV_MOBILE,
+        is_fraud=1 if foreign else 0,   # intended label only; the model decides
+    )
+
+
 def _poll_verdict(txn_id: str):
     """Poll the private-record list (saved synchronously by the consumer) for
     this txn's verdict. Returns (label, score, frozen) or None on timeout."""
@@ -129,24 +171,20 @@ def _poll_verdict(txn_id: str):
     return None
 
 
-def _handle_tap(producer: Producer, ser, uid: str, scenario: str, amount_override):
+def _handle_tap(producer: Producer, ser, uid: str, scn: dict):
     profile = CARD_MAP.get(uid.upper())
     if profile is None:
         if DEFAULT_PROFILE is None:
             print(f"[tap] UNKNOWN card {uid} — rejected (add it to CARD_MAP)")
-            _send(ser, "RESULT:UNKNOWN:0")
+            _send(ser, f"RESULT:UNKNOWN:0:{scn['amount']:.0f}")
             return
         print(f"[tap] UNKNOWN card {uid} — falling back to default profile "
               f"({DEFAULT_PROFILE['Cardholder Name']}); add it to CARD_MAP")
         profile = DEFAULT_PROFILE
 
-    scn = dict(SCENARIOS.get(scenario.upper(), SCENARIOS[DEFAULT_SCENARIO]))
-    if amount_override is not None:
-        scn["amount"] = amount_override
-
     txn_id = f"IOT{int(time.time() * 1000)}"
     message = _build_message(profile, scn, txn_id)
-    print(f"[tap] {uid} -> {profile['Cardholder Name']} | scn={scenario} "
+    print(f"[tap] {uid} -> {profile['Cardholder Name']} | "
           f"RM{scn['amount']:.2f} @ {scn['location']} | {txn_id}")
 
     producer.produce(TOPIC, key=txn_id, value=json.dumps(message))
@@ -155,13 +193,17 @@ def _handle_tap(producer: Producer, ser, uid: str, scenario: str, amount_overrid
     verdict = _poll_verdict(txn_id)
     if verdict is None:
         print("  no verdict (timeout) — is the fraud consumer running?")
-        _send(ser, "RESULT:TIMEOUT:0")
+        _send(ser, f"RESULT:TIMEOUT:0:{scn['amount']:.0f}")
         return
 
     label, score, frozen = verdict
+    # Realistic behaviour: a frozen card declines EVERYTHING, so once a fraud has
+    # frozen this victim's card every later tap reads FROZEN until the operator
+    # resets the demo (Reset button on /shop -> /internal/reset-demo-data, which
+    # wipes demo taps and unfreezes the card to start a fresh run).
     state = "FROZEN" if (label == "FRAUD" or frozen) else "APPROVED"
-    print(f"  verdict: {label} score={score:.3f} frozen={frozen} -> {state}")
-    _send(ser, f"RESULT:{state}:{score:.2f}")
+    print(f"  verdict: {label} score={score:.3f} card_frozen={frozen} -> {state}")
+    _send(ser, f"RESULT:{state}:{score:.2f}:{scn['amount']:.0f}")
 
 
 def _send(ser, line: str):
@@ -234,8 +276,10 @@ def main():
     producer = Producer({"bootstrap.servers": BOOTSTRAP_SERVERS})
 
     if args.simulate:
+        # --simulate UID:SCN still uses the built-in A/B scenarios (no shop page).
         uid, _, scn = args.simulate.partition(":")
-        _handle_tap(producer, None, uid, scn or DEFAULT_SCENARIO, None)
+        scn_dict = dict(SCENARIOS.get((scn or DEFAULT_SCENARIO).upper(), SCENARIOS[DEFAULT_SCENARIO]))
+        _handle_tap(producer, None, uid, scn_dict)
         return
 
     ser = _open_serial(args.port)
@@ -249,12 +293,22 @@ def main():
             if not raw.startswith("TAP:"):
                 print(f"  (arduino) {raw}")  # debug/status lines from the sketch
                 continue
-            parts = raw.split(":")            # TAP:<UID>:<SCN>[:<amount>]
-            uid      = parts[1] if len(parts) > 1 else ""
-            scenario = parts[2] if len(parts) > 2 and parts[2] else DEFAULT_SCENARIO
-            amount   = float(parts[3]) if len(parts) > 3 and parts[3] else None
-            if uid:
-                _handle_tap(producer, ser, uid, scenario, amount)
+            parts = raw.split(":")            # TAP:<UID>  (scenario now comes from the shop page)
+            uid = parts[1] if len(parts) > 1 else ""
+            if not uid:
+                continue
+            # A purchase MUST be chosen on the /shop page first. With no armed
+            # cart we refuse the tap — nothing is produced — and tell the
+            # terminal to prompt the user to pick something on screen.
+            cart = _fetch_cart()
+            if not cart:
+                print("[tap] no armed cart — refused (pick an item on /shop first)")
+                _send(ser, "RESULT:NOITEM:0:0")
+                continue
+            scn = _scn_from_cart(cart)
+            print(f"[tap] armed cart: {cart.get('label')} RM{scn['amount']:.2f} @ {scn['location']}")
+            _handle_tap(producer, ser, uid, scn)
+            _clear_cart()   # consume so the next bare tap doesn't replay it
     except KeyboardInterrupt:
         print("\n[bridge] stopped.")
     finally:

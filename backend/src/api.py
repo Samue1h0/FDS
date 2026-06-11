@@ -221,6 +221,19 @@ class ReviewRequest(BaseModel):
     notes: Optional[str] = ""
 
 
+class IotCartRequest(BaseModel):
+    # The "heist checkout" shop page arms this; the Arduino bridge reads it on a
+    # physical card tap and turns it into one real transaction. Semantic fields
+    # only — the bridge maps foreign/online to IP/device/mode.
+    label:    str                       # display name, e.g. "Luxury Watch"
+    amount:   float
+    merchant: str
+    mcc:      str
+    location: str
+    online:   bool = True               # True -> Mode "Online", else "In-Person"
+    foreign:  bool = True               # True -> foreign IP (cross-location)
+
+
 # ── Auth ──────────────────────────────────────────────────────
 
 @app.post("/api/auth/login")
@@ -490,6 +503,34 @@ def list_transactions(
         }
 
     return {"total": int(total), "transactions": [_row_to_txn(r) for r in rows]}
+
+
+# ── IoT "armed cart" (booth shop page <-> Arduino bridge) ─────────────────────
+# A single in-memory slot. The /shop page POSTs what the visitor wants to buy;
+# the Arduino bridge GETs it on a physical card tap, fires the transaction, then
+# DELETEs it so the next bare tap doesn't replay. Public (no auth) on purpose:
+# the booth page can be opened by anyone, locally or via myfaid.com (same
+# backend through the tunnel), and arming alone does nothing without a real tap.
+_iot_cart: Optional[dict] = None
+
+
+@app.post("/api/iot/cart")
+def set_iot_cart(body: IotCartRequest):
+    global _iot_cart
+    _iot_cart = body.model_dump()
+    return {"status": "armed", "cart": _iot_cart}
+
+
+@app.get("/api/iot/cart")
+def get_iot_cart():
+    return {"cart": _iot_cart}
+
+
+@app.delete("/api/iot/cart")
+def clear_iot_cart():
+    global _iot_cart
+    _iot_cart = None
+    return {"status": "cleared"}
 
 
 # Whitelist of sortable keys -> safe SQL expression. Never interpolate a raw
