@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-// Public OAuth Client ID from Google Cloud Console (safe to expose).
-const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
+// Public OAuth Client ID from Google Cloud Console (safe to expose). We fall
+// back to it when NEXT_PUBLIC_GOOGLE_CLIENT_ID isn't in the build env — e.g. on
+// Vercel, where .env.local is never present — so the button still renders.
+const DEFAULT_CLIENT_ID = "315587208584-cuu3e21ppm52t1a4bioqv4aedp2glpmj.apps.googleusercontent.com";
+const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || DEFAULT_CLIENT_ID;
 const GIS_SRC = "https://accounts.google.com/gsi/client";
 
 // Minimal shape of the Google Identity Services we use.

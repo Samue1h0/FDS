@@ -23,10 +23,10 @@ USERS = [
     {"username": "analyst2", "password": "analyst123", "role": "analyst", "email": None},
     {"username": "admin",    "password": "admin123",   "role": "admin",   "email": None},
     # Team accounts (display name + avatar mapped in frontend userDirectory.ts)
-    {"username": "CCX",  "password": "ccx12345",  "role": "analyst", "email": None},  # Chun Xian
-    {"username": "Hong", "password": "hong12345", "role": "analyst", "email": None},  # Mun Hong
-    {"username": "Sam",  "password": "sam12345",  "role": "analyst", "email": "143samuelho@gmail.com"},  # Sam
-    {"username": "Siew", "password": "siew12345", "role": "analyst", "email": None},  # Yat Fei
+    {"username": "CCX",  "password": "ccx12345",  "role": "analyst", "email": "ccxian97@gmail.com"},    # Chun Xian
+    {"username": "Hong", "password": "hong12345", "role": "analyst", "email": "gohmunhong@gmail.com"},  # Mun Hong
+    {"username": "Sam",  "password": "sam12345",  "role": "analyst", "email": "143samuelho@gmail.com"}, # Sam
+    {"username": "Siew", "password": "siew12345", "role": "analyst", "email": "siao.alter@gmail.com"},  # Yat Fei
 ]
 
 

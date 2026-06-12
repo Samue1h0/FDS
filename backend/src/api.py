@@ -52,7 +52,9 @@ JWT_SECRET         = os.getenv("JWT_SECRET", "fraud-detection-secret-change-in-p
 JWT_ALGORITHM      = "HS256"
 JWT_EXPIRE_HOURS   = 8
 # Google "Sign in with Google" (SSO). Same Client ID as the frontend button.
-GOOGLE_CLIENT_ID   = os.getenv("GOOGLE_CLIENT_ID", "")
+# Public OAuth Client ID (safe to embed); env var overrides it. Used only as the
+# expected audience when verifying Google ID tokens, so a default is safe.
+GOOGLE_CLIENT_ID   = os.getenv("GOOGLE_CLIENT_ID", "315587208584-cuu3e21ppm52t1a4bioqv4aedp2glpmj.apps.googleusercontent.com")
 
 fabric = FabricClient(gateway_url=FABRIC_GATEWAY_URL)
 
