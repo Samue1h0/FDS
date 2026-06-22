@@ -28,18 +28,42 @@ fi
 log "Stopping Kafka + Postgres..."
 docker compose -f "$BASE_DIR/docker-compose.yml" down && log "Kafka + Postgres stopped."
 
-# ── Optionally stop Fabric network ───────────────────────────
+# ── Fabric network: choose how far to take it down ───────────
+# Volumes (the ledger) survive Docker Desktop closing and reboots — they only
+# die when the containers are *removed*. So "stop" keeps the chain; only "wipe"
+# (network.sh down) deletes it.
 echo ""
-read -p "Stop Fabric network too? This deletes all blockchain data. (y/N): " -n 1 -r
+echo "Fabric network options:"
+echo "  [1] Leave it running          (default)"
+echo "  [2] Stop containers, KEEP ledger   ← safe to shut down the device after this"
+echo "  [3] Wipe everything           (deletes ALL blockchain data — irreversible)"
+read -p "Choose 1/2/3: " -n 1 -r FABRIC_CHOICE
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-  log "Stopping Fabric network..."
-  cd "$BLOCKCHAIN_DIR"
-  ./network.sh down
-  log "Fabric network stopped."
-else
-  log "Fabric network left running."
-fi
+
+case "$FABRIC_CHOICE" in
+  2)
+    log "Stopping Fabric containers (ledger volumes preserved)..."
+    # Peers + orderer carry the service=hyperledger-fabric label; the chaincode
+    # containers (dev-peer*) are spawned by the peer and don't, so match both.
+    fabric_ids="$(docker ps -q --filter 'label=service=hyperledger-fabric'; docker ps -q --filter 'name=dev-peer')"
+    fabric_ids="$(echo "$fabric_ids" | tr '\n' ' ' | xargs)"
+    if [ -n "$fabric_ids" ]; then
+      docker stop $fabric_ids >/dev/null
+      log "Fabric containers stopped. Ledger data retained — './start.sh' will resume it."
+    else
+      warn "No running Fabric containers found."
+    fi
+    ;;
+  3)
+    warn "Wiping Fabric network and ALL blockchain data..."
+    cd "$BLOCKCHAIN_DIR"
+    ./network.sh down
+    log "Fabric network wiped."
+    ;;
+  *)
+    log "Fabric network left running."
+    ;;
+esac
 
 echo ""
 echo -e "${GREEN}All services stopped.${NC}"

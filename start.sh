@@ -87,14 +87,23 @@ python3 -m src.kafka_setup 2>/dev/null || warn "Topics may already exist — con
 # ─────────────────────────────────────────────────────────────
 
 log "Checking Fabric network..."
-if ! docker ps --format '{{.Names}}' | grep -q "peer0.org1"; then
-  warn "Fabric network not running. Starting it now..."
+if docker ps --format '{{.Names}}' | grep -q "peer0.org1"; then
+  log "Fabric network already running — skipping."
+elif docker ps -a --format '{{.Names}}' | grep -q "peer0.org1"; then
+  # Containers exist but are stopped (stop.sh option 2). Resume them so the
+  # existing ledger comes back — do NOT run network.sh up, which would clash
+  # with the already-created channel.
+  log "Resuming stopped Fabric containers (preserving existing ledger)..."
+  resume_ids="$(docker ps -aq --filter 'label=service=hyperledger-fabric'; docker ps -aq --filter 'name=dev-peer')"
+  resume_ids="$(echo "$resume_ids" | tr '\n' ' ' | xargs)"
+  docker start $resume_ids >/dev/null
+  log "Fabric containers resumed."
+else
+  warn "Fabric network not found. Starting fresh..."
   cd "$BLOCKCHAIN_DIR"
   ./network.sh up createChannel -c mychannel
   ./network.sh deployCC -c mychannel -ccn fraud -ccp ../chaincode/fraud-detection -ccl go
   log "Fabric network started and chaincode deployed."
-else
-  log "Fabric network already running — skipping."
 fi
 
 # ─────────────────────────────────────────────────────────────
