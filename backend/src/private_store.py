@@ -118,14 +118,19 @@ class PrivateRecordStore:
             ))
         self.conn.commit()
 
-    def reconcile_card_freeze(self, card_hash: str):
+    def reconcile_card_freeze(self, card_hash: str) -> bool:
         """Recompute a card's freeze after a review changed its labels. A card
         stays frozen while it has a 'standing fraud' (predicted FRAUD and NOT
         reviewed-legit, i.e. ground_truth_label IS DISTINCT FROM 0). Re-points
         frozen_cards to the EARLIEST standing fraud, or deletes the row
-        (unfreezes) when none remain."""
+        (unfreezes) when none remain.
+
+        Returns True only when this call actually UNFROZE the card — i.e. a
+        previously-frozen card now has no standing fraud and its row was
+        deleted. Lets callers announce the unfreeze (e.g. a toast)."""
         if not card_hash:
-            return
+            return False
+        unfroze = False
         with self.conn.cursor() as cur:
             cur.execute("""
                 SELECT transaction_id, timestamp, customer_ref, cardholder_name,
@@ -140,6 +145,7 @@ class PrivateRecordStore:
             row = cur.fetchone()
             if row is None:
                 cur.execute("DELETE FROM frozen_cards WHERE card_hash = %s", (card_hash,))
+                unfroze = cur.rowcount > 0
             else:
                 txn_id, ts, customer_ref, cardholder_name, masked, reasons = row
                 cur.execute("""
@@ -157,6 +163,7 @@ class PrivateRecordStore:
                 """, (card_hash, customer_ref, cardholder_name, (masked or "")[-4:],
                       ts, txn_id, reasons))
         self.conn.commit()
+        return unfroze
 
     def update_ground_truth(
         self,

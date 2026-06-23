@@ -13,9 +13,10 @@ function timeAgo(d: Date): string {
 }
 
 const DOT: Record<NotificationType, string> = {
-  fraud:  "bg-red-500",
-  freeze: "bg-blue-500",
-  review: "bg-amber-500",
+  fraud:    "bg-red-500",
+  freeze:   "bg-blue-500",
+  review:   "bg-amber-500",
+  unfreeze: "bg-emerald-500",
 };
 
 export default function NotificationDropdown() {

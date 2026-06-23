@@ -11,11 +11,13 @@ const FADE_MS    = 400;
 
 // Whole-pill vibrant style per type, using the app's semantic theme tokens so it
 // matches the rest of the UI: freeze = warning amber (reads as a warning), fraud
-// = error red (danger), review = brand blue (info).
+// = error red (danger), review = brand blue (info), unfreeze = success green
+// (the all-clear, the positive counterpart to freeze).
 const STYLE: Record<NotificationType, { pill: string; badge: string; title: string; sub: string }> = {
-  fraud:  { pill: "bg-gradient-to-r from-error-500 to-error-600",     badge: "bg-white/25 text-white",       title: "text-white",    sub: "text-white/85" },
-  freeze: { pill: "bg-gradient-to-r from-warning-400 to-warning-500", badge: "bg-gray-900/15 text-gray-900", title: "text-gray-900", sub: "text-gray-900/75" },
-  review: { pill: "bg-gradient-to-r from-brand-400 to-brand-500",     badge: "bg-white/25 text-white",       title: "text-white",    sub: "text-white/85" },
+  fraud:    { pill: "bg-gradient-to-r from-error-500 to-error-600",     badge: "bg-white/25 text-white",       title: "text-white",    sub: "text-white/85" },
+  freeze:   { pill: "bg-gradient-to-r from-warning-400 to-warning-500", badge: "bg-gray-900/15 text-gray-900", title: "text-gray-900", sub: "text-gray-900/75" },
+  review:   { pill: "bg-gradient-to-r from-brand-400 to-brand-500",     badge: "bg-white/25 text-white",       title: "text-white",    sub: "text-white/85" },
+  unfreeze: { pill: "bg-gradient-to-r from-success-500 to-success-600", badge: "bg-white/25 text-white",       title: "text-white",    sub: "text-white/85" },
 };
 
 interface Toast {
@@ -39,6 +41,14 @@ function Icon({ type }: { type: NotificationType }) {
     return (
       <svg className={cls} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6">
         <circle cx="10" cy="10" r="7" /><path d="M10 6v4l2.5 1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  if (type === "unfreeze") {
+    // Open padlock — the freeze lock, released.
+    return (
+      <svg className={cls} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <rect x="4" y="9" width="12" height="8" rx="2" /><path d="M7 9V7a3 3 0 015.83-1" strokeLinecap="round" />
       </svg>
     );
   }
@@ -106,9 +116,10 @@ export default function DynamicIsland() {
     if (!latest || latest.id === lastSeenId.current) return;
     lastSeenId.current = latest.id;
 
-    // Freeze is the hero event — always show it. Fraud/review only off-dashboard.
+    // Freeze/unfreeze are the hero events — always show them, dashboard included.
+    // Fraud/review only off-dashboard (the dashboard has its own live feed).
     const onDashboard = pathname === "/";
-    if (latest.type !== "freeze" && onDashboard) return;
+    if (latest.type !== "freeze" && latest.type !== "unfreeze" && onDashboard) return;
 
     const toast: Toast = {
       id: latest.id, type: latest.type, title: latest.title,

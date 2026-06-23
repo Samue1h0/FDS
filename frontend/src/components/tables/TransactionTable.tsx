@@ -366,6 +366,9 @@ export default function TransactionTable() {
                     const reviewed  = !!(txn.reviewed_by && txn.reviewed_by !== "");
                     const decColor  = txn.predicted_label === "FRAUD" ? "error" : txn.predicted_label === "LEGIT" ? "success" : "light";
                     const postFreeze = !!(txn.card_frozen && txn.card_frozen_at && new Date(txn.timestamp) > new Date(txn.card_frozen_at));
+                    // A fraud cleared on review (ground_truth = legit) whose card is no
+                    // longer frozen = this row is the false-positive that lifted the freeze.
+                    const unfrozen  = !txn.card_frozen && reviewed && txn.predicted_label === "FRAUD" && txn.ground_truth_label === 0;
 
                     return (
                       <TableRow key={txn.transaction_id}>
@@ -386,11 +389,18 @@ export default function TransactionTable() {
                         <TableCell className="px-5 py-3 text-theme-sm text-gray-500 dark:text-gray-400 font-mono">
                           <div className="flex flex-col gap-1">
                             <span>{txn.masked_card_number}</span>
-                            {txn.card_frozen && (
+                            {txn.card_frozen ? (
                               <span className="inline-flex w-fit items-center rounded-full bg-error-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-error-600 dark:bg-error-500/15 dark:text-error-500">
                                 {postFreeze ? "Post-freeze" : "Frozen"}
                               </span>
-                            )}
+                            ) : unfrozen ? (
+                              <span className="inline-flex w-fit items-center gap-1 rounded-full bg-success-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-success-600 dark:bg-success-500/15 dark:text-success-500">
+                                <svg className="h-2.5 w-2.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">
+                                  <rect x="4" y="9" width="12" height="8" rx="2" /><path d="M7 9V7a3 3 0 015.83-1" strokeLinecap="round" />
+                                </svg>
+                                Unfrozen
+                              </span>
+                            ) : null}
                           </div>
                         </TableCell>
                         <TableCell className="px-5 py-3 text-theme-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">

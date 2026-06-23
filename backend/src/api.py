@@ -110,7 +110,8 @@ def _build_snapshot() -> dict:
                     COUNT(*) FILTER (WHERE predicted_label = 'LEGIT')                  AS legit_count,
                     COUNT(*) FILTER (WHERE predicted_label = 'FRAUD'
                                      AND reviewed_by IS NULL)                          AS pending_review,
-                    COUNT(*) FILTER (WHERE reviewed_by IS NOT NULL)                    AS reviewed,
+                    COUNT(*) FILTER (WHERE predicted_label = 'FRAUD'
+                                     AND reviewed_by IS NOT NULL)                      AS reviewed,
                     COALESCE(AVG(fraud_score), 0)                                      AS avg_fraud_score,
                     COALESCE(SUM(amount_myr) FILTER (WHERE predicted_label = 'FRAUD'), 0) AS balance_at_risk
                 FROM private_transactions
@@ -999,18 +1000,29 @@ def review_transaction(transaction_id: str, body: ReviewRequest):
         # freeze (unfreezes when no standing fraud remains on the card).
         with conn.cursor() as cur:
             cur.execute(
-                "SELECT card_hash FROM private_transactions WHERE transaction_id = %s",
+                "SELECT card_hash, merchant_name, amount_myr "
+                "FROM private_transactions WHERE transaction_id = %s",
                 (transaction_id,),
             )
             r = cur.fetchone()
+        unfroze = False
         if r and r[0]:
-            private_store.reconcile_card_freeze(r[0])
+            unfroze = private_store.reconcile_card_freeze(r[0])
         private_store.close()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Postgres update failed: {e}")
 
-    # Notify all SSE clients that a review was just submitted
-    _notify_clients("review", {"transaction_id": transaction_id})
+    # Notify all SSE clients. Clearing a false-positive that unfreezes the card
+    # gets its own event so the UI can announce it (mirrors the freeze toast);
+    # otherwise it's a plain review (both trigger a dashboard refresh).
+    if unfroze:
+        _notify_clients("unfreeze", {
+            "transaction_id": transaction_id,
+            "merchant_name":  r[1] or "",
+            "amount_myr":     float(r[2]) if r[2] is not None else 0.0,
+        })
+    else:
+        _notify_clients("review", {"transaction_id": transaction_id})
 
     return {"status": "SUCCESS", "transaction_id": transaction_id}
 
@@ -1076,7 +1088,8 @@ def get_stats():
                     COUNT(*) FILTER (WHERE predicted_label = 'LEGIT')                  AS legit_count,
                     COUNT(*) FILTER (WHERE predicted_label = 'FRAUD'
                                      AND reviewed_by IS NULL)                          AS pending_review,
-                    COUNT(*) FILTER (WHERE reviewed_by IS NOT NULL)                    AS reviewed,
+                    COUNT(*) FILTER (WHERE predicted_label = 'FRAUD'
+                                     AND reviewed_by IS NOT NULL)                      AS reviewed,
                     COALESCE(AVG(fraud_score), 0)                                      AS avg_fraud_score,
                     COALESCE(SUM(amount_myr) FILTER (WHERE predicted_label = 'FRAUD'), 0) AS balance_at_risk
                 FROM private_transactions
@@ -1847,10 +1860,21 @@ async def stream_dashboard(request: Request):
                         yield "event: reset\ndata: {}\n\n"
                         return
 
+                    # Pass-through events the client reacts to directly (e.g. an
+                    # unfreeze toast). Collect from this event and the drain below.
+                    passthrough = []
+                    if isinstance(event_data, dict) and event_data.get("type") == "unfreeze":
+                        passthrough.append(event_data)
+
                     # Debounce: drain any events that stacked up while
                     # we were building the last snapshot
                     while not queue.empty():
-                        queue.get_nowait()
+                        ev = queue.get_nowait()
+                        if isinstance(ev, dict) and ev.get("type") == "unfreeze":
+                            passthrough.append(ev)
+
+                    for ev in passthrough:
+                        yield f"event: unfreeze\ndata: {json.dumps(ev)}\n\n"
 
                     try:
                         snapshot = await asyncio.get_event_loop().run_in_executor(

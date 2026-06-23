@@ -29,7 +29,7 @@ export interface AlertEntry {
   alertedAt:      Date;
 }
 
-export type NotificationType = "fraud" | "freeze" | "review";
+export type NotificationType = "fraud" | "freeze" | "review" | "unfreeze";
 
 export interface AppNotification {
   id: string;
@@ -228,6 +228,21 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
       }
     });
 
+    es.addEventListener("unfreeze", (e: MessageEvent) => {
+      try {
+        const d = JSON.parse(e.data) as { merchant_name?: string; amount_myr?: number };
+        const merchant = d.merchant_name || "Card";
+        pushNotif({
+          type: "unfreeze",
+          title: "Card unfrozen",
+          subtitle: `${merchant} · ${money(d.amount_myr ?? 0)} cleared`,
+          href: "/frozen-cards",
+        });
+      } catch {
+        /* malformed payload — ignore */
+      }
+    });
+
     es.addEventListener("reset", () => {
       isResetting.current = true;
       setStats(null); setTrend([]); setScoreDist([]); setRecent([]);
@@ -250,7 +265,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
       esRef.current = null;
       reconnectTimeout.current = setTimeout(connectSSE, delay);
     });
-  }, [SSE_URL, applyPayload, startPolling, stopPolling]);
+  }, [SSE_URL, applyPayload, startPolling, stopPolling, pushNotif]);
 
   useEffect(() => {
     connectSSE();
