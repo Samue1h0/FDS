@@ -419,7 +419,18 @@ export default function TransactionTable() {
                         </TableCell>
                         <TableCell className="px-5 py-3">
                           {reviewed ? (
-                            <span className="text-xs text-gray-400 dark:text-gray-600">—</span>
+                            <button
+                              type="button"
+                              onClick={() => handleReview(txn)}
+                              title="View review"
+                              aria-label="View review"
+                              className="inline-flex items-center justify-center rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-white/5 dark:hover:text-gray-300 transition-colors"
+                            >
+                              <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6">
+                                <path d="M1.667 10S4.667 4.167 10 4.167 18.333 10 18.333 10 15.333 15.833 10 15.833 1.667 10 1.667 10Z" strokeLinecap="round" strokeLinejoin="round" />
+                                <circle cx="10" cy="10" r="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </button>
                           ) : (
                             <button
                               type="button"

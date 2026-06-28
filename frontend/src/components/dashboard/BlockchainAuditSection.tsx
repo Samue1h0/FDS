@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState, useCallback, useRef } from "react";
-import Link from "next/link";
 import Badge from "../ui/badge/Badge";
 import type { Transaction, Stats } from "@/services/fraudApi";
 
@@ -195,9 +194,6 @@ function RecentlyReviewedCard({ transactions }: { transactions: Transaction[] })
     <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
       <div className="flex items-center justify-between mb-4">
         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Recently Reviewed</p>
-        <Link href="/transactions?reviewed=true" className="text-xs text-brand-500 hover:underline dark:text-brand-400">
-          See all
-        </Link>
       </div>
 
       {recent.length === 0 ? (
