@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import type { ChainState } from "@/services/fraudApi";
 
 const short = (hash: string) =>
@@ -31,10 +32,10 @@ function BlockTile({ number, dataHash, txCount, isTip }: {
 /** Arrow showing each block references the previous block's hash. */
 function ChainLink() {
   return (
-    <div className="flex shrink-0 flex-col items-center justify-center px-1 text-gray-300 dark:text-gray-600">
-      <span className="text-[9px] uppercase tracking-wide text-gray-400">prev&nbsp;hash</span>
-      <svg className="h-5 w-8" viewBox="0 0 32 20" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M2 10h26m0 0l-6-5m6 5l-6 5" strokeLinecap="round" strokeLinejoin="round" />
+    <div className="flex shrink-0 flex-col items-center justify-center gap-1 text-gray-300 dark:text-gray-600">
+      <span className="whitespace-nowrap text-[9px] uppercase tracking-wide text-gray-400">prev&nbsp;hash</span>
+      <svg className="h-5 w-10" viewBox="0 0 40 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M2 10h34m0 0l-6-5m6 5l-6 5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </div>
   );
@@ -61,9 +62,9 @@ export default function BlockHashChain({ chain }: { chain: ChainState | null }) 
         ) : chain.blocks.length === 0 ? (
           <p className="text-sm text-gray-500 dark:text-gray-400">No blocks committed yet.</p>
         ) : (
-          <div className="flex items-stretch gap-2 overflow-x-auto pb-2">
+          <div className="flex items-stretch gap-4 overflow-x-auto pb-2">
             {chain.blocks.map((b, i) => (
-              <div key={b.number} className="flex items-stretch">
+              <Fragment key={b.number}>
                 <BlockTile
                   number={b.number}
                   dataHash={b.data_hash}
@@ -71,7 +72,7 @@ export default function BlockHashChain({ chain }: { chain: ChainState | null }) 
                   isTip={i === 0}
                 />
                 {i < chain.blocks.length - 1 && <ChainLink />}
-              </div>
+              </Fragment>
             ))}
           </div>
         )}
