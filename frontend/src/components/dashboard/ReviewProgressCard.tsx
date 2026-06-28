@@ -56,7 +56,11 @@ export default function ReviewProgressCard({ stats }: ReviewProgressCardProps) {
 
         <div className="relative">
           <div className="max-h-[220px] pt-3.5 print:flex print:justify-center">
-            <ReactApexChart options={options} series={series} type="radialBar" height={220} />
+            {/* key on progressPct: ApexCharts radialBar can get stuck showing the
+                first value it rendered (0% during a reset/refetch) and never
+                redraw its arc when series later changes. Remounting on value
+                change guarantees the arc matches the numbers. */}
+            <ReactApexChart key={progressPct} options={options} series={series} type="radialBar" height={220} />
           </div>
           <span
             className={`absolute left-1/2 top-full -translate-x-1/2 -translate-y-[95%] rounded-full px-3 py-1 text-xs font-medium ${
