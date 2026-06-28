@@ -38,29 +38,29 @@ function isToday(timestamp: string): boolean {
 
 // ── Card 1: Immutability Health ───────────────────────────────────────────────
 
-function ImmutabilityHealthCard({ transactions }: { transactions: Transaction[] }) {
-  const sorted = [...transactions].sort(
-    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  );
-  const latest = sorted[0];
+function ImmutabilityHealthCard({ transactions, stats }: { transactions: Transaction[]; stats: Stats | null }) {
+  // Count of records secured on-chain. Uses the authoritative total from stats
+  // (the transactions list is capped), falling back to the loaded rows.
+  const count  = stats?.total ?? transactions.length;
+  const active = count > 0;
 
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
       <div className="flex items-center justify-between mb-3">
         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Immutability Health</p>
         <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
-          latest
+          active
             ? "bg-success-50 text-success-700 dark:bg-success-500/15 dark:text-success-400"
             : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
         }`}>
-          <span className={`w-1.5 h-1.5 rounded-full ${latest ? "bg-success-500 animate-pulse" : "bg-gray-400"}`} />
-          {latest ? "Active" : "No data"}
+          <span className={`w-1.5 h-1.5 rounded-full ${active ? "bg-success-500 animate-pulse" : "bg-gray-400"}`} />
+          {active ? "Verified" : "No data"}
         </span>
       </div>
       <p className="text-2xl font-bold text-gray-800 dark:text-white/90">
-        {latest ? minutesAgo(latest.created_at) : "—"}
+        {count.toLocaleString()}
       </p>
-      <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">Most recent transaction confirmed on chain</p>
+      <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">Records cryptographically secured on chain</p>
     </div>
   );
 }
@@ -88,7 +88,10 @@ function AuditTrailTodayCard({ transactions }: { transactions: Transaction[]; st
 // ── Card 3: Review Velocity ───────────────────────────────────────────────────
 
 function ReviewVelocityCard({ transactions }: { transactions: Transaction[] }) {
-  const reviewed = transactions.filter(t => t.reviewed_by && t.reviewed_at && t.timestamp);
+  // Queue time: how long a case waited from entering the system (created_at) to
+  // being actioned (reviewed_at). Measuring against the transaction's business
+  // timestamp instead would include the purchase's historical age (months/years).
+  const reviewed = transactions.filter(t => t.reviewed_by && t.reviewed_at && t.created_at);
 
   let avgHours = 0;
   let fast = 0;   // < 4 h
@@ -96,7 +99,7 @@ function ReviewVelocityCard({ transactions }: { transactions: Transaction[] }) {
 
   if (reviewed.length > 0) {
     const deltas = reviewed.map(t => {
-      const ms = new Date(t.reviewed_at).getTime() - new Date(t.timestamp).getTime();
+      const ms = new Date(t.reviewed_at).getTime() - new Date(t.created_at).getTime();
       return Math.max(ms / 3_600_000, 0);
     });
     avgHours = deltas.reduce((s, v) => s + v, 0) / deltas.length;
@@ -403,7 +406,7 @@ export default function BlockchainAuditSection({ transactions, stats }: Blockcha
 
       {/* Row 1 — 3 stat cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
-        <ImmutabilityHealthCard transactions={transactions} />
+        <ImmutabilityHealthCard transactions={transactions} stats={stats} />
         <AuditTrailTodayCard transactions={transactions} stats={stats} />
         <ReviewVelocityCard transactions={transactions} />
       </div>
