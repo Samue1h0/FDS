@@ -92,6 +92,17 @@ def get_db():
     return psycopg2.connect(POSTGRES_DSN)
 
 
+def _utc_iso(dt) -> str:
+    """Serialize a *generated* timestamp (NOW()-sourced, e.g. reviewed_at /
+    created_at) as a UTC-aware ISO string so the browser localizes it to the
+    viewer's timezone. The DB runs in UTC and the column is naive, so we tag a
+    trailing 'Z'. NOT for the dataset transaction `timestamp` / `frozen_at`,
+    which are local wall-clock and shown as-is."""
+    if not dt:
+        return ""
+    return dt.isoformat() + ("Z" if dt.tzinfo is None else "")
+
+
 # ── Dashboard snapshot builder ────────────────────────────────
 # Reads from PostgreSQL (the read model) so the snapshot is available
 # immediately after the fraud consumer saves — no need to wait for
@@ -153,7 +164,7 @@ def _build_snapshot() -> dict:
                     transaction_id, timestamp::text, amount_myr, merchant_name,
                     customer_ref, fraud_score, predicted_label, ml_prediction,
                     rule_flag, risk_reasons, ground_truth_label,
-                    reviewed_by, reviewed_at::text,
+                    reviewed_by, reviewed_at,
                     mcc, mode, location, ic_hash, masked_card_number,
                     EXISTS (SELECT 1 FROM frozen_cards fc
                             WHERE fc.card_hash = private_transactions.card_hash) AS card_frozen
@@ -174,6 +185,7 @@ def _build_snapshot() -> dict:
                 txn = dict(zip(cols, r))
                 txn["fraud_score"] = float(txn["fraud_score"]) if txn["fraud_score"] is not None else 0.0
                 txn["amount_myr"]  = float(txn["amount_myr"])  if txn["amount_myr"]  is not None else 0.0
+                txn["reviewed_at"] = _utc_iso(txn["reviewed_at"])  # generated → UTC-tagged for the browser
                 rr = txn["risk_reasons"]
                 txn["risk_reasons"] = json.loads(rr) if isinstance(rr, str) else (rr or [])
                 recent.append(txn)
@@ -497,8 +509,8 @@ def list_transactions(
             "risk_reasons":       risk_reasons,
             "ground_truth_label": int(row[15]) if row[15] is not None else 0,
             "reviewed_by":        row[16] or "",
-            "reviewed_at":        row[17].isoformat() if row[17] else "",
-            "created_at":         row[18].isoformat() if row[18] else "",
+            "reviewed_at":        _utc_iso(row[17]),
+            "created_at":         _utc_iso(row[18]),
             "created_by":         "",
             "card_frozen":         frozen_at is not None,
             "card_frozen_at":      frozen_at.isoformat() if frozen_at else "",
@@ -759,7 +771,7 @@ def export_transactions(
             "rules_triggered": "; ".join(reasons),
             "ground_truth":    int(row[14]) if row[14] is not None else "",
             "reviewed_by":     row[15] or "",
-            "reviewed_at":     row[16].isoformat() if row[16] else "",
+            "reviewed_at":     _utc_iso(row[16]),
         }
         if pii:
             v["cardholder_name"] = row[17] or ""
@@ -899,8 +911,8 @@ def get_customer_transactions(customer_ref: str, limit: int = Query(20, le=50)):
             "risk_reasons":       risk_reasons,
             "ground_truth_label": int(row[15]) if row[15] is not None else 0,
             "reviewed_by":        row[16] or "",
-            "reviewed_at":        row[17].isoformat() if row[17] else "",
-            "created_at":         row[18].isoformat() if row[18] else "",
+            "reviewed_at":        _utc_iso(row[17]),
+            "created_at":         _utc_iso(row[18]),
             "created_by":         "",
         }
 
@@ -947,7 +959,7 @@ def get_transaction(transaction_id: str):
             blockchain_data["ic_number"]           = _decrypt(row[2])
             blockchain_data["card_number"]         = _decrypt(row[3])
             blockchain_data["private_reviewed_by"] = row[4]
-            blockchain_data["private_reviewed_at"] = str(row[5]) if row[5] else ""
+            blockchain_data["private_reviewed_at"] = _utc_iso(row[5])
             blockchain_data["notes"]               = row[6]
 
             frozen_at = row[7]
