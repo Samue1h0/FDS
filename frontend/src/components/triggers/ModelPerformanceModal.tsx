@@ -13,8 +13,6 @@ interface Props {
   onClose: () => void;
 }
 
-type Tab = "test" | "live";
-
 const pct = (v: number) => `${(v * 100).toFixed(1)}%`;
 
 /** A metric tile with its formal name, value, and a plain-English gloss. */
@@ -111,7 +109,6 @@ function MetricsPanel({
 export default function ModelPerformanceModal({ isOpen, onClose }: Props) {
   const [data, setData]   = useState<ModelPerformance | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [tab, setTab]     = useState<Tab>("test");
 
   useEffect(() => {
     if (!isOpen) return;
@@ -119,13 +116,12 @@ export default function ModelPerformanceModal({ isOpen, onClose }: Props) {
     setError(null);
     let active = true;
     getModelPerformance()
-      .then((d) => { if (active) { setData(d); setTab(d.test ? "test" : "live"); } })
+      .then((d) => { if (active) setData(d); })
       .catch((e) => { if (active) setError(e instanceof Error ? e.message : "Failed to load performance"); });
     return () => { active = false; };
   }, [isOpen]);
 
   const test = data?.test ?? null;
-  const live = data?.live ?? null;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="max-w-4xl m-4">
@@ -151,80 +147,31 @@ export default function ModelPerformanceModal({ isOpen, onClose }: Props) {
           </div>
         )}
 
-        {data && (
-          <>
-            {/* Tabs */}
-            <div className="mb-5 flex gap-1 rounded-lg bg-gray-100 p-1 dark:bg-white/[0.05]">
-              <button
-                onClick={() => setTab("test")}
-                disabled={!test}
-                className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition disabled:opacity-40 ${
-                  tab === "test"
-                    ? "bg-white text-gray-800 shadow-sm dark:bg-gray-800 dark:text-white"
-                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400"
-                }`}
-              >
-                Held-out test set
-              </button>
-              <button
-                onClick={() => setTab("live")}
-                className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition ${
-                  tab === "live"
-                    ? "bg-white text-gray-800 shadow-sm dark:bg-gray-800 dark:text-white"
-                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400"
-                }`}
-              >
-                Live (current data)
-              </button>
+        {data && test && (
+          <div className="space-y-4">
+            <MetricsPanel
+              cm={test.confusion_matrix}
+              accuracy={test.accuracy} precision={test.precision} recall={test.recall}
+              f1={test.f1} fpr={test.fpr} rocAuc={test.roc_auc}
+              positives={test.positives} negatives={test.negatives}
+            />
+            <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-xs leading-relaxed text-gray-500 dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-400">
+              <span className="font-semibold text-gray-700 dark:text-gray-300">Methodology — </span>
+              {test.methodology} Trained on {test.train_size.toLocaleString()} transactions,
+              evaluated on {test.test_size.toLocaleString()} ({test.n_estimators} trees,{" "}
+              {test.n_features} features, <code>class_weight={test.class_weight}</code>).
+              With only {test.positives} fraud cases in the test fold, precision/recall carry
+              meaningful variance — the ROC-AUC ({test.roc_auc.toFixed(3)}) is the more stable
+              summary. Regenerate with <code>python -m src.eval_model</code>.
             </div>
+          </div>
+        )}
 
-            {tab === "test" && test && (
-              <div className="space-y-4">
-                <MetricsPanel
-                  cm={test.confusion_matrix}
-                  accuracy={test.accuracy} precision={test.precision} recall={test.recall}
-                  f1={test.f1} fpr={test.fpr} rocAuc={test.roc_auc}
-                  positives={test.positives} negatives={test.negatives}
-                />
-                <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-xs leading-relaxed text-gray-500 dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-400">
-                  <span className="font-semibold text-gray-700 dark:text-gray-300">Methodology — </span>
-                  {test.methodology} Trained on {test.train_size.toLocaleString()} transactions,
-                  evaluated on {test.test_size.toLocaleString()} ({test.n_estimators} trees,{" "}
-                  {test.n_features} features, <code>class_weight={test.class_weight}</code>).
-                  With only {test.positives} fraud cases in the test fold, precision/recall carry
-                  meaningful variance — the ROC-AUC ({test.roc_auc.toFixed(3)}) is the more stable
-                  summary. Regenerate with <code>python -m src.eval_model</code>.
-                </div>
-              </div>
-            )}
-
-            {tab === "test" && !test && (
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                No held-out evaluation found. Run <code>python -m src.eval_model</code> in the
-                backend to generate <code>models/model_metrics.json</code>.
-              </p>
-            )}
-
-            {tab === "live" && live && (
-              <div className="space-y-4">
-                <MetricsPanel
-                  cm={live.confusion_matrix}
-                  accuracy={live.accuracy} precision={live.precision} recall={live.recall}
-                  f1={live.f1} fpr={live.fpr}
-                  positives={live.positives} negatives={live.negatives}
-                />
-                <div className="rounded-xl border border-warning-200 bg-warning-50 p-4 text-xs leading-relaxed text-warning-700 dark:border-warning-500/30 dark:bg-warning-500/10 dark:text-warning-300">
-                  <span className="font-semibold">Read with care — </span>
-                  these reflect the model&apos;s prediction vs. ground truth across all{" "}
-                  {live.n_scored.toLocaleString()} scored transactions currently in the system.
-                  Because the model was trained on most of this data, these figures run higher than
-                  the held-out test set and are <span className="font-medium">not</span> a
-                  generalization estimate. No ROC-AUC here — the per-transaction ML probability
-                  isn&apos;t persisted.
-                </div>
-              </div>
-            )}
-          </>
+        {data && !test && (
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            No held-out evaluation found. Run <code>python -m src.eval_model</code> in the
+            backend to generate <code>models/model_metrics.json</code>.
+          </p>
         )}
       </div>
     </Modal>
