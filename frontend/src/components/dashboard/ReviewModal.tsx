@@ -90,6 +90,13 @@ export default function ReviewModal({ transaction, isOpen, onClose, onSuccess }:
   const risk = getRisk(txn.fraud_score);
   const historyCount = loadingHistory ? null : history.length;
 
+  // Once a transaction is reviewed the decision is locked: we show the saved
+  // review record (reviewer · date · verdict · notes) instead of the form.
+  const reviewedBy = txn.private_reviewed_by || txn.reviewed_by || "";
+  const isReviewed = reviewedBy !== "";
+  const reviewedAt = txn.private_reviewed_at || txn.reviewed_at || "";
+  const reviewVerdict = txn.ground_truth_label === 1 ? "fraud" : "legit";
+
   const handleClose = () => {
     setSelectedLabel(null);
     setConsentChecked(false);
@@ -383,6 +390,50 @@ export default function ReviewModal({ transaction, isOpen, onClose, onSuccess }:
         </div>
       )}
 
+      {isReviewed ? (
+        /* ── Read-only review record (decision is locked) ───────────── */
+        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-white/[0.02]">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Review record</p>
+            <Badge size="sm" color={reviewVerdict === "fraud" ? "error" : "success"}>
+              {reviewVerdict === "fraud" ? "Confirmed Fraud" : "Legitimate"}
+            </Badge>
+          </div>
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+            <div>
+              <dt className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">Reviewer</dt>
+              <dd className="text-gray-700 dark:text-gray-300">{reviewedBy}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">Reviewed at</dt>
+              <dd className="text-gray-700 dark:text-gray-300">
+                {reviewedAt
+                  ? new Date(reviewedAt).toLocaleString("en-MY", {
+                      day: "2-digit", month: "short", year: "numeric",
+                      hour: "2-digit", minute: "2-digit",
+                    })
+                  : "—"}
+              </dd>
+            </div>
+            <div className="col-span-2">
+              <dt className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">Notes</dt>
+              <dd className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                {txn.notes?.trim() || <span className="text-gray-400 dark:text-gray-500">No notes recorded.</span>}
+              </dd>
+            </div>
+          </dl>
+          <div className="mt-5">
+            <button
+              type="button"
+              onClick={handleClose}
+              className="w-full rounded-xl border border-gray-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ) : (
+      <>
       {/* ── Verdict — always visible ────────────────────────────────── */}
       <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Verdict</p>
       <div className="flex gap-3 mb-5">
@@ -457,6 +508,8 @@ export default function ReviewModal({ transaction, isOpen, onClose, onSuccess }:
           {submitting ? "Submitting…" : "Submit Review"}
         </button>
       </div>
+      </>
+      )}
     </Modal>
   );
 }
